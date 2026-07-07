@@ -1,0 +1,107 @@
+/* Kiri design tokens · generated from docs/design.html (source of truth: docs/design.md) */
+/* ============ TOKENS · mirror of docs/design.md ============ */
+  :root {
+    --color-primary: #322014;
+    --color-on-primary: #F5F4F2;
+    --color-primary-hover: #5A3921;
+    --color-accent: #7E4E2D;
+    --color-accent-muted: #C5A681;
+    --color-background: #EFEEE8;
+    --color-surface: #F5F4F2;
+    --color-surface-raised: #FAF8F3;
+    --color-on-surface: #322014;
+    --color-on-surface-muted: #66625F;
+    --color-border: #EAE3D7;
+    --color-border-strong: #DCCBB3;
+    --color-success: #5C7350;
+    --color-warning: #A9741B;
+    --color-error: #A22727;
+    --color-info: #2C50B5;
+    --color-accent-alt: #7D95A1;
+    --color-trend-up: #5C7350;
+    --color-trend-down: #A22727;
+    --color-rarity-common: #9E9B98;
+    --color-rarity-uncommon: #7D95A1;
+    --color-rarity-rare: #C39A45;
+    --color-rarity-epic: #8F7193;
+    --color-rarity-mythic: #C06A3B;
+    --color-rarity-secret: #5C4A6E;
+    --gradient-secret: linear-gradient(100deg, #5C4A6E, #4A5E6D 50%, #7E4E2D);
+    --color-haku-deep: #52321B;
+    --color-haku-mid: #7E4E2D;
+    --color-haku-bright: #B78D62;
+    --color-haku-pale: #C5A681;
+    --gradient-haku: linear-gradient(180deg, var(--color-haku-bright) 0%, var(--color-haku-pale) 42%, var(--color-haku-mid) 78%, var(--color-haku-deep) 100%);
+    --shadow-float: 0 8px 32px rgba(50,32,20,0.16);
+    --scrim: rgba(26,18,14,0.5);
+
+    --font-heading: 'Newsreader', 'Source Serif 4', Georgia, serif;
+    --font-body: 'Geist', system-ui, sans-serif;
+    --type-display: 400 60px/1.22 var(--font-heading);
+    --type-display-ls: -0.025em;
+    --type-h1: 400 48px/1.22 var(--font-heading);
+    --type-h1-ls: -0.025em;
+    --type-h2: 400 36px/1.3 var(--font-heading);
+    --type-h2-ls: -0.025em;
+    --type-h3: 400 24px/1.3 var(--font-heading);
+    --type-h3-ls: -0.015em;
+    --type-h4: 500 16px/1.3 var(--font-heading);
+    --type-h4-ls: -0.015em;
+    --type-body-lg: 400 18px/1.5 var(--font-body);
+    --type-body: 400 16px/1.5 var(--font-body);
+    --type-body-sm: 400 13px/1.5 var(--font-body);
+    --type-caption: 400 11px/1.4 var(--font-body);
+    --type-caption-ls: 0.01em;
+    --type-label: 500 10px/1.4 var(--font-body);
+    --type-label-ls: 0.04em;
+
+    --rounded-none: 0px;
+    --rounded-xs: 4px;
+    --rounded-sm: 8px;
+    --rounded-md: 12px;
+    --rounded-lg: 16px;
+    --rounded-full: 9999px;
+
+    --space-1: 4px;  --space-2: 8px;  --space-3: 12px;
+    --space-4: 16px; --space-5: 24px; --space-6: 32px;
+    --space-7: 48px; --space-8: 64px; --space-9: 96px;
+  }
+  [data-theme="dark"] {
+    --color-primary: #CEB69A;
+    --color-on-primary: #1A120E;
+    --color-primary-hover: #DCCFBC;
+    --color-accent: #BEA083;
+    --color-accent-muted: #694F3E;
+    --color-background: #1A120E;
+    --color-surface: #2E2019;
+    --color-surface-raised: #413026;
+    --color-on-surface: #EAE7E2;
+    --color-on-surface-muted: #ABA59E;
+    --color-border: #413026;
+    --color-border-strong: #694F3E;
+    --shadow-float: 0 8px 32px rgba(0,0,0,0.5);
+  }
+
+/* ============ base ============ */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { color-scheme: light; }
+[data-theme="dark"] { color-scheme: dark; }
+body {
+  background: var(--color-background);
+  color: var(--color-on-surface);
+  font: var(--type-body);
+  transition: background .25s, color .25s;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+button { font-family: var(--font-body); }
+.tnum { font-variant-numeric: tabular-nums; }
+.caret-svg { width: 16px; height: 16px; opacity: .55; margin-left: 2px; vertical-align: -3px; }
+.caret-svg.up { transform: rotate(180deg); }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ============ next/font wiring (overrides the token fallbacks) ============ */
+:root {
+  --font-heading: var(--font-newsreader), 'Source Serif 4', Georgia, serif;
+  --font-body: var(--font-geist), system-ui, sans-serif;
+}
