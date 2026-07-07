@@ -36,10 +36,18 @@ export async function justTcgFetch<T>(path: string, params: Record<string, strin
   return (await res.json()) as T;
 }
 
-export function utcDay(now = Date.now()): string {
-  return new Date(now).toISOString().slice(0, 10);
+/** Batch lookup: POST /cards with [{ variantId }], ≤20 per request. */
+export async function justTcgPost<T>(path: string, body: unknown): Promise<T> {
+  const key = process.env.JUSTTCG_API_KEY;
+  if (!key) throw new JustTcgError("JUSTTCG_API_KEY is not set in the Convex environment");
+  await pace();
+  const res = await fetch(BASE + path, {
+    method: "POST",
+    headers: { "x-api-key": key, "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new JustTcgError(`JustTCG ${res.status} on POST ${path}`, res.status);
+  return (await res.json()) as T;
 }
 
-/** Default daily request budget; 10 of 100 reserved for search backfill. */
-export const DAILY_BUDGET = 90;
-export const BACKFILL_BUDGET = 10;
+export { DAILY_BUDGET, BACKFILL_BUDGET, utcDay } from "./budget";

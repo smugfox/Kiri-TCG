@@ -7,13 +7,15 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run"
   },
   "dependencies": {
     "@auth/core": "^0.41.2",
     "@convex-dev/auth": "^0.0.94",
     "@sentry/nextjs": "^10.64.0",
     "convex": "^1.42.1",
+    "lightweight-charts": "^5.2.0",
     "lucide-react": "^1.23.0",
     "next": "^16.2.10",
     "react": "^19.2.7",
@@ -25,6 +27,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.10",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.10"
   }
 }
