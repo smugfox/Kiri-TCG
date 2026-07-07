@@ -7,7 +7,7 @@ metadata:
   originSessionId: 3796ab52-8d5b-4bcb-b8c0-b511a162e2dc
 ---
 
-The testBuilderOS project (GitHub: smugfox/TCGDS) is **Kiri**: a TCG collection-portfolio web app ("Kiri helps collectors track, value, and trade their TCG collection across every game"). Named July 7, 2026 after paulownia wood (kiri), used for Japanese valuables chests. Founder: Robin, product designer (ex-Crunchyroll, 9 yrs) with front-end roots. Full product docs exist: docs/VISION.md, product-vision.md, prd.md, product-roadmap.md (68 tasks, 7 phases). Decisions confirmed by the founder:
+The testBuilderOS project (GitHub: smugfox/Kiri-TCG (public; fresh history)) is **Kiri**: a TCG collection-portfolio web app ("Kiri helps collectors track, value, and trade their TCG collection across every game"). Named July 7, 2026 after paulownia wood (kiri), used for Japanese valuables chests. Founder: Robin, product designer (ex-Crunchyroll, 9 yrs) with front-end roots. Full product docs exist: docs/VISION.md, product-vision.md, prd.md, product-roadmap.md (68 tasks, 7 phases). Decisions confirmed by the founder:
 
 - **Price data**: JustTCG API (`api.justtcg.com/v1`, `x-api-key` header). Free-tier key stored in `/Users/robinfox/Desktop/sandbox/testBuilderOS/.env` as `JUSTTCG_API_KEY`; server-side only, never in client code or docs. Free tier includes per-variant (condition/printing) `price`, daily `priceHistory` [{p,t}], and 7/30/90d change stats. Covers Magic, Pokémon, Yu-Gi-Oh, Sorcery; no Warlord (out of print).
 - **Charts**: Lightweight Charts (TradingView), area/line only, theme config is in design.md's Components section.
