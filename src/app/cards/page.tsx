@@ -13,6 +13,7 @@ import SortControl, { type SortDir } from "@/components/ui/SortControl";
 import Drawer from "@/components/ui/Drawer";
 import EmptyState from "@/components/ui/EmptyState";
 import Chip from "@/components/ui/Chip";
+import AddCardDrawer from "@/components/features/AddCardDrawer";
 
 const PAGE_SIZE = 24;
 
@@ -25,6 +26,7 @@ export default function BrowsePage() {
   const [dir, setDir] = useState<SortDir>("asc");
   const [page, setPage] = useState(1);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [quickAdd, setQuickAdd] = useState<CardTileData | null>(null);
 
   const games = useQuery(api.cards.listGames, ready ? {} : "skip") ?? [];
   const gameId = games.find((g) => g.slug === filters.gameSlug)?._id;
@@ -111,7 +113,7 @@ export default function BrowsePage() {
           {!loading && visible.length > 0 && (
             <div className="browse-grid">
               {visible.map((card) => (
-                <CardTile key={card._id} card={card} />
+                <CardTile key={card._id} card={card} onQuickAdd={setQuickAdd} />
               ))}
             </div>
           )}
@@ -137,6 +139,25 @@ export default function BrowsePage() {
       <Drawer open={filtersOpen} onClose={() => setFiltersOpen(false)} title="Filters">
         {panel}
       </Drawer>
+      <QuickAddHost card={quickAdd} onClose={() => setQuickAdd(null)} />
     </div>
+  );
+}
+
+/** Tile quick-add: fetch the card's variants, then hand off to the drawer. */
+function QuickAddHost({ card, onClose }: { card: CardTileData | null; onClose: () => void }) {
+  const ready = useConvexReady();
+  const data = useQuery(
+    api.cards.getBySlug,
+    ready && card ? { gameSlug: card.gameSlug, slug: card.slug } : "skip",
+  );
+  if (!card) return null;
+  return (
+    <AddCardDrawer
+      open={data != null}
+      onClose={onClose}
+      card={card}
+      variants={data?.variants ?? []}
+    />
   );
 }

@@ -19,6 +19,7 @@ export default defineSchema({
     emailAlertsEnabled: v.optional(v.boolean()),
     polarCustomerId: v.optional(v.string()),
     polarSubscriptionId: v.optional(v.string()),
+    onboardingDismissed: v.optional(v.boolean()),
   })
     .index("email", ["email"])
     .index("byPolarCustomer", ["polarCustomerId"]),
@@ -78,6 +79,26 @@ export default defineSchema({
     price: v.number(),
     day: v.string(),
   }).index("byVariantDay", ["variantId", "day"]),
+
+  // holdings: a user's position in a variant.
+  holdings: defineTable({
+    userId: v.id("users"),
+    variantId: v.id("variants"),
+    quantity: v.number(), // 1-999
+    costBasisPerCard: v.optional(v.number()), // USD, what they paid each
+    acquiredAt: v.optional(v.number()),
+  })
+    .index("byUser", ["userId"])
+    .index("byUserVariant", ["userId", "variantId"])
+    .index("byVariant", ["variantId"]), // refresh prioritization
+
+  // portfolioSnapshots: nightly per-user total for the portfolio chart.
+  portfolioSnapshots: defineTable({
+    userId: v.id("users"),
+    totalValue: v.number(),
+    costBasis: v.number(),
+    day: v.string(),
+  }).index("byUserDay", ["userId", "day"]),
 
   // JustTCG request budget bookkeeping: one row per UTC day.
   syncState: defineTable({

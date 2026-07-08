@@ -451,6 +451,20 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .errdemo .et { font: var(--type-h1); letter-spacing: var(--type-h1-ls); margin-bottom: var(--space-3); }
 .errdemo .ed { font: var(--type-body); color: var(--color-on-surface-muted); margin-bottom: var(--space-5); }
 
+/* ============ onboarding checklist ============ */
+.obc { width: 360px; max-width: 100%; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-5); }
+.obc .ot { font: 500 15px/1.4 var(--font-body); margin-bottom: var(--space-3); display: flex; justify-content: space-between; align-items: baseline; }
+.obc .ot .oc { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); font-variant-numeric: tabular-nums; font-weight: 400; }
+.obc .prog { margin-bottom: var(--space-3); width: 100%; }
+.obrow { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--color-border); font: var(--type-body-sm); }
+.obrow:last-child { border-bottom: none; }
+.obrow .oc2 { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--color-border-strong); flex: none; display: flex; align-items: center; justify-content: center; background: var(--color-surface-raised); }
+.obrow .oc2 svg { width: 11px; height: 11px; }
+.obrow.done .oc2 { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.obrow.done .otx { color: var(--color-on-surface-muted); text-decoration: line-through; }
+.obrow.next .otx { font-weight: 500; }
+.obrow .ochev { margin-left: auto; color: var(--color-on-surface-muted); }
+
 /* ============ browse page (app adaptation) ============ */
 .browse-layout { display: flex; gap: var(--space-6); align-items: flex-start; }
 .browse-side { flex: none; position: sticky; top: 88px; }
@@ -468,3 +482,20 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
   .filters-chip { display: inline-flex; }
 }
 a.btn { text-decoration: none; }
+
+/* ============ portfolio page (app adaptation) ============ */
+.portfolio-page { max-width: 1080px; margin: 0 auto; padding: var(--space-6) var(--space-5); display: grid; gap: var(--space-6); }
+.portfolio-split { display: flex; gap: var(--space-6); align-items: flex-start; flex-wrap: wrap; }
+.portfolio-split > .main { flex: 1 1 560px; min-width: 0; display: grid; gap: var(--space-6); }
+.portfolio-split > .side { flex: 0 1 360px; }
+.holdings-mobile { display: none; }
+@media (max-width: 640px) {
+  .holdings-desktop { display: none; }
+  .holdings-mobile { display: block; }
+}
+@media (max-width: 640px) {
+  .portfolio-split > .main, .portfolio-split > .side { flex: 1 1 100%; }
+  .obc { width: 100%; }
+  .pstats { flex-wrap: wrap; gap: var(--space-4); }
+  .stat-tile { flex: 1 1 150px; width: auto; }
+}

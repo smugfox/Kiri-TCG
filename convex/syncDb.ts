@@ -172,7 +172,13 @@ export const refreshCandidates = internalQuery({
       }
     };
 
-    // Rung 1 (holdings) and rung 2 (watchlist): wired in Phases 2 and 3.
+    // Rung 1: variants held in portfolios. (Rung 2, watchlist, arrives in Phase 3.)
+    const held = await ctx.db.query("holdings").collect();
+    const heldVariantIds = [...new Set(held.map((h) => h.variantId))];
+    for (const variantId of heldVariantIds) {
+      const variant = await ctx.db.get(variantId);
+      if (variant) push(variant.justTcgVariantId);
+    }
 
     // Rung 3: variants of cards viewed in the last 7 days.
     const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;

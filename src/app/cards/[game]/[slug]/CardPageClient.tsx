@@ -12,6 +12,7 @@ import CardFrame from "@/components/features/CardFrame";
 import { RarityBadge } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
+import AddCardDrawer from "@/components/features/AddCardDrawer";
 
 export default function CardPageClient({
   preloaded,
@@ -23,6 +24,7 @@ export default function CardPageClient({
   const touchViewed = useMutation(api.cards.touchViewed);
   const [range, setRange] = useState<ChartRange>("30d");
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+  const [addOpen, setAddOpen] = useState(false);
 
   const cardId = data?.card._id;
   useEffect(() => {
@@ -66,9 +68,7 @@ export default function CardPageClient({
         <div style={{ flex: "0 1 280px", minWidth: 220 }}>
           <CardFrame imageUrl={card.imageUrl} name={card.name} />
           <div style={{ display: "flex", gap: "var(--space-2)", marginTop: "var(--space-4)" }}>
-            <Button onClick={() => toast("The portfolio arrives in the next phase of the build.")}>
-              Add to portfolio
-            </Button>
+            <Button onClick={() => setAddOpen(true)}>Add to portfolio</Button>
             <Button variant="secondary" onClick={() => toast("Watchlist arrives in a later phase.")}>
               Watch
             </Button>
@@ -110,6 +110,12 @@ export default function CardPageClient({
           </section>
         </div>
       </div>
+      <AddCardDrawer
+        open={addOpen}
+        onClose={() => setAddOpen(false)}
+        card={card}
+        variants={variants}
+      />
     </div>
   );
 }

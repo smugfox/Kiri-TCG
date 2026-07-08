@@ -1,4 +1,5 @@
 import { internalMutation } from "./_generated/server";
+import { v } from "convex/values";
 
 const GAMES = [
   { slug: "magic-the-gathering", name: "Magic: The Gathering", justTcgId: "magic-the-gathering" },
@@ -19,5 +20,62 @@ export const init = internalMutation({
       if (!existing) await ctx.db.insert("games", game);
     }
     return "seeded";
+  },
+});
+
+/**
+ * Dev tooling: fill a user's portfolio to N rows with distinct variants
+ * (marker acquiredAt=1 so testClearHoldings can undo it). Verifies FR-010.
+ */
+export const testFillHoldings = internalMutation({
+  args: { email: v.string(), target: v.number() },
+  handler: async (ctx, { email, target }) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("email", (q) => q.eq("email", email))
+      .unique();
+    if (!user) throw new Error("no user");
+    const existing = await ctx.db
+      .query("holdings")
+      .withIndex("byUser", (q) => q.eq("userId", user._id))
+      .collect();
+    const owned = new Set(existing.map((h) => h.variantId));
+    const variants = await ctx.db.query("variants").take(target + existing.length + 10);
+    let added = 0;
+    for (const variant of variants) {
+      if (existing.length + added >= target) break;
+      if (owned.has(variant._id)) continue;
+      await ctx.db.insert("holdings", {
+        userId: user._id,
+        variantId: variant._id,
+        quantity: 1,
+        acquiredAt: 1,
+      });
+      added++;
+    }
+    return { added, total: existing.length + added };
+  },
+});
+
+export const testClearHoldings = internalMutation({
+  args: { email: v.string() },
+  handler: async (ctx, { email }) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("email", (q) => q.eq("email", email))
+      .unique();
+    if (!user) throw new Error("no user");
+    const rows = await ctx.db
+      .query("holdings")
+      .withIndex("byUser", (q) => q.eq("userId", user._id))
+      .collect();
+    let removed = 0;
+    for (const row of rows) {
+      if (row.acquiredAt === 1) {
+        await ctx.db.delete(row._id);
+        removed++;
+      }
+    }
+    return { removed };
   },
 });

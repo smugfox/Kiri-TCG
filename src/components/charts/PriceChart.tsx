@@ -21,7 +21,7 @@ function cssColor(name: string, fallback: string): string {
 }
 
 /** The Lightweight Charts area, themed per design.md § Components. */
-function Area({ data }: { data: PricePoint[] }) {
+export function ChartArea({ data }: { data: PricePoint[] }) {
   const el = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -126,7 +126,7 @@ export default function PriceChart({
         </div>
       </div>
       {data.length >= 2 ? (
-        <Area data={data} />
+        <ChartArea data={data} />
       ) : (
         <div
           style={{
