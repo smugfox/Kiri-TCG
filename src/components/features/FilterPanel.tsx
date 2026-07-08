@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { RarityBadge, type RarityTier } from "@/components/ui/Badge";
 import Checkbox from "@/components/ui/Checkbox";
 
@@ -7,24 +8,40 @@ const TIERS: RarityTier[] = ["common", "uncommon", "rare", "epic", "mythic", "se
 
 export type Filters = {
   gameSlug: string | null; // null = all games
+  setName: string | null; // scoped to the selected game
   rarities: RarityTier[];
 };
 
+export const EMPTY_FILTERS: Filters = { gameSlug: null, setName: null, rarities: [] };
+
 /**
  * filter-panel (design.md § Components): 260px facet sidebar with game
- * checkboxes, the rarity ladder as selectable badges, and the price range
- * slider (visual-only at MVP). On mobile the page hosts this inside a Drawer.
+ * checkboxes, a set facet (filter-facet-search mini input over a scrollable
+ * list, since sets run to the hundreds), the rarity ladder as selectable
+ * badges, and the price range slider (visual-only at MVP). On mobile the
+ * page hosts this inside a Drawer.
  */
 export default function FilterPanel({
   games,
+  sets,
   filters,
   onChange,
 }: {
   games: Array<{ slug: string; name: string }>;
+  /** Sets for the selected game; undefined while loading, [] when no game. */
+  sets?: Array<{ setName: string; count: number }>;
   filters: Filters;
   onChange: (filters: Filters) => void;
 }) {
-  const clear = () => onChange({ gameSlug: null, rarities: [] });
+  const [setQuery, setSetQuery] = useState("");
+  const clear = () => {
+    setSetQuery("");
+    onChange(EMPTY_FILTERS);
+  };
+  const shownSets = (sets ?? []).filter((s) =>
+    s.setName.toLowerCase().includes(setQuery.trim().toLowerCase()),
+  );
+
   return (
     <div className="fpanel">
       <div className="fph">
@@ -39,21 +56,59 @@ export default function FilterPanel({
           Clear all
         </a>
       </div>
+
       <div className="fgroup">
         <div className="gh">Game</div>
         {games.map((game) => (
           <div className="frow" key={game.slug}>
             <Checkbox
               checked={filters.gameSlug === game.slug}
-              onChange={(checked) =>
-                onChange({ ...filters, gameSlug: checked ? game.slug : null })
-              }
+              onChange={(checked) => {
+                setSetQuery("");
+                onChange({ ...filters, gameSlug: checked ? game.slug : null, setName: null });
+              }}
             >
               {game.name}
             </Checkbox>
           </div>
         ))}
       </div>
+
+      <div className="fgroup">
+        <div className="gh">Set</div>
+        {!filters.gameSlug ? (
+          <span className="fhint">Pick a game to browse its sets</span>
+        ) : (
+          <>
+            <input
+              className="fmini"
+              placeholder="Filter sets"
+              aria-label="Filter sets"
+              value={setQuery}
+              onChange={(e) => setSetQuery(e.target.value)}
+            />
+            <div className="fscroll">
+              {shownSets.map((set) => (
+                <div className="frow" key={set.setName}>
+                  <Checkbox
+                    checked={filters.setName === set.setName}
+                    onChange={(checked) =>
+                      onChange({ ...filters, setName: checked ? set.setName : null })
+                    }
+                  >
+                    {set.setName}
+                  </Checkbox>
+                  <span className="n">{set.count}</span>
+                </div>
+              ))}
+              {sets !== undefined && shownSets.length === 0 && (
+                <span className="fhint">No cached sets match</span>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+
       <div className="fgroup">
         <div className="gh">Rarity</div>
         <div className="fbadges">
@@ -85,6 +140,7 @@ export default function FilterPanel({
           })}
         </div>
       </div>
+
       <div className="fgroup">
         <div className="gh">Price</div>
         <input
@@ -93,7 +149,7 @@ export default function FilterPanel({
           disabled
           style={{ width: "100%", marginTop: 10, accentColor: "var(--color-accent)" }}
         />
-        <span className="cs-set">Price filtering arrives with a later phase</span>
+        <span className="fhint">Price filtering arrives with a later phase</span>
       </div>
     </div>
   );

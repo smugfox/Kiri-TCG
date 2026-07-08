@@ -54,6 +54,7 @@ export default defineSchema({
   })
     .index("byJustTcgId", ["justTcgCardId"])
     .index("byGameSlug", ["gameId", "slug"])
+    .index("byGameSet", ["gameId", "setName"])
     .index("byLastViewed", ["lastViewedAt"])
     .searchIndex("search", { searchField: "searchText", filterFields: ["gameId"] }),
 

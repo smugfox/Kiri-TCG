@@ -56,10 +56,17 @@ export default function CardTile({
             </button>
           )}
         </span>
-        <span className="tnm" style={{ display: "block" }}>{card.name}</span>
+        <span className="tnm" style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+          {card.name}
+        </span>
         <span className="tst">
-          {card.setName}
-          {card.number ? ` · ${card.number}` : ""}
+          <span
+            title={`${card.setName}${card.number && card.number.toUpperCase() !== "N/A" ? ` · ${card.number}` : ""}`}
+            style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
+          >
+            {card.setName}
+            {card.number && card.number.toUpperCase() !== "N/A" ? ` · ${card.number}` : ""}
+          </span>
           <RarityDot tier={card.rarityTier}>{card.rarityTier}</RarityDot>
         </span>
         <span className="tpr">

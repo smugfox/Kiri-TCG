@@ -192,6 +192,7 @@
   .input { font: var(--type-body); font-family: var(--font-body); background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-sm); height: 40px; padding: 10px 14px; width: 240px; }
   .input::placeholder { color: var(--color-on-surface-muted); }
   .input.is-focus { border-color: var(--color-accent); outline: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent); outline-offset: 1px; }
+  .input:focus-visible, .csearch .inp:focus-visible, .fpanel .fmini:focus-visible { border-color: var(--color-accent); outline: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent); outline-offset: 1px; }
   .input.is-error { border-color: var(--color-error); outline: 2px solid color-mix(in srgb, var(--color-error) 25%, transparent); outline-offset: 1px; }
   .input.is-disabled, .fselect.is-disabled { background: var(--color-background); color: var(--color-on-surface-muted); border-color: var(--color-border); cursor: not-allowed; }
   .ck.is-disabled { color: var(--color-on-surface-muted); cursor: not-allowed; }
@@ -501,7 +502,8 @@
   .ctile .qadd { position: absolute; right: 8px; bottom: 8px; width: 32px; height: 32px; border-radius: var(--rounded-full); border: none; background: var(--color-primary); color: var(--color-on-primary); font-size: 16px; line-height: 1; cursor: pointer; opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s; }
   .ctile:hover .qadd, .ctile.is-hover .qadd { opacity: 1; transform: none; }
   .ctile .tnm { font: 500 14px/1.35 var(--font-body); margin-bottom: 2px; }
-  .ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; }
+  .ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; min-width: 0; }
+  .ctile .tst .badge-dot { flex: none; }
   .ctile .tpr { display: flex; align-items: center; justify-content: space-between; font: 500 14px/1.4 var(--font-body); font-variant-numeric: tabular-nums; }
 
   /* ============ breadcrumbs / accordion / banner / avatar ============ */
@@ -757,6 +759,10 @@
   .fgroup .frow { display: flex; align-items: center; gap: 10px; margin-top: var(--space-2); font: var(--type-body-sm); cursor: pointer; }
   .fgroup .frow .n { margin-left: auto; color: var(--color-on-surface-muted); font: var(--type-caption); font-variant-numeric: tabular-nums; }
   .fgroup .fbadges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--space-2); }
+  .fpanel .fmini { height: 32px; width: 100%; font: var(--type-body-sm); font-family: var(--font-body); background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-xs); padding: 6px 10px; margin-top: var(--space-2); }
+  .fpanel .fmini::placeholder { color: var(--color-on-surface-muted); }
+  .fpanel .fscroll { max-height: 240px; overflow-y: auto; margin-top: var(--space-1); padding-right: 2px; }
+  .fpanel .fhint { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-top: var(--space-2); display: block; }
   .sortctl { display: inline-flex; align-items: stretch; border: 1px solid var(--color-border); border-radius: var(--rounded-sm); overflow: hidden; background: var(--color-surface-raised); height: 36px; }
   .sortctl .ssel { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font: var(--type-body-sm); cursor: pointer; }
   .sortctl .ssel .k { color: var(--color-on-surface-muted); }
@@ -1909,6 +1915,17 @@
         <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Pokémon<span class="n">862</span></label>
         <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Yu-Gi-Oh!<span class="n">590</span></label>
         <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Sorcery<span class="n">118</span></label>
+      </div>
+      <div class="fgroup">
+        <div class="gh">Set <svg class="caret-svg up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
+        <input class="fmini" placeholder="Filter sets">
+        <div class="fscroll">
+          <label class="frow"><span class="ckbox checked" style="width:16px;height:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Masters 25<span class="n">64</span></label>
+          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Magic 2011 (M11)<span class="n">42</span></label>
+          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Jumpstart<span class="n">31</span></label>
+          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Double Masters<span class="n">27</span></label>
+          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Commander Legends<span class="n">19</span></label>
+        </div>
       </div>
       <div class="fgroup">
         <div class="gh">Rarity <svg class="caret-svg up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>

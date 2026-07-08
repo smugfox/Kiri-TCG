@@ -99,20 +99,28 @@ export const requestBackfill = mutation({
   },
 });
 
-/** Cached-catalog browse: newest-synced first, optional game facet. */
+/** Cached-catalog browse: newest-synced first, optional game and set facets. */
 export const browse = query({
   args: {
     game: v.optional(v.id("games")),
+    setName: v.optional(v.string()),
     paginationOpts: paginationOptsValidator,
   },
-  handler: async (ctx, { game, paginationOpts }) => {
-    const results = game
-      ? await ctx.db
-          .query("cards")
-          .withIndex("byGameSlug", (x) => x.eq("gameId", game))
-          .order("desc")
-          .paginate(paginationOpts)
-      : await ctx.db.query("cards").order("desc").paginate(paginationOpts);
+  handler: async (ctx, { game, setName, paginationOpts }) => {
+    const results =
+      game && setName
+        ? await ctx.db
+            .query("cards")
+            .withIndex("byGameSet", (x) => x.eq("gameId", game).eq("setName", setName))
+            .order("desc")
+            .paginate(paginationOpts)
+        : game
+          ? await ctx.db
+              .query("cards")
+              .withIndex("byGameSlug", (x) => x.eq("gameId", game))
+              .order("desc")
+              .paginate(paginationOpts)
+          : await ctx.db.query("cards").order("desc").paginate(paginationOpts);
 
     const games = await ctx.db.query("games").collect();
     const gameSlugById = new Map(games.map((g) => [g._id, g.slug]));
@@ -140,6 +148,24 @@ export const browse = query({
       }),
     );
     return { ...results, page };
+  },
+});
+
+/** Cached sets for a game, with card counts, for the filter panel facet. */
+export const listSets = query({
+  args: { game: v.id("games") },
+  handler: async (ctx, { game }) => {
+    const cards = await ctx.db
+      .query("cards")
+      .withIndex("byGameSlug", (x) => x.eq("gameId", game))
+      .collect();
+    const counts = new Map<string, number>();
+    for (const card of cards) {
+      counts.set(card.setName, (counts.get(card.setName) ?? 0) + 1);
+    }
+    return [...counts.entries()]
+      .map(([setName, count]) => ({ setName, count }))
+      .sort((a, b) => a.setName.localeCompare(b.setName));
   },
 });
 

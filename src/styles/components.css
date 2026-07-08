@@ -364,7 +364,8 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .ctile .qadd { position: absolute; right: 8px; bottom: 8px; width: 32px; height: 32px; border-radius: var(--rounded-full); border: none; background: var(--color-primary); color: var(--color-on-primary); font-size: 16px; line-height: 1; cursor: pointer; opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s; }
 .ctile:hover .qadd, .ctile.is-hover .qadd { opacity: 1; transform: none; }
 .ctile .tnm { font: 500 14px/1.35 var(--font-body); margin-bottom: 2px; }
-.ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; }
+.ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; min-width: 0; }
+.ctile .tst .badge-dot { flex: none; }
 .ctile .tpr { display: flex; align-items: center; justify-content: space-between; font: 500 14px/1.4 var(--font-body); font-variant-numeric: tabular-nums; }
 
 /* ============ bulk / filter / sort / tag / comparison ============ */
@@ -384,6 +385,10 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .fgroup .frow { display: flex; align-items: center; gap: 10px; margin-top: var(--space-2); font: var(--type-body-sm); cursor: pointer; }
 .fgroup .frow .n { margin-left: auto; color: var(--color-on-surface-muted); font: var(--type-caption); font-variant-numeric: tabular-nums; }
 .fgroup .fbadges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--space-2); }
+.fpanel .fmini { height: 32px; width: 100%; font: var(--type-body-sm); font-family: var(--font-body); background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-xs); padding: 6px 10px; margin-top: var(--space-2); }
+.fpanel .fmini::placeholder { color: var(--color-on-surface-muted); }
+.fpanel .fscroll { max-height: 240px; overflow-y: auto; margin-top: var(--space-1); padding-right: 2px; }
+.fpanel .fhint { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-top: var(--space-2); display: block; }
 .sortctl { display: inline-flex; align-items: stretch; border: 1px solid var(--color-border); border-radius: var(--rounded-sm); overflow: hidden; background: var(--color-surface-raised); height: 36px; }
 .sortctl .ssel { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font: var(--type-body-sm); cursor: pointer; }
 .sortctl .ssel .k { color: var(--color-on-surface-muted); }
@@ -417,6 +422,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 /* Native select inside the fselect shell */
 .fselect { position: relative; }
 .fselect select { appearance: none; background: transparent; border: none; font: inherit; color: inherit; padding: 10px 34px 10px 14px; cursor: pointer; width: 100%; }
+.input:focus-visible, .csearch .inp:focus-visible, .fpanel .fmini:focus-visible { border-color: var(--color-accent); outline: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent); outline-offset: 1px; }
 .fselect select:focus-visible { outline: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent); outline-offset: 1px; border-radius: var(--rounded-sm); }
 .fselect .caret-svg { position: absolute; right: 12px; pointer-events: none; }
 .ck input:focus-visible + .ckbox, .ck input:focus-visible + .rdot { outline: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent); outline-offset: 2px; }

@@ -86,7 +86,8 @@ export const upsertCardFromApi = internalMutation({
       gameId: game._id,
       name: card.name,
       setName: card.setName,
-      number: card.number,
+      // Upstream sends the literal string "N/A" for unnumbered cards.
+      number: card.number && card.number.toUpperCase() !== "N/A" ? card.number : undefined,
       rarity: card.rarity,
       rarityTier: normalizeRarity(game.slug, card.rarity),
       slug: cardSlug(card.name, card.setName, card.number),

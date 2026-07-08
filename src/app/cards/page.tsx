@@ -7,7 +7,7 @@ import { api } from "../../../convex/_generated/api";
 import { useConvexReady } from "@/app/providers";
 import CardSearch from "@/components/features/CardSearch";
 import CardTile, { CardTileSkeleton, type CardTileData } from "@/components/features/CardTile";
-import FilterPanel, { type Filters } from "@/components/features/FilterPanel";
+import FilterPanel, { EMPTY_FILTERS, type Filters } from "@/components/features/FilterPanel";
 import Pagination from "@/components/ui/Pagination";
 import SortControl, { type SortDir } from "@/components/ui/SortControl";
 import Drawer from "@/components/ui/Drawer";
@@ -21,7 +21,7 @@ type SortKey = "name" | "price";
 
 export default function BrowsePage() {
   const ready = useConvexReady();
-  const [filters, setFilters] = useState<Filters>({ gameSlug: null, rarities: [] });
+  const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [sort, setSort] = useState<SortKey>("name");
   const [dir, setDir] = useState<SortDir>("asc");
   const [page, setPage] = useState(1);
@@ -30,10 +30,11 @@ export default function BrowsePage() {
 
   const games = useQuery(api.cards.listGames, ready ? {} : "skip") ?? [];
   const gameId = games.find((g) => g.slug === filters.gameSlug)?._id;
+  const sets = useQuery(api.cards.listSets, ready && gameId ? { game: gameId } : "skip");
 
   const { results, status, loadMore } = usePaginatedQuery(
     api.cards.browse,
-    ready ? { game: gameId } : "skip",
+    ready ? { game: gameId, setName: gameId ? (filters.setName ?? undefined) : undefined } : "skip",
     { initialNumItems: PAGE_SIZE * 2 },
   );
 
@@ -56,21 +57,29 @@ export default function BrowsePage() {
   const clamped = Math.min(page, pageCount);
   const visible = filtered.slice((clamped - 1) * PAGE_SIZE, clamped * PAGE_SIZE);
   const loading = ready && status === "LoadingFirstPage";
-  const activeFilterCount = (filters.gameSlug ? 1 : 0) + filters.rarities.length;
+  const activeFilterCount =
+    (filters.gameSlug ? 1 : 0) + (filters.setName ? 1 : 0) + filters.rarities.length;
 
   const setFiltersAndReset = (next: Filters) => {
     setFilters(next);
     setPage(1);
   };
 
-  const panel = <FilterPanel games={games} filters={filters} onChange={setFiltersAndReset} />;
+  const panel = (
+    <FilterPanel
+      games={games}
+      sets={gameId ? sets : []}
+      filters={filters}
+      onChange={setFiltersAndReset}
+    />
+  );
 
   return (
     <div className="page" style={{ maxWidth: 1280, margin: "0 auto", padding: "var(--space-6) var(--space-5)" }}>
       <h1 style={{ font: "var(--type-h2)", letterSpacing: "var(--type-h2-ls)", marginBottom: "var(--space-4)" }}>
         Cards
       </h1>
-      <CardSearch />
+      <CardSearch game={gameId} />
       <div className="browse-bar">
         <button
           className="chip filters-chip"
@@ -82,8 +91,13 @@ export default function BrowsePage() {
           {activeFilterCount > 0 ? ` · ${activeFilterCount}` : ""}
         </button>
         {filters.gameSlug && (
-          <Chip onRemove={() => setFiltersAndReset({ ...filters, gameSlug: null })}>
+          <Chip onRemove={() => setFiltersAndReset({ ...filters, gameSlug: null, setName: null })}>
             {games.find((g) => g.slug === filters.gameSlug)?.name}
+          </Chip>
+        )}
+        {filters.setName && (
+          <Chip onRemove={() => setFiltersAndReset({ ...filters, setName: null })}>
+            {filters.setName}
           </Chip>
         )}
         <span className="spacer" />
