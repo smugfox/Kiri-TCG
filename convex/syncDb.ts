@@ -234,3 +234,41 @@ export const refreshCandidates = internalQuery({
     return ids;
   },
 });
+
+/** Replace-style upsert of a game's set catalog from JustTCG /sets. */
+export const upsertSets = internalMutation({
+  args: {
+    gameId: v.id("games"),
+    sets: v.array(
+      v.object({
+        justTcgSetId: v.string(),
+        name: v.string(),
+        cardsCount: v.optional(v.number()),
+        releaseDate: v.optional(v.string()),
+        setValueUsd: v.optional(v.number()),
+      }),
+    ),
+  },
+  handler: async (ctx, { gameId, sets }) => {
+    let written = 0;
+    for (const set of sets) {
+      const existing = await ctx.db
+        .query("sets")
+        .withIndex("byJustTcgId", (q) => q.eq("justTcgSetId", set.justTcgSetId))
+        .unique();
+      if (existing) await ctx.db.patch(existing._id, { gameId, ...set });
+      else await ctx.db.insert("sets", { gameId, ...set });
+      written++;
+    }
+    return written;
+  },
+});
+
+/** Games with their justTcgIds, for the set-catalog seeder. */
+export const listGamesInternal = internalQuery({
+  args: {},
+  handler: async (ctx) => {
+    const games = await ctx.db.query("games").collect();
+    return games.map(({ _id, slug, justTcgId }) => ({ _id, slug, justTcgId }));
+  },
+});

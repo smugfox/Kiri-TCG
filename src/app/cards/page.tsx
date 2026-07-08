@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { usePaginatedQuery, useQuery } from "convex/react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useMutation, usePaginatedQuery, useQuery } from "convex/react";
 import { SlidersHorizontal } from "lucide-react";
 import { api } from "../../../convex/_generated/api";
 import { useConvexReady } from "@/app/providers";
@@ -57,6 +57,22 @@ export default function BrowsePage() {
   const clamped = Math.min(page, pageCount);
   const visible = filtered.slice((clamped - 1) * PAGE_SIZE, clamped * PAGE_SIZE);
   const loading = ready && status === "LoadingFirstPage";
+
+  // Selecting a set we haven't cached yet pulls its first cards on demand,
+  // through the same rate-limited backfill path as uncached searches.
+  const requestBackfill = useMutation(api.cards.requestBackfill);
+  const pulledSets = useRef(new Set<string>());
+  const selectedSet = (sets ?? []).find((s) => s.setName === filters.setName);
+  const setIsEmpty =
+    !!filters.setName && status === "Exhausted" && filtered.length === 0;
+  useEffect(() => {
+    if (!setIsEmpty || !selectedSet?.justTcgSetId) return;
+    if (pulledSets.current.has(selectedSet.justTcgSetId)) return;
+    pulledSets.current.add(selectedSet.justTcgSetId);
+    requestBackfill({ gameSlug: filters.gameSlug ?? undefined, setId: selectedSet.justTcgSetId }).catch(
+      () => {},
+    );
+  }, [setIsEmpty, selectedSet, filters.gameSlug, requestBackfill]);
   const activeFilterCount =
     (filters.gameSlug ? 1 : 0) + (filters.setName ? 1 : 0) + filters.rarities.length;
 
@@ -133,8 +149,12 @@ export default function BrowsePage() {
           )}
           {!loading && visible.length === 0 && (
             <EmptyState
-              title="Nothing in the catalog yet"
-              description="Search for any card above and Kiri pulls it from the market, prices and all."
+              title={setIsEmpty ? "Nothing cached from this set yet" : "Nothing in the catalog yet"}
+              description={
+                setIsEmpty
+                  ? "Kiri is pulling this set's first cards from the market; check back in a minute."
+                  : "Search for any card above and Kiri pulls it from the market, prices and all."
+              }
             />
           )}
           <div style={{ display: "flex", justifyContent: "center", marginTop: "var(--space-6)" }}>

@@ -30,6 +30,20 @@ export default defineSchema({
     justTcgId: v.string(),
   }).index("slug", ["slug"]),
 
+  // sets: the per-game set catalog, seeded from JustTCG /sets (a handful of
+  // requests, one time) so facets and set pages can show sets we haven't
+  // cached cards from yet.
+  sets: defineTable({
+    gameId: v.id("games"),
+    justTcgSetId: v.string(),
+    name: v.string(),
+    cardsCount: v.optional(v.number()),
+    releaseDate: v.optional(v.string()),
+    setValueUsd: v.optional(v.number()),
+  })
+    .index("byGame", ["gameId"])
+    .index("byJustTcgId", ["justTcgSetId"]),
+
   // cards: one row per printed card (per set/number); catalog rows are append-only.
   cards: defineTable({
     gameId: v.id("games"),

@@ -73,10 +73,14 @@ export const search = query({
  * cap keeps one user from draining the shared backfill pool (PRD § Security).
  */
 export const requestBackfill = mutation({
-  args: { q: v.string(), gameSlug: v.optional(v.string()) },
-  handler: async (ctx, { q, gameSlug }) => {
-    const trimmed = q.trim();
-    if (trimmed.length < 3) return { scheduled: false };
+  args: {
+    q: v.optional(v.string()),
+    gameSlug: v.optional(v.string()),
+    setId: v.optional(v.string()), // JustTCG set id: pulls a set's first cards
+  },
+  handler: async (ctx, { q, gameSlug, setId }) => {
+    const trimmed = (q ?? "").trim();
+    if (trimmed.length < 3 && !setId) return { scheduled: false };
 
     const userId = await getAuthUserId(ctx);
     const key = userId ?? "anon";
@@ -94,7 +98,11 @@ export const requestBackfill = mutation({
     if (row) await ctx.db.patch(row._id, { count: row.count + 1 });
     else await ctx.db.insert("backfillTriggers", { key, hour, count: 1 });
 
-    await ctx.scheduler.runAfter(0, internal.sync.searchBackfill, { q: trimmed, gameSlug });
+    await ctx.scheduler.runAfter(0, internal.sync.searchBackfill, {
+      q: trimmed || undefined,
+      gameSlug,
+      setId,
+    });
     return { scheduled: true };
   },
 });
@@ -151,7 +159,11 @@ export const browse = query({
   },
 });
 
-/** Cached sets for a game, with card counts, for the filter panel facet. */
+/**
+ * The full set catalog for a game (seeded from JustTCG /sets) merged with
+ * cached-card counts. Cached-only sets (e.g. Japanese catalogs we haven't
+ * seeded) still appear. `count` is how many of that set's cards we cache.
+ */
 export const listSets = query({
   args: { game: v.id("games") },
   handler: async (ctx, { game }) => {
@@ -159,13 +171,30 @@ export const listSets = query({
       .query("cards")
       .withIndex("byGameSlug", (x) => x.eq("gameId", game))
       .collect();
-    const counts = new Map<string, number>();
+    const cached = new Map<string, number>();
     for (const card of cards) {
-      counts.set(card.setName, (counts.get(card.setName) ?? 0) + 1);
+      cached.set(card.setName, (cached.get(card.setName) ?? 0) + 1);
     }
-    return [...counts.entries()]
-      .map(([setName, count]) => ({ setName, count }))
-      .sort((a, b) => a.setName.localeCompare(b.setName));
+    const catalog = await ctx.db
+      .query("sets")
+      .withIndex("byGame", (x) => x.eq("gameId", game))
+      .collect();
+    const out = new Map<
+      string,
+      { setName: string; count: number; totalCards?: number; justTcgSetId?: string }
+    >();
+    for (const set of catalog) {
+      out.set(set.name, {
+        setName: set.name,
+        count: cached.get(set.name) ?? 0,
+        totalCards: set.cardsCount,
+        justTcgSetId: set.justTcgSetId,
+      });
+    }
+    for (const [setName, count] of cached) {
+      if (!out.has(setName)) out.set(setName, { setName, count });
+    }
+    return [...out.values()].sort((a, b) => a.setName.localeCompare(b.setName));
   },
 });
 

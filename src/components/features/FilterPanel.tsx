@@ -98,7 +98,7 @@ export default function FilterPanel({
                   >
                     {set.setName}
                   </Checkbox>
-                  <span className="n">{set.count}</span>
+                  {set.count > 0 && <span className="n">{set.count}</span>}
                 </div>
               ))}
               {sets !== undefined && shownSets.length === 0 && (
