@@ -415,12 +415,13 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .page { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-5); }
 @media (min-width: 640px) { .page { padding: 0 var(--space-6); } }
 .nav-demo .navlink-active { color: var(--color-on-surface); border-bottom-color: var(--color-accent); }
-.nav-search { flex: 1; display: flex; justify-content: center; min-width: 0; }
-.nav-search button { display: inline-flex; align-items: center; gap: 10px; width: min(360px, 100%); height: 38px; padding: 0 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--rounded-sm); color: var(--color-on-surface-muted); font: var(--type-body-sm); font-family: var(--font-body); cursor: pointer; transition: border-color .15s; }
+.nav-search { flex: 1; display: flex; justify-content: flex-end; min-width: 0; }
+.nav-search button { display: inline-flex; align-items: center; gap: 10px; width: min(280px, 100%); height: 38px; padding: 0 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--rounded-sm); color: var(--color-on-surface-muted); font: var(--type-body-sm); font-family: var(--font-body); cursor: pointer; transition: border-color .15s; }
 .nav-search button:hover { border-color: var(--color-border-strong); }
 .nav-search .kbd { margin-left: auto; font: var(--type-caption); letter-spacing: var(--type-caption-ls); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 1px 5px; }
 .search-overlay { position: fixed; inset: 0; background: var(--color-scrim, rgba(26,18,14,0.5)); z-index: 200; display: flex; justify-content: center; align-items: flex-start; padding: 12vh var(--space-4) 0; }
 .search-overlay .panel { width: min(560px, 100%); background: var(--color-surface-raised); border-radius: var(--rounded-lg); box-shadow: var(--shadow-float); padding: var(--space-4); }
+.search-overlay .csearch { width: 100%; }
 @media (max-width: 1080px) { .site-nav .nav-search { display: none; } }
 
 /* Phase 0 shell hero (replaced by the real marketing hero in Phase 4) */
