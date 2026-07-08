@@ -375,7 +375,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .bulkbar button { background: none; border: none; color: var(--color-on-primary); font: var(--type-body-sm); font-family: var(--font-body); cursor: pointer; padding: 6px 10px; border-radius: var(--rounded-full); }
 .bulkbar button:hover { background: color-mix(in srgb, var(--color-on-primary) 12%, transparent); }
 .bulkbar button.bdanger { color: color-mix(in srgb, var(--color-error) 55%, var(--color-on-primary)); }
-.fpanel { width: 260px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-2) var(--space-4) var(--space-3); }
+.fpanel { width: 280px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-2) var(--space-4) var(--space-3); }
 .fpanel .fph { display: flex; justify-content: space-between; align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
 .fpanel .fph .t { font: 500 14px/1.4 var(--font-body); }
 .fpanel .fph a { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); text-decoration: none; }
@@ -384,10 +384,13 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .fgroup .gh { display: flex; justify-content: space-between; align-items: center; font: 500 13px/1.4 var(--font-body); cursor: pointer; }
 .fgroup .frow { display: flex; align-items: center; gap: 10px; margin-top: var(--space-2); font: var(--type-body-sm); cursor: pointer; }
 .fgroup .frow .n { margin-left: auto; color: var(--color-on-surface-muted); font: var(--type-caption); font-variant-numeric: tabular-nums; }
+.fgroup .frow .ck { flex: 1; min-width: 0; }
+.fgroup .frow .fname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fgroup .frow .n { flex: none; }
 .fgroup .fbadges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--space-2); }
 .fpanel .fmini { height: 32px; width: 100%; font: var(--type-body-sm); font-family: var(--font-body); background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-xs); padding: 6px 10px; margin-top: var(--space-2); }
 .fpanel .fmini::placeholder { color: var(--color-on-surface-muted); }
-.fpanel .fscroll { max-height: 240px; overflow-y: auto; margin-top: var(--space-1); padding-right: 2px; }
+.fpanel .fscroll { max-height: 240px; overflow-y: auto; margin-top: var(--space-1); padding-right: var(--space-2); scrollbar-gutter: stable; }
 .fpanel .fhint { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-top: var(--space-2); display: block; }
 .sortctl { display: inline-flex; align-items: stretch; border: 1px solid var(--color-border); border-radius: var(--rounded-sm); overflow: hidden; background: var(--color-surface-raised); height: 36px; }
 .sortctl .ssel { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font: var(--type-body-sm); cursor: pointer; }
@@ -472,6 +475,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .obrow .ochev { margin-left: auto; color: var(--color-on-surface-muted); }
 
 /* ============ browse page (app adaptation) ============ */
+.app-drawer .fpanel { width: 100%; }
 .browse-layout { display: flex; gap: var(--space-6); align-items: flex-start; }
 .browse-side { flex: none; position: sticky; top: 88px; }
 .browse-main { flex: 1; min-width: 0; }

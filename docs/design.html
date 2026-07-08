@@ -749,7 +749,7 @@
   .bulkbar button { background: none; border: none; color: var(--color-on-primary); font: var(--type-body-sm); font-family: var(--font-body); cursor: pointer; padding: 6px 10px; border-radius: var(--rounded-full); }
   .bulkbar button:hover { background: color-mix(in srgb, var(--color-on-primary) 12%, transparent); }
   .bulkbar button.bdanger { color: color-mix(in srgb, var(--color-error) 55%, var(--color-on-primary)); }
-  .fpanel { width: 260px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-2) var(--space-4) var(--space-3); }
+  .fpanel { width: 280px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-2) var(--space-4) var(--space-3); }
   .fpanel .fph { display: flex; justify-content: space-between; align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
   .fpanel .fph .t { font: 500 14px/1.4 var(--font-body); }
   .fpanel .fph a { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); text-decoration: none; }
@@ -758,10 +758,13 @@
   .fgroup .gh { display: flex; justify-content: space-between; align-items: center; font: 500 13px/1.4 var(--font-body); cursor: pointer; }
   .fgroup .frow { display: flex; align-items: center; gap: 10px; margin-top: var(--space-2); font: var(--type-body-sm); cursor: pointer; }
   .fgroup .frow .n { margin-left: auto; color: var(--color-on-surface-muted); font: var(--type-caption); font-variant-numeric: tabular-nums; }
+  .fgroup .frow .ck { flex: 1; min-width: 0; }
+  .fgroup .frow .fname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fgroup .frow .n { flex: none; }
   .fgroup .fbadges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--space-2); }
   .fpanel .fmini { height: 32px; width: 100%; font: var(--type-body-sm); font-family: var(--font-body); background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-xs); padding: 6px 10px; margin-top: var(--space-2); }
   .fpanel .fmini::placeholder { color: var(--color-on-surface-muted); }
-  .fpanel .fscroll { max-height: 240px; overflow-y: auto; margin-top: var(--space-1); padding-right: 2px; }
+  .fpanel .fscroll { max-height: 240px; overflow-y: auto; margin-top: var(--space-1); padding-right: var(--space-2); scrollbar-gutter: stable; }
   .fpanel .fhint { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-top: var(--space-2); display: block; }
   .sortctl { display: inline-flex; align-items: stretch; border: 1px solid var(--color-border); border-radius: var(--rounded-sm); overflow: hidden; background: var(--color-surface-raised); height: 36px; }
   .sortctl .ssel { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font: var(--type-body-sm); cursor: pointer; }
@@ -1920,11 +1923,11 @@
         <div class="gh">Set <svg class="caret-svg up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></div>
         <input class="fmini" placeholder="Filter sets">
         <div class="fscroll">
-          <label class="frow"><span class="ckbox checked" style="width:16px;height:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Masters 25<span class="n">64</span></label>
-          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Magic 2011 (M11)<span class="n">42</span></label>
-          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Jumpstart<span class="n">31</span></label>
-          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Double Masters<span class="n">27</span></label>
-          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span>Commander Legends<span class="n">19</span></label>
+          <label class="frow"><span class="ckbox checked" style="width:16px;height:16px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span><span class="fname">Masters 25</span><span class="n">64</span></label>
+          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span><span class="fname">Magic 2011 (M11)</span><span class="n">42</span></label>
+          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span><span class="fname">Jumpstart</span><span class="n">31</span></label>
+          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span><span class="fname">Double Masters</span><span class="n">27</span></label>
+          <label class="frow"><span class="ckbox" style="width:16px;height:16px"></span><span class="fname">Commander Legends</span><span class="n">19</span></label>
         </div>
       </div>
       <div class="fgroup">

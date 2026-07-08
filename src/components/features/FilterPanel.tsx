@@ -96,7 +96,7 @@ export default function FilterPanel({
                       onChange({ ...filters, setName: checked ? set.setName : null })
                     }
                   >
-                    {set.setName}
+                    <span className="fname" title={set.setName}>{set.setName}</span>
                   </Checkbox>
                   {set.count > 0 && <span className="n">{set.count}</span>}
                 </div>
