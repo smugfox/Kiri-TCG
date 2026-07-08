@@ -226,7 +226,7 @@ export default function HoldingsTable() {
                       </span>
                     </span>
                   </td>
-                  <td><RarityDot tier={row.card.rarityTier}>{row.card.rarityTier}</RarityDot></td>
+                  <td><RarityDot tier={row.card.rarityTier}>{row.card.rarity ?? row.card.rarityTier}</RarityDot></td>
                   <td><span className="cchip">{row.condition}{row.printing !== "Normal" ? ` · ${row.printing}` : ""}{row.language !== "English" ? ` · ${row.language}` : ""}</span></td>
                   <td style={{ textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{row.quantity}</td>
                   <td style={{ textAlign: "right", fontVariantNumeric: "tabular-nums" }}>

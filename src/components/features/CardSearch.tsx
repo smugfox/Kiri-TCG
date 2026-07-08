@@ -16,6 +16,7 @@ type Result = {
   name: string;
   setName: string;
   number?: string;
+  rarity?: string;
   rarityTier: "common" | "uncommon" | "rare" | "epic" | "mythic" | "secret";
   slug: string;
   gameSlug: string;
@@ -188,7 +189,7 @@ export default function CardSearch({
                   </span>
                 </span>
                 <span style={{ marginLeft: "auto", display: "inline-flex", alignItems: "center", gap: 10 }}>
-                  <RarityDot tier={card.rarityTier}>{card.rarityTier}</RarityDot>
+                  <RarityDot tier={card.rarityTier}>{card.rarity ?? card.rarityTier}</RarityDot>
                   {card.headline && <span className="cs-price">{money(card.headline.price)}</span>}
                 </span>
               </div>

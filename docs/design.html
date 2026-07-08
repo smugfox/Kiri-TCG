@@ -434,7 +434,7 @@
   .alloc .v { font-weight: 500; color: var(--color-on-surface); font-variant-numeric: tabular-nums; }
 
   /* ============ feedback & overlays ============ */
-  .alert { --sem: var(--color-info); background: color-mix(in srgb, var(--sem) 12%, var(--color-surface)); border: 1px solid color-mix(in srgb, var(--sem) 35%, transparent); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); max-width: 420px; }
+  .alert { --sem: var(--color-info); background: color-mix(in srgb, var(--sem) 12%, var(--color-surface)); border: 1px solid color-mix(in srgb, var(--sem) 35%, transparent); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); }
   .alert .ic { color: var(--sem); margin-right: 4px; }
   .toast { background: var(--color-primary); color: var(--color-on-primary); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); display: inline-flex; box-shadow: var(--shadow-float); }
   .tip-wrap { position: relative; display: inline-block; margin-top: var(--space-6); }
@@ -446,7 +446,8 @@
   .skel-row:first-of-type { border-radius: var(--rounded-md) var(--rounded-md) 0 0; }
   .skel-row + .skel-row { border-top: none; }
   .skel-row:last-of-type { border-radius: 0 0 var(--rounded-md) var(--rounded-md); }
-  .empty { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-7); text-align: center; width: min(480px, 100%); }
+  .empty { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-7); text-align: center; width: 100%; min-height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .empty > * { max-width: 44ch; }
   .empty .well { width: 64px; height: 64px; border-radius: var(--rounded-md); background: var(--color-border); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: 26px; color: var(--color-accent); }
   .empty .t { font: var(--type-h3); letter-spacing: var(--type-h3-ls); margin-bottom: var(--space-2); }
   .empty .d { font: var(--type-body-sm); color: var(--color-on-surface-muted); margin-bottom: var(--space-5); }
@@ -504,6 +505,7 @@
   .ctile .tnm { font: 500 14px/1.35 var(--font-body); margin-bottom: 2px; }
   .ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; min-width: 0; }
   .ctile .tst .badge-dot { flex: none; }
+  .ctile .trar { display: block; margin: 3px 0 var(--space-2); }
   .ctile .tpr { display: flex; align-items: center; justify-content: space-between; font: 500 14px/1.4 var(--font-body); font-variant-numeric: tabular-nums; }
 
   /* ============ breadcrumbs / accordion / banner / avatar ============ */
@@ -1306,25 +1308,25 @@
     <div class="ctile">
       <div class="cimg">⬖<button class="qadd">+</button></div>
       <div class="tnm">Kiri, Mist Courser</div>
-      <div class="tst">Origins · 042 <span class="badge-dot r-mythic">Mythic</span></div>
+      <div class="tst">Origins · 042 </div><div class="trar"><span class="badge-dot r-mythic">Mythic</span></div>
       <div class="tpr"><span class="tnum">$42.00</span><span class="pdelta up">4.8%</span></div>
     </div>
     <div class="ctile is-hover">
       <div class="cimg">⬖<button class="qadd">+</button></div>
       <div class="tnm">Kiri, Mist Courser</div>
-      <div class="tst">Origins · 042 <span class="badge-dot r-mythic">Mythic</span></div>
+      <div class="tst">Origins · 042 </div><div class="trar"><span class="badge-dot r-mythic">Mythic</span></div>
       <div class="tpr"><span class="tnum">$42.00</span><span class="pdelta up">4.8%</span></div>
     </div>
     <div class="ctile">
       <div class="cimg">⬖<button class="qadd">+</button></div>
       <div class="tnm">Paper Crane Scout</div>
-      <div class="tst">Origins · 101 <span class="badge-dot r-common">Common</span></div>
+      <div class="tst">Origins · 101 </div><div class="trar"><span class="badge-dot r-common">Common</span></div>
       <div class="tpr"><span class="tnum">$0.25</span><span class="pdelta down">2.1%</span></div>
     </div>
     <div class="ctile">
       <div class="cimg">⬖<button class="qadd">+</button></div>
       <div class="tnm">Bronze Familiar</div>
-      <div class="tst">Empire · 033 <span class="badge-dot r-rare">Rare</span></div>
+      <div class="tst">Empire · 033 </div><div class="trar"><span class="badge-dot r-rare">Rare</span></div>
       <div class="tpr"><span class="tnum">$3.10</span><span class="pdelta flat">0.0%</span></div>
     </div>
   </div>
@@ -1567,7 +1569,7 @@
     <div class="nh">Notifications <a href="#navigation">Mark all read</a></div>
     <div class="nitem unread">
       <span class="nico" style="background:color-mix(in srgb, var(--color-trend-up) 14%, var(--color-surface));color:var(--color-trend-up)">▲</span>
-      <div><div class="nt"><b>Kiri, Mist Courser</b> passed your $50.00 alert · now $52.40</div><div class="ntime">12 minutes ago</div></div>
+      <div><div class="nt"><b>Kiri, Mist Courser</b></div><div class="nt" style="color:var(--color-on-surface-muted)">Passed your $50.00 alert · now $52.40</div><div class="ntime">12 minutes ago</div></div>
     </div>
     <div class="nitem unread">
       <span class="nico" style="background:color-mix(in srgb, var(--color-info) 12%, var(--color-surface));color:var(--color-info)">ℹ</span>
@@ -1575,7 +1577,7 @@
     </div>
     <div class="nitem">
       <span class="nico" style="background:color-mix(in srgb, var(--color-trend-down) 12%, var(--color-surface));color:var(--color-trend-down)">▼</span>
-      <div><div class="nt"><b>Paper Crane Scout</b> fell 8% this week</div><div class="ntime">Yesterday</div></div>
+      <div><div class="nt"><b>Paper Crane Scout</b></div><div class="nt" style="color:var(--color-on-surface-muted)">Fell 8% this week</div><div class="ntime">Yesterday</div></div>
     </div>
     <div class="nfoot"><a href="#navigation">View all notifications</a></div>
   </div>
@@ -2131,10 +2133,10 @@
 
   <h3 class="group">Alerts &amp; toast</h3>
   <div class="comp-row" style="flex-direction:column">
-    <div class="alert" style="--sem:var(--color-info)"><span class="ic">ℹ</span> New set “Origins II” previews begin next week.</div>
-    <div class="alert" style="--sem:var(--color-success)"><span class="ic">✓</span> Deck saved to your collection.</div>
-    <div class="alert" style="--sem:var(--color-warning)"><span class="ic">⚠</span> This deck is 2 cards under the 60-card minimum.</div>
-    <div class="alert" style="--sem:var(--color-error)"><span class="ic">✗</span> Card could not be added: collection limit reached.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-info)"><span class="ic">ℹ</span> New set “Origins II” previews begin next week.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-success)"><span class="ic">✓</span> Deck saved to your collection.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-warning)"><span class="ic">⚠</span> This deck is 2 cards under the 60-card minimum.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-error)"><span class="ic">✗</span> Card could not be added: collection limit reached.</div>
     <div><span class="toast">Deck exported · View file</span></div>
   </div>
 
@@ -2152,7 +2154,7 @@
   </div>
 
   <h3 class="group">Empty state</h3>
-  <div class="empty">
+  <div class="empty" style="max-width:480px">
     <div class="well">⬖</div>
     <div class="t">No cards in your portfolio yet</div>
     <div class="d">Search for any card across Magic, Pokémon, Yu-Gi-Oh!, and Sorcery to start tracking its value.</div>

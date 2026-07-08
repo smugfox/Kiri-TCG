@@ -12,6 +12,14 @@ crons.daily(
   {},
 );
 
+// Alert evaluation, after prices are fresh (crossing semantics, PRD FR-011).
+crons.daily(
+  "evaluate alerts",
+  { hourUTC: 6, minuteUTC: 45 },
+  internal.alerts.evaluate,
+  {},
+);
+
 // Per-user portfolio totals, after prices are fresh.
 crons.daily(
   "portfolio snapshots",

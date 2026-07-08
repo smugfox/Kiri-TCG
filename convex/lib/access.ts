@@ -48,9 +48,14 @@ export async function requireCapacity(
     return;
   }
 
-  // alerts: table arrives in Phase 3; cap is enforced there via this branch.
-  throw new ConvexError({
-    code: "LIMIT_REACHED",
-    message: "The free tier includes one active alert. Upgrade to Trader for unlimited alerts.",
-  });
+  const active = await ctx.db
+    .query("alerts")
+    .withIndex("byUser", (q) => q.eq("userId", userId))
+    .collect();
+  if (active.filter((a) => a.active).length >= FREE_LIMITS.alerts) {
+    throw new ConvexError({
+      code: "LIMIT_REACHED",
+      message: "The free tier includes one active alert. Upgrade to Trader for unlimited alerts.",
+    });
+  }
 }

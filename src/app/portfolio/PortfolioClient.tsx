@@ -33,7 +33,7 @@ export default function PortfolioClient() {
             title="No cards in your portfolio yet"
             description="Add your first card and Kiri starts tracking what your collection is worth, every night."
             action={
-              <div style={{ width: "min(440px, 100%)", textAlign: "left" }}>
+              <div style={{ width: "min(440px, 100%)", margin: "0 auto", textAlign: "left" }}>
                 <CardSearch autoFocus placeholder="Search for your first card" />
               </div>
             }
