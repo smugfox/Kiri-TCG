@@ -29,9 +29,67 @@ export default defineSchema({
     justTcgId: v.string(),
   }).index("slug", ["slug"]),
 
+  // cards: one row per printed card (per set/number); catalog rows are append-only.
+  cards: defineTable({
+    gameId: v.id("games"),
+    justTcgCardId: v.string(),
+    name: v.string(),
+    setName: v.string(),
+    number: v.optional(v.string()),
+    rarity: v.optional(v.string()),
+    rarityTier: v.union(
+      v.literal("common"),
+      v.literal("uncommon"),
+      v.literal("rare"),
+      v.literal("epic"),
+      v.literal("mythic"),
+      v.literal("secret"),
+    ),
+    slug: v.string(),
+    imageUrl: v.optional(v.string()),
+    searchText: v.string(),
+    lastSyncedAt: v.number(),
+    lastViewedAt: v.optional(v.number()),
+  })
+    .index("byJustTcgId", ["justTcgCardId"])
+    .index("byGameSlug", ["gameId", "slug"])
+    .index("byLastViewed", ["lastViewedAt"])
+    .searchIndex("search", { searchField: "searchText", filterFields: ["gameId"] }),
+
+  // variants: condition × printing per card; the priceable unit.
+  variants: defineTable({
+    cardId: v.id("cards"),
+    justTcgVariantId: v.string(),
+    condition: v.string(),
+    printing: v.string(),
+    currentPrice: v.optional(v.number()),
+    change7d: v.optional(v.number()),
+    change30d: v.optional(v.number()),
+    change90d: v.optional(v.number()),
+    lastUpdatedAt: v.number(),
+  })
+    .index("byCard", ["cardId"])
+    .index("byJustTcgId", ["justTcgVariantId"])
+    .index("byLastUpdated", ["lastUpdatedAt"]),
+
+  // priceSnapshots: one per variant per day; the proprietary history, never deleted.
+  priceSnapshots: defineTable({
+    variantId: v.id("variants"),
+    price: v.number(),
+    day: v.string(),
+  }).index("byVariantDay", ["variantId", "day"]),
+
   // JustTCG request budget bookkeeping: one row per UTC day.
   syncState: defineTable({
     day: v.string(),
     requestsUsed: v.number(),
+    backfillUsed: v.optional(v.number()),
   }).index("byDay", ["day"]),
+
+  // Per-user hourly cap on uncached-search backfill triggers (PRD § Security).
+  backfillTriggers: defineTable({
+    key: v.string(), // user id, or "anon" for unauthenticated searches
+    hour: v.string(), // "2026-07-07T13" UTC
+    count: v.number(),
+  }).index("byKeyHour", ["key", "hour"]),
 });
