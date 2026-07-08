@@ -310,10 +310,14 @@
 
   /* ============ navigation ============ */
   .nav-demo { background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-md); height: 72px; padding: 0 var(--space-6); display: flex; align-items: center; gap: 28px; }
-  .nav-demo .brand { font: 500 18px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-right: var(--space-4); }
-  .nav-demo a { font: var(--type-body); color: var(--color-on-surface-muted); text-decoration: none; transition: color .15s; }
+  .nav-demo .brand { font: 500 20px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-right: var(--space-4); }
+  .nav-demo a { font: 500 16px/1.4 var(--font-body); color: var(--color-on-surface-muted); text-decoration: none; transition: color .15s, border-color .15s; padding-bottom: 4px; border-bottom: 2px solid transparent; }
   .nav-demo a:hover, .nav-demo a.active { color: var(--color-on-surface); }
+  .nav-demo a.active { border-bottom-color: var(--color-accent); }
   .nav-demo .spacer { flex: 1; }
+  .nav-search { flex: 1; display: flex; justify-content: center; min-width: 0; }
+  .nav-search .well { display: inline-flex; align-items: center; gap: 10px; width: min(360px, 100%); height: 38px; padding: 0 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--rounded-sm); color: var(--color-on-surface-muted); font: var(--type-body-sm); }
+  .nav-search .kbd { margin-left: auto; font: var(--type-caption); letter-spacing: var(--type-caption-ls); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 1px 5px; }
   .navdd { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding-bottom: var(--space-6); }
   .navdd .nav-demo { border: none; border-bottom: 1px solid var(--color-border); border-radius: var(--rounded-md) var(--rounded-md) 0 0; }
   .navdd .dd-menu { margin: var(--space-2) 0 0 210px; }
@@ -1424,6 +1428,15 @@
   <p class="intro">Header bars, dropdowns, mega menus, page tabs, pagination, and row-action menus.</p>
 
   <h3 class="group">Navigation · 72px bar, 16px links</h3>
+  <h3 class="group" style="margin-top:0">Authed app nav · active underline + center search well</h3>
+  <div class="nav-demo" style="margin-bottom:var(--space-6)">
+    <span class="brand">⬖ Kiri</span>
+    <a href="#navigation">Cards</a><a href="#navigation" class="active">Portfolio</a><a href="#navigation">Watchlist</a><a href="#navigation">Pricing</a>
+    <span class="nav-search"><span class="well"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search any card<span class="kbd">⌘K</span></span></span>
+    <span class="bellwrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+    <span class="avt s32 img"></span>
+  </div>
+
   <div class="nav-demo">
     <span class="brand">⬖ Kiri</span>
     <a href="#navigation">Products <svg class="caret-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a><a href="#navigation">Cards</a><a href="#navigation">Decks</a><a href="#navigation">Events</a><a href="#navigation">Pricing</a>

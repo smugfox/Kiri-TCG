@@ -83,9 +83,10 @@
 
 /* ============ navigation ============ */
   .nav-demo { background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-md); height: 72px; padding: 0 var(--space-6); display: flex; align-items: center; gap: 28px; }
-  .nav-demo .brand { font: 500 18px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-right: var(--space-4); }
-  .nav-demo a { font: var(--type-body); color: var(--color-on-surface-muted); text-decoration: none; transition: color .15s; }
+  .nav-demo .brand { font: 500 20px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-right: var(--space-4); }
+  .nav-demo a { font: 500 16px/1.4 var(--font-body); color: var(--color-on-surface-muted); text-decoration: none; transition: color .15s, border-color .15s; padding-bottom: 4px; border-bottom: 2px solid transparent; }
   .nav-demo a:hover, .nav-demo a.active { color: var(--color-on-surface); }
+.nav-demo a.active { border-bottom-color: var(--color-accent); }
   .nav-demo .spacer { flex: 1; }
   .navdd { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding-bottom: var(--space-6); }
   .navdd .nav-demo { border: none; border-bottom: 1px solid var(--color-border); border-radius: var(--rounded-md) var(--rounded-md) 0 0; }
@@ -413,7 +414,14 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .site-footer { border-radius: 0; margin-top: var(--space-9); }
 .page { max-width: 1200px; margin: 0 auto; padding: 0 var(--space-5); }
 @media (min-width: 640px) { .page { padding: 0 var(--space-6); } }
-.nav-demo .navlink-active { color: var(--color-on-surface); font-weight: 500; }
+.nav-demo .navlink-active { color: var(--color-on-surface); border-bottom-color: var(--color-accent); }
+.nav-search { flex: 1; display: flex; justify-content: center; min-width: 0; }
+.nav-search button { display: inline-flex; align-items: center; gap: 10px; width: min(360px, 100%); height: 38px; padding: 0 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--rounded-sm); color: var(--color-on-surface-muted); font: var(--type-body-sm); font-family: var(--font-body); cursor: pointer; transition: border-color .15s; }
+.nav-search button:hover { border-color: var(--color-border-strong); }
+.nav-search .kbd { margin-left: auto; font: var(--type-caption); letter-spacing: var(--type-caption-ls); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 1px 5px; }
+.search-overlay { position: fixed; inset: 0; background: var(--color-scrim, rgba(26,18,14,0.5)); z-index: 200; display: flex; justify-content: center; align-items: flex-start; padding: 12vh var(--space-4) 0; }
+.search-overlay .panel { width: min(560px, 100%); background: var(--color-surface-raised); border-radius: var(--rounded-lg); box-shadow: var(--shadow-float); padding: var(--space-4); }
+@media (max-width: 1080px) { .site-nav .nav-search { display: none; } }
 
 /* Phase 0 shell hero (replaced by the real marketing hero in Phase 4) */
 .mhero-lite { padding: var(--space-9) 0; }
