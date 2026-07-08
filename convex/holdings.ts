@@ -156,6 +156,7 @@ export const list = query({
             variantId: variant._id,
             condition: variant.condition,
             printing: variant.printing,
+            language: variant.language ?? "English",
             currentPrice: variant.currentPrice,
             change7d: variant.change7d,
             lastUpdatedAt: variant.lastUpdatedAt,

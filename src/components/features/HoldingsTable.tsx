@@ -78,7 +78,10 @@ function EditDrawer({ row, onClose }: { row: Row; onClose: () => void }) {
           <span className="cs-thumb" aria-hidden style={row.card.imageUrl ? { background: `center / cover url(${row.card.imageUrl})` } : undefined} />
           <span>
             <span className="cs-name" style={{ display: "block" }}>{row.card.name}</span>
-            <span className="cs-set">{row.condition} · {row.printing}</span>
+            <span className="cs-set">
+              {row.condition} · {row.printing}
+              {row.language !== "English" ? ` · ${row.language}` : ""}
+            </span>
           </span>
         </div>
       </div>
@@ -220,7 +223,7 @@ export default function HoldingsTable() {
                     </span>
                   </td>
                   <td><RarityDot tier={row.card.rarityTier}>{row.card.rarityTier}</RarityDot></td>
-                  <td><span className="cchip">{row.condition}{row.printing !== "Normal" ? ` · ${row.printing}` : ""}</span></td>
+                  <td><span className="cchip">{row.condition}{row.printing !== "Normal" ? ` · ${row.printing}` : ""}{row.language !== "English" ? ` · ${row.language}` : ""}</span></td>
                   <td style={{ textAlign: "right", fontVariantNumeric: "tabular-nums" }}>{row.quantity}</td>
                   <td style={{ textAlign: "right", fontVariantNumeric: "tabular-nums" }}>
                     {row.costBasisPerCard !== undefined ? money(row.costBasisPerCard) : "·"}

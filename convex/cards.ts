@@ -6,13 +6,15 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { BACKFILL_TRIGGERS_PER_HOUR, utcHour } from "./lib/budget";
 import type { Doc } from "./_generated/dataModel";
 
-/** NM/Normal first, then any NM, then whatever has a price. */
+/** English NM/Normal first, then any English NM, then whatever has a price. */
 function headlineVariant(variants: Doc<"variants">[]) {
+  const english = variants.filter((x) => (x.language ?? "English") === "English");
+  const pool = english.length > 0 ? english : variants;
   return (
-    variants.find((x) => x.condition === "NM" && x.printing === "Normal") ??
-    variants.find((x) => x.condition === "NM") ??
-    variants.find((x) => x.currentPrice !== undefined) ??
-    variants[0]
+    pool.find((x) => x.condition === "NM" && x.printing === "Normal") ??
+    pool.find((x) => x.condition === "NM") ??
+    pool.find((x) => x.currentPrice !== undefined) ??
+    pool[0]
   );
 }
 

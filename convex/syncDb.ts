@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { internalMutation, internalQuery } from "./_generated/server";
-import { normalizeCondition, normalizeRarity, cardSlug } from "./lib/normalize";
+import { normalizeCondition, normalizeRarity, cardSlug, splitPrinting } from "./lib/normalize";
 import { DAILY_BUDGET, BACKFILL_BUDGET, utcDay } from "./lib/budget";
 
 /**
@@ -111,10 +111,14 @@ export const upsertCardFromApi = internalMutation({
         );
         continue;
       }
+      // Language rides in the printing label upstream; split it out so the
+      // UI can default to English and gate other languages behind a select.
+      const { printing, language } = splitPrinting(variant.printing);
       const variantFields = {
         cardId,
         condition: normalizeCondition(variant.condition),
-        printing: variant.printing ?? "Normal",
+        printing,
+        language,
         currentPrice: variant.price,
         change7d: variant.change7d,
         change30d: variant.change30d,

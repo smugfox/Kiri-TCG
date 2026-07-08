@@ -10,8 +10,10 @@ import Drawer from "@/components/ui/Drawer";
 import Button from "@/components/ui/Button";
 import Stepper from "@/components/ui/Stepper";
 import { RarityBadge, type RarityTier } from "@/components/ui/Badge";
+import Select from "@/components/ui/Select";
 import { useToast } from "@/components/ui/Toast";
 import UpgradePrompt from "@/components/features/UpgradePrompt";
+import { defaultLanguage, languagesOf, variantLanguage } from "@/lib/languages";
 
 const CONDITION_ORDER = ["NM", "LP", "MP", "HP", "DMG"];
 const PENDING_KEY = "kiri.pendingAdd";
@@ -28,6 +30,7 @@ export type DrawerVariant = {
   _id: Id<"variants">;
   condition: string;
   printing: string;
+  language?: string;
   currentPrice?: number;
 };
 
@@ -94,29 +97,35 @@ export default function AddCardDrawer({
 
   const [condition, setCondition] = useState("NM");
   const [printing, setPrinting] = useState("Normal");
+  const [language, setLanguage] = useState("English");
   const [quantity, setQuantity] = useState(1);
   const [pricePaid, setPricePaid] = useState("");
   const [dateAcquired, setDateAcquired] = useState("");
   const [saving, setSaving] = useState(false);
   const [limitHit, setLimitHit] = useState(false);
 
+  // English leads; other languages sit behind the select (one language at a time).
+  const languages = useMemo(() => languagesOf(variants), [variants]);
+  const pool = useMemo(
+    () => variants.filter((x) => variantLanguage(x) === language),
+    [variants, language],
+  );
   const conditions = useMemo(
-    () => CONDITION_ORDER.filter((c) => variants.some((x) => x.condition === c)),
-    [variants],
+    () => CONDITION_ORDER.filter((c) => pool.some((x) => x.condition === c)),
+    [pool],
   );
   const printings = useMemo(
     () =>
-      [...new Set(variants.filter((x) => x.condition === condition).map((x) => x.printing))].sort(
+      [...new Set(pool.filter((x) => x.condition === condition).map((x) => x.printing))].sort(
         (a, b) => (a === "Normal" ? -1 : b === "Normal" ? 1 : a.localeCompare(b)),
       ),
-    [variants, condition],
+    [pool, condition],
   );
 
   // Reset to smart defaults each time the drawer opens (US-003).
   useEffect(() => {
     if (!open) return;
-    const firstCondition = CONDITION_ORDER.find((c) => variants.some((x) => x.condition === c)) ?? "NM";
-    setCondition(firstCondition);
+    setLanguage(defaultLanguage(variants));
     setQuantity(1);
     setPricePaid("");
     setDateAcquired("");
@@ -124,10 +133,13 @@ export default function AddCardDrawer({
   }, [open, variants]);
 
   useEffect(() => {
+    if (!conditions.includes(condition)) setCondition(conditions[0] ?? "NM");
+  }, [conditions, condition]);
+  useEffect(() => {
     if (!printings.includes(printing)) setPrinting(printings[0] ?? "Normal");
   }, [printings, printing]);
 
-  const selected = variants.find((x) => x.condition === condition && x.printing === printing);
+  const selected = pool.find((x) => x.condition === condition && x.printing === printing);
 
   const submit = async () => {
     if (!selected || !card) return;
@@ -195,6 +207,22 @@ export default function AddCardDrawer({
           </span>
         </div>
       </div>
+
+      {languages.length > 1 && (
+        <div className="fld">
+          <div className="lb">Language</div>
+          <Select
+            aria-label="Language"
+            value={language}
+            onChange={(e) => setLanguage(e.target.value)}
+            style={{ width: "100%" }}
+          >
+            {languages.map((lang) => (
+              <option key={lang} value={lang}>{lang}</option>
+            ))}
+          </Select>
+        </div>
+      )}
 
       <div className="fld">
         <div className="lb">Condition</div>

@@ -11,8 +11,10 @@ import FreshnessChip from "@/components/features/FreshnessChip";
 import CardFrame from "@/components/features/CardFrame";
 import { RarityBadge } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
+import Select from "@/components/ui/Select";
 import { useToast } from "@/components/ui/Toast";
 import AddCardDrawer from "@/components/features/AddCardDrawer";
+import { defaultLanguage, languagesOf, variantLanguage } from "@/lib/languages";
 
 export default function CardPageClient({
   preloaded,
@@ -24,6 +26,7 @@ export default function CardPageClient({
   const touchViewed = useMutation(api.cards.touchViewed);
   const [range, setRange] = useState<ChartRange>("30d");
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+  const [language, setLanguage] = useState<string | null>(null); // null = default
   const [addOpen, setAddOpen] = useState(false);
 
   const cardId = data?.card._id;
@@ -31,18 +34,26 @@ export default function CardPageClient({
     if (cardId) touchViewed({ cardId }).catch(() => {});
   }, [cardId, touchViewed]);
 
+  // English is the default surface; other languages sit behind the select.
+  const allVariants = useMemo(() => data?.variants ?? [], [data]);
+  const languages = useMemo(() => languagesOf(allVariants), [allVariants]);
+  const activeLanguage = language ?? defaultLanguage(allVariants);
+  const shownVariants = useMemo(
+    () => allVariants.filter((x) => variantLanguage(x) === activeLanguage),
+    [allVariants, activeLanguage],
+  );
+
   const defaultVariant = useMemo(() => {
-    const variants = data?.variants ?? [];
     return (
-      variants.find((x) => x.condition === "NM" && x.printing === "Normal") ??
-      variants.find((x) => x.condition === "NM") ??
-      variants.find((x) => x.currentPrice !== undefined) ??
-      variants[0]
+      shownVariants.find((x) => x.condition === "NM" && x.printing === "Normal") ??
+      shownVariants.find((x) => x.condition === "NM") ??
+      shownVariants.find((x) => x.currentPrice !== undefined) ??
+      shownVariants[0]
     );
-  }, [data]);
+  }, [shownVariants]);
 
   const selected =
-    data?.variants.find((x) => x._id === selectedVariantId) ?? defaultVariant;
+    shownVariants.find((x) => x._id === selectedVariantId) ?? defaultVariant;
 
   const history = useQuery(
     api.prices.history,
@@ -91,7 +102,11 @@ export default function CardPageClient({
           </header>
 
           <PriceChart
-            title={selected ? `${selected.condition} · ${selected.printing}` : card.name}
+            title={
+              selected
+                ? `${selected.condition} · ${selected.printing}${activeLanguage !== "English" ? ` · ${activeLanguage}` : ""}`
+                : card.name
+            }
             data={history ?? []}
             range={range}
             onRange={setRange}
@@ -99,11 +114,28 @@ export default function CardPageClient({
           />
 
           <section>
-            <h2 style={{ font: "var(--type-h4)", letterSpacing: "var(--type-h4-ls)", marginBottom: "var(--space-3)" }}>
-              Prices by condition
-            </h2>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-3)", marginBottom: "var(--space-3)", flexWrap: "wrap" }}>
+              <h2 style={{ font: "var(--type-h4)", letterSpacing: "var(--type-h4-ls)" }}>
+                Prices by condition
+              </h2>
+              {languages.length > 1 && (
+                <Select
+                  aria-label="Language"
+                  value={activeLanguage}
+                  onChange={(e) => {
+                    setLanguage(e.target.value);
+                    setSelectedVariantId(null);
+                  }}
+                  style={{ minWidth: 150 }}
+                >
+                  {languages.map((lang) => (
+                    <option key={lang} value={lang}>{lang}</option>
+                  ))}
+                </Select>
+              )}
+            </div>
             <PriceMatrix
-              variants={variants}
+              variants={shownVariants}
               selectedId={selected?._id}
               onSelect={(variant) => setSelectedVariantId(variant._id)}
             />

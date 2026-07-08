@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { cardSlug, normalizeCondition, normalizeRarity } from "./normalize";
+import { cardSlug, normalizeCondition, normalizeRarity, splitPrinting } from "./normalize";
 
 describe("normalizeCondition", () => {
   it("maps standard labels", () => {
@@ -83,5 +83,24 @@ describe("cardSlug", () => {
 
   it("handles a missing number", () => {
     expect(cardSlug("Charizard", "Base Set", null)).toBe("charizard-base-set");
+  });
+});
+
+describe("splitPrinting", () => {
+  it("splits language suffixes", () => {
+    expect(splitPrinting("Normal - Japanese")).toEqual({ printing: "Normal", language: "Japanese" });
+    expect(splitPrinting("1st Edition - Japanese")).toEqual({ printing: "1st Edition", language: "Japanese" });
+    expect(splitPrinting("Normal - Chinese (S)")).toEqual({ printing: "Normal", language: "Chinese (S)" });
+    expect(splitPrinting("Foil - German")).toEqual({ printing: "Foil", language: "German" });
+  });
+
+  it("leaves plain and exotic printings alone", () => {
+    expect(splitPrinting("Normal")).toEqual({ printing: "Normal", language: "English" });
+    expect(splitPrinting("Reverse Holofoil")).toEqual({ printing: "Reverse Holofoil", language: "English" });
+    expect(splitPrinting("Foo - Bar")).toEqual({ printing: "Foo - Bar", language: "English" });
+  });
+
+  it("defaults empty to Normal / English", () => {
+    expect(splitPrinting(undefined)).toEqual({ printing: "Normal", language: "English" });
   });
 });

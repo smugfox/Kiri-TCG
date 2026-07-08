@@ -62,7 +62,8 @@ export default defineSchema({
     cardId: v.id("cards"),
     justTcgVariantId: v.string(),
     condition: v.string(),
-    printing: v.string(),
+    printing: v.string(), // base printing: Normal, Foil, 1st Edition, ...
+    language: v.optional(v.string()), // "English" default; "Japanese", ...
     currentPrice: v.optional(v.number()),
     change7d: v.optional(v.number()),
     change30d: v.optional(v.number()),
