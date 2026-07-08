@@ -148,14 +148,17 @@ export default function BrowsePage() {
             </div>
           )}
           {!loading && visible.length === 0 && (
-            <EmptyState
-              title={setIsEmpty ? "Nothing cached from this set yet" : "Nothing in the catalog yet"}
-              description={
-                setIsEmpty
-                  ? "Kiri is pulling this set's first cards from the market; check back in a minute."
-                  : "Search for any card above and Kiri pulls it from the market, prices and all."
-              }
-            />
+            // Fill the column height so the state owns the whole surface.
+            <div style={{ display: "flex", minHeight: "min(720px, calc(100vh - 300px))" }}>
+              <EmptyState
+                title={setIsEmpty ? "Nothing cached from this set yet" : "Nothing in the catalog yet"}
+                description={
+                  setIsEmpty
+                    ? "Kiri is pulling this set's first cards from the market; check back in a minute."
+                    : "Search for any card above and Kiri pulls it from the market, prices and all."
+                }
+              />
+            </div>
           )}
           <div style={{ display: "flex", justifyContent: "center", marginTop: "var(--space-6)" }}>
             <Pagination
