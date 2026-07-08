@@ -150,6 +150,12 @@ export default defineSchema({
     .index("byUserRead", ["userId", "read"])
     .index("byUser", ["userId"]),
 
+  // webhookEvents: Polar webhook idempotency.
+  webhookEvents: defineTable({
+    provider: v.literal("polar"),
+    eventId: v.string(),
+  }).index("byEventId", ["eventId"]),
+
   // JustTCG request budget bookkeeping: one row per UTC day.
   syncState: defineTable({
     day: v.string(),

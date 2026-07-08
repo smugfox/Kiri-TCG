@@ -1,7 +1,13 @@
+import { Suspense } from "react";
 import PortfolioClient from "./PortfolioClient";
 
 export const metadata = { title: "Portfolio" };
 
 export default function PortfolioPage() {
-  return <PortfolioClient />;
+  // Suspense: PortfolioClient reads useSearchParams (?upgraded=1).
+  return (
+    <Suspense>
+      <PortfolioClient />
+    </Suspense>
+  );
 }

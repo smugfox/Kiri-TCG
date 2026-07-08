@@ -45,3 +45,19 @@ export const deleteOrphanLocalVariants = internalMutation({
     return { deleted };
   },
 });
+
+/** Test cleanup: clear fake Polar ids left by webhook verification. */
+export const cleanupTestBilling = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const users = await ctx.db.query("users").collect();
+    let cleaned = 0;
+    for (const user of users) {
+      if (user.polarCustomerId?.startsWith("cus_test")) {
+        await ctx.db.patch(user._id, { polarCustomerId: undefined, polarSubscriptionId: undefined });
+        cleaned++;
+      }
+    }
+    return { cleaned };
+  },
+});
