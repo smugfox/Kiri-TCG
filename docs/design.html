@@ -446,7 +446,8 @@
   .skel-row:first-of-type { border-radius: var(--rounded-md) var(--rounded-md) 0 0; }
   .skel-row + .skel-row { border-top: none; }
   .skel-row:last-of-type { border-radius: 0 0 var(--rounded-md) var(--rounded-md); }
-  .empty { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-7); text-align: center; width: min(480px, 100%); }
+  .empty { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-7); text-align: center; width: 100%; min-height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .empty > * { max-width: 44ch; }
   .empty .well { width: 64px; height: 64px; border-radius: var(--rounded-md); background: var(--color-border); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: 26px; color: var(--color-accent); }
   .empty .t { font: var(--type-h3); letter-spacing: var(--type-h3-ls); margin-bottom: var(--space-2); }
   .empty .d { font: var(--type-body-sm); color: var(--color-on-surface-muted); margin-bottom: var(--space-5); }
@@ -2153,7 +2154,7 @@
   </div>
 
   <h3 class="group">Empty state</h3>
-  <div class="empty">
+  <div class="empty" style="max-width:480px">
     <div class="well">⬖</div>
     <div class="t">No cards in your portfolio yet</div>
     <div class="d">Search for any card across Magic, Pokémon, Yu-Gi-Oh!, and Sorcery to start tracking its value.</div>
