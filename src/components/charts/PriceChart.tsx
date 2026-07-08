@@ -21,9 +21,9 @@ function cssColor(name: string, fallback: string): string {
 }
 
 /**
- * Day-one chart state: a dashed hairline running to a terminal accent dot
- * at the right edge (today), caption underneath. Reads as "the line starts
- * here" instead of an unanchored dot (design.md § Components).
+ * Day-one chart state, Robinhood-style: a solid accent line at today's
+ * value running the full width to a terminal dot with a soft halo. The
+ * chart exists, it just hasn't moved yet (design.md § Components).
  */
 export function ChartBaseline({ caption }: { caption: string }) {
   return (
@@ -32,16 +32,37 @@ export function ChartBaseline({ caption }: { caption: string }) {
         height: 220,
         display: "flex",
         flexDirection: "column",
-        alignItems: "center",
         justifyContent: "center",
-        gap: 12,
+        gap: 28,
       }}
     >
-      <svg width="100%" height="24" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden>
-        <line x1="0" y1="12" x2="388" y2="12" stroke="var(--color-border-strong)" strokeWidth="1.5" strokeDasharray="4 5" />
-        <circle cx="392" cy="12" r="5" fill="var(--color-accent)" />
-      </svg>
-      <span className="cs-set">{caption}</span>
+      <div style={{ position: "relative", height: 8 }} aria-hidden>
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 14,
+            top: "50%",
+            transform: "translateY(-50%)",
+            height: 2,
+            background: "var(--color-accent)",
+          }}
+        />
+        <span
+          style={{
+            position: "absolute",
+            right: 4,
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: "var(--color-accent)",
+            boxShadow: "0 0 0 4px color-mix(in srgb, var(--color-accent) 20%, transparent)",
+          }}
+        />
+      </div>
+      <span className="cs-set" style={{ textAlign: "center" }}>{caption}</span>
     </div>
   );
 }
