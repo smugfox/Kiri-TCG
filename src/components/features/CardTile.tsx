@@ -9,6 +9,7 @@ export type CardTileData = {
   name: string;
   setName: string;
   number?: string;
+  rarity?: string; // the game's native label, e.g. "Mythic Rare"
   rarityTier: RarityTier;
   slug: string;
   gameSlug: string;
@@ -56,19 +57,24 @@ export default function CardTile({
             </button>
           )}
         </span>
+        {/* Variant C: name, set, rarity, price each on their own line. */}
         <span className="tnm" style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {card.name}
         </span>
-        <span className="tst">
-          <span
-            title={`${card.setName}${card.number && card.number.toUpperCase() !== "N/A" ? ` · ${card.number}` : ""}`}
-            style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
-          >
-            {card.setName}
-            {card.number && card.number.toUpperCase() !== "N/A" ? ` · ${card.number}` : ""}
-          </span>
-          <RarityDot tier={card.rarityTier}>{card.rarityTier}</RarityDot>
+        <span
+          className="tst"
+          title={`${card.setName}${card.number && card.number.toUpperCase() !== "N/A" ? ` · ${card.number}` : ""}`}
+          style={{ display: "block", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", marginBottom: 0 }}
+        >
+          {card.setName}
+          {card.number && card.number.toUpperCase() !== "N/A" ? ` · ${card.number}` : ""}
         </span>
+        {/* Sealed product carries no rarity; skip the row rather than say "None". */}
+        {card.rarity?.toLowerCase() !== "none" && (
+          <span className="trar">
+            <RarityDot tier={card.rarityTier}>{card.rarity ?? card.rarityTier}</RarityDot>
+          </span>
+        )}
         <span className="tpr">
           <span>{card.headline ? money(card.headline.price) : "No price data"}</span>
           {delta !== null && delta !== 0 && (

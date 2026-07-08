@@ -55,7 +55,7 @@ export default function WatchlistClient() {
                 {row.name}
               </Link>
               <span className="h-set" style={{ display: "block" }}>
-                {row.setName} <RarityDot tier={row.rarityTier}>{row.rarityTier}</RarityDot>
+                {row.setName} <RarityDot tier={row.rarityTier}>{row.rarity ?? row.rarityTier}</RarityDot>
               </span>
             </span>
             {row.sparkline.length >= 2 ? (

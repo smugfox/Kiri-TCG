@@ -71,6 +71,7 @@ export const list = query({
           cardId: card._id,
           name: card.name,
           setName: card.setName,
+          rarity: card.rarity,
           rarityTier: card.rarityTier,
           slug: card.slug,
           gameSlug: gameSlugById.get(card.gameId) ?? "",

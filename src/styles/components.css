@@ -366,6 +366,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .ctile .tnm { font: 500 14px/1.35 var(--font-body); margin-bottom: 2px; }
 .ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; min-width: 0; }
 .ctile .tst .badge-dot { flex: none; }
+.ctile .trar { display: block; margin: 3px 0 var(--space-2); }
 .ctile .tpr { display: flex; align-items: center; justify-content: space-between; font: 500 14px/1.4 var(--font-body); font-variant-numeric: tabular-nums; }
 
 /* ============ bulk / filter / sort / tag / comparison ============ */

@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { RarityBadge, type RarityTier } from "@/components/ui/Badge";
 import Checkbox from "@/components/ui/Checkbox";
-
-const TIERS: RarityTier[] = ["common", "uncommon", "rare", "epic", "mythic", "secret"];
+import { GAME_RARITIES } from "@/lib/rarities";
 
 export type Filters = {
   gameSlug: string | null; // null = all games
@@ -65,7 +64,8 @@ export default function FilterPanel({
               checked={filters.gameSlug === game.slug}
               onChange={(checked) => {
                 setSetQuery("");
-                onChange({ ...filters, gameSlug: checked ? game.slug : null, setName: null });
+                // Sets and rarity tiers are game-scoped; changing game resets both.
+                onChange({ gameSlug: checked ? game.slug : null, setName: null, rarities: [] });
               }}
             >
               {game.name}
@@ -111,34 +111,40 @@ export default function FilterPanel({
 
       <div className="fgroup">
         <div className="gh">Rarity</div>
-        <div className="fbadges">
-          {TIERS.map((tier) => {
-            const active = filters.rarities.includes(tier);
-            return (
-              <button
-                key={tier}
-                aria-pressed={active}
-                style={{
-                  background: "none",
-                  border: "none",
-                  padding: 0,
-                  cursor: "pointer",
-                  opacity: active || filters.rarities.length === 0 ? 1 : 0.45,
-                }}
-                onClick={() =>
-                  onChange({
-                    ...filters,
-                    rarities: active
-                      ? filters.rarities.filter((t) => t !== tier)
-                      : [...filters.rarities, tier],
-                  })
-                }
-              >
-                <RarityBadge tier={tier}>{tier}</RarityBadge>
-              </button>
-            );
-          })}
-        </div>
+        {!filters.gameSlug ? (
+          // Every game names its rarities differently; the ladder only
+          // makes sense inside one game.
+          <span className="fhint">Pick a game to filter by rarity</span>
+        ) : (
+          <div className="fbadges">
+            {(GAME_RARITIES[filters.gameSlug] ?? []).map(({ tier, label }) => {
+              const active = filters.rarities.includes(tier);
+              return (
+                <button
+                  key={tier}
+                  aria-pressed={active}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                    opacity: active || filters.rarities.length === 0 ? 1 : 0.45,
+                  }}
+                  onClick={() =>
+                    onChange({
+                      ...filters,
+                      rarities: active
+                        ? filters.rarities.filter((t) => t !== tier)
+                        : [...filters.rarities, tier],
+                    })
+                  }
+                >
+                  <RarityBadge tier={tier}>{label}</RarityBadge>
+                </button>
+              );
+            })}
+          </div>
+        )}
       </div>
 
       <div className="fgroup">
