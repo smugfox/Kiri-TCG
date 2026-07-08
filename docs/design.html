@@ -217,6 +217,9 @@
   .cs-set { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); }
   .cs-price { margin-left: auto; font: 500 13px/1.5 var(--font-body); font-variant-numeric: tabular-nums; }
   .cs-note { padding: var(--space-4); font: var(--type-body-sm); color: var(--color-on-surface-muted); text-align: center; }
+  .search-overlay-demo { background: var(--color-scrim, rgba(26,18,14,0.5)); border-radius: var(--rounded-lg); padding: 40px 24px 56px; display: flex; justify-content: center; }
+  .search-overlay-demo .panel { width: min(560px, 100%); background: var(--color-surface-raised); border-radius: var(--rounded-lg); box-shadow: var(--shadow-float); padding: var(--space-4); }
+  .search-overlay-demo .csearch { width: 100%; }
   .switch { width: 36px; height: 20px; border-radius: 10px; background: var(--color-border-strong); position: relative; border: none; cursor: pointer; flex: none; transition: background .2s; }
   .switch::after { content: ""; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #FAF8F3; top: 2px; left: 2px; transition: left .2s; }
   .switch.on { background: var(--color-accent); }
@@ -310,10 +313,14 @@
 
   /* ============ navigation ============ */
   .nav-demo { background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-md); height: 72px; padding: 0 var(--space-6); display: flex; align-items: center; gap: 28px; }
-  .nav-demo .brand { font: 500 18px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-right: var(--space-4); }
-  .nav-demo a { font: var(--type-body); color: var(--color-on-surface-muted); text-decoration: none; transition: color .15s; }
+  .nav-demo .brand { font: 500 20px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-right: var(--space-4); }
+  .nav-demo a { font: 500 16px/1.4 var(--font-body); color: var(--color-on-surface-muted); text-decoration: none; transition: color .15s, border-color .15s; padding-bottom: 4px; border-bottom: 2px solid transparent; }
   .nav-demo a:hover, .nav-demo a.active { color: var(--color-on-surface); }
+  .nav-demo a.active { border-bottom-color: var(--color-accent); }
   .nav-demo .spacer { flex: 1; }
+  .nav-search { flex: 1; display: flex; justify-content: flex-end; min-width: 0; }
+  .nav-search .well { display: inline-flex; align-items: center; gap: 10px; width: min(280px, 100%); height: 38px; padding: 0 12px; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--rounded-sm); color: var(--color-on-surface-muted); font: var(--type-body-sm); }
+  .nav-search .kbd { margin-left: auto; font: var(--type-caption); letter-spacing: var(--type-caption-ls); border: 1px solid var(--color-border-strong); border-radius: 4px; padding: 1px 5px; }
   .navdd { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding-bottom: var(--space-6); }
   .navdd .nav-demo { border: none; border-bottom: 1px solid var(--color-border); border-radius: var(--rounded-md) var(--rounded-md) 0 0; }
   .navdd .dd-menu { margin: var(--space-2) 0 0 210px; }
@@ -391,7 +398,7 @@
   .fbar { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; margin-bottom: var(--space-3); max-width: 900px; }
   .fbar .spacer { flex: 1; }
   .stat-tile { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-5); width: 190px; }
-  .stat-tile .num { font: var(--type-h2); letter-spacing: var(--type-h2-ls); }
+  .stat-tile .num { font: var(--type-h2); letter-spacing: var(--type-h2-ls); margin-bottom: 4px; }
   .stat-tile .lbl2 { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); }
   .stat-tile .sub { margin-top: 6px; }
   .pos { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-5); width: 280px; }
@@ -414,7 +421,7 @@
   .pdelta.up { color: var(--color-trend-up); background: color-mix(in srgb, var(--color-trend-up) 12%, var(--color-surface)); }
   .pdelta.down { color: var(--color-trend-down); background: color-mix(in srgb, var(--color-trend-down) 12%, var(--color-surface)); }
   .pdelta.flat { color: var(--color-on-surface-muted); background: var(--color-background); }
-  .range-tabs { display: inline-flex; gap: 2px; background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-full); padding: 3px; }
+  .range-tabs { display: inline-flex; gap: 2px; background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-full); padding: 3px; height: fit-content; align-self: flex-start; }
   .range-tabs button { font: var(--type-label); font-family: var(--font-body); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); background: transparent; border: none; border-radius: var(--rounded-full); padding: 5px 12px; cursor: pointer; }
   .range-tabs button.active { background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border-strong); padding: 4px 11px; }
   .pchart svg.chart { width: 100%; height: auto; display: block; font-family: var(--font-body); }
@@ -461,8 +468,8 @@
   .drawer .dh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-5); }
   .drawer .dh .t { font: var(--type-h3); letter-spacing: var(--type-h3-ls); }
   .drawer .dh .x { font-size: 18px; color: var(--color-on-surface-muted); cursor: pointer; background: none; border: none; }
-  .drawer .fld { margin-bottom: var(--space-4); }
-  .drawer .fld .lb { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
+  .fld { margin-bottom: var(--space-4); }
+  .fld .lb { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
   .drawer .factions { display: flex; gap: var(--space-3); justify-content: flex-end; margin-top: var(--space-5); }
   .selrow { display: flex; gap: var(--space-3); align-items: center; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--rounded-sm); padding: 8px 12px; }
 
@@ -722,7 +729,9 @@
   .scard { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-5); }
   .scard .srow-save { display: flex; justify-content: flex-end; margin-top: var(--space-4); }
   .keyrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .danger-card { background: var(--color-surface); border: 1px solid color-mix(in srgb, var(--color-error) 35%, transparent); border-radius: var(--rounded-md); padding: var(--space-5); display: flex; align-items: center; gap: var(--space-4); max-width: 760px; flex-wrap: wrap; }
+  .danger-card { background: var(--color-surface); border: 1px solid color-mix(in srgb, var(--color-error) 35%, transparent); border-radius: var(--rounded-md); padding: var(--space-5); display: flex; align-items: center; justify-content: space-between; gap: var(--space-6); flex-wrap: wrap; }
+  .danger-card .dd { max-width: 48ch; margin-top: 2px; }
+  .danger-card .btn { flex: none; }
   .danger-card .dinfo { flex: 1; min-width: 240px; }
   .danger-card .dt { font: 500 14px/1.4 var(--font-body); }
   .danger-card .dd { font: var(--type-body-sm); color: var(--color-on-surface-muted); }
@@ -1184,6 +1193,20 @@
       <div class="cs-results" style="margin-top:0"><div class="cs-note">No cards found. Try another game.</div></div>
       <span class="lbl">card-search · empty state</span>
     </div>
+
+  <h3 class="group">Search overlay · the command layer (nav well or ⌘K)</h3>
+  <div class="search-overlay-demo">
+    <div class="panel">
+      <div class="csearch">
+        <svg class="sicon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input class="inp" value="bolt">
+        <div class="cs-results">
+          <div class="cs-row is-hover"><span class="cs-thumb"></span><span><span class="cs-name" style="display:block">Lightning Bolt</span><span class="cs-set">Masters 25 · 141</span></span><span style="margin-left:auto;display:inline-flex;align-items:center;gap:10px"><span class="badge-dot r-uncommon">Uncommon</span><span class="cs-price">$1.25</span></span></div>
+          <div class="cs-row"><span class="cs-thumb"></span><span><span class="cs-name" style="display:block">Lightning Bolt</span><span class="cs-set">Magic Player Rewards · 1</span></span><span style="margin-left:auto;display:inline-flex;align-items:center;gap:10px"><span class="badge-dot r-rare">Promo</span><span class="cs-price">$26.16</span></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
   </div>
 
   <h3 class="group">Date picker &amp; range slider</h3>
@@ -1422,6 +1445,15 @@
   <p class="intro">Header bars, dropdowns, mega menus, page tabs, pagination, and row-action menus.</p>
 
   <h3 class="group">Navigation · 72px bar, 16px links</h3>
+  <h3 class="group" style="margin-top:0">Authed app nav · active underline + center search well</h3>
+  <div class="nav-demo" style="margin-bottom:var(--space-6)">
+    <span class="brand">⬖ Kiri</span>
+    <a href="#navigation">Cards</a><a href="#navigation" class="active">Portfolio</a><a href="#navigation">Watchlist</a><a href="#navigation">Pricing</a>
+    <span class="nav-search"><span class="well"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search any card<span class="kbd">⌘K</span></span></span>
+    <span class="bellwrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
+    <span class="avt s32 img"></span>
+  </div>
+
   <div class="nav-demo">
     <span class="brand">⬖ Kiri</span>
     <a href="#navigation">Products <svg class="caret-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a><a href="#navigation">Cards</a><a href="#navigation">Decks</a><a href="#navigation">Events</a><a href="#navigation">Pricing</a>
@@ -1990,6 +2022,21 @@
   <h2>Charts &amp; Portfolio</h2>
   <p class="intro">Lightweight Charts theme, rendered here as static token-styled mocks. Area/line only; bronze for neutral series, moss/crimson strictly for direction.</p>
 
+  <h3 class="group">Chart baseline · day-one state (solid line at today's value, terminal dot)</h3>
+  <div class="pchart">
+    <div class="phead">
+      <div><div class="pname">NM · Normal</div><div class="pval">$1.25</div></div>
+      <div class="range-tabs"><button>7D</button><button class="active">30D</button><button>90D</button></div>
+    </div>
+    <div style="height:150px;display:flex;flex-direction:column;justify-content:center;gap:26px">
+      <div style="position:relative;height:8px">
+        <div style="position:absolute;left:0;right:14px;top:50%;transform:translateY(-50%);height:2px;background:var(--color-accent)"></div>
+        <span style="position:absolute;right:4px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:var(--color-accent);box-shadow:0 0 0 4px color-mix(in srgb, var(--color-accent) 20%, transparent)"></span>
+      </div>
+      <span style="font:var(--type-body-sm);color:var(--color-on-surface-muted);text-align:center">One price point so far. History builds daily.</span>
+    </div>
+  </div>
+
   <h3 class="group">Portfolio hero · dashboard lead</h3>
   <div class="pchart hero">
     <div class="phead">
@@ -2233,6 +2280,24 @@
 <section id="settings-pages">
   <h2>Settings &amp; Pages</h2>
   <p class="intro">Settings sections, the API key row, the danger zone, error page templates, and the onboarding checklist.</p>
+
+  <h3 class="group">Settings billing card · plan + live usage meters (free tier)</h3>
+  <div class="scard" style="max-width:520px;margin-bottom:var(--space-6)">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-4)">
+      <span style="font:500 16px/1.4 var(--font-body)">Collector · Free</span>
+      <button class="btn btn-secondary">See plans</button>
+    </div>
+    <div style="display:flex;gap:var(--space-6);flex-wrap:wrap;margin-top:var(--space-4)">
+      <div class="prog" style="flex:1;min-width:150px;width:auto">
+        <div class="ph"><span style="color:var(--color-on-surface-muted)">Portfolio</span><span class="r">4 / 100</span></div>
+        <div class="track"><div class="fill" style="width:4%;min-width:6px"></div></div>
+      </div>
+      <div class="prog" style="flex:1;min-width:150px;width:auto">
+        <div class="ph"><span style="color:var(--color-on-surface-muted)">Active alerts</span><span class="r">1 / 1</span></div>
+        <div class="track"><div class="fill" style="width:100%"></div></div>
+      </div>
+    </div>
+  </div>
 
   <h3 class="group">Settings section · title left, card right, Save bottom-right</h3>
   <div class="sset">

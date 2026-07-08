@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useConvexReady } from "@/app/providers";
+import { useToast } from "@/components/ui/Toast";
 import PortfolioHero from "@/components/features/PortfolioHero";
 import StatTiles from "@/components/features/StatTiles";
 import AllocationBar from "@/components/features/AllocationBar";
@@ -14,6 +17,24 @@ import EmptyState from "@/components/ui/EmptyState";
 export default function PortfolioClient() {
   const ready = useConvexReady();
   const summary = useQuery(api.portfolio.summary, ready ? {} : "skip");
+  const viewer = useQuery(api.users.viewer, ready ? {} : "skip");
+  const toast = useToast();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const upgradedToastShown = useRef(false);
+
+  // ?upgraded=1 confirms once the webhook has actually landed (tier is
+  // reactive), then cleans the param so refreshes stay quiet.
+  const upgraded = searchParams.get("upgraded") === "1";
+  const tier = viewer?.tier;
+  useEffect(() => {
+    if (!upgraded || upgradedToastShown.current) return;
+    if (tier && tier !== "free") {
+      upgradedToastShown.current = true;
+      toast(`Welcome to ${tier === "trader" ? "Trader" : "Dealer"}. Limits are off.`);
+      router.replace("/portfolio");
+    }
+  }, [upgraded, tier, toast, router]);
 
   if (!ready) return null;
   if (summary === undefined) {

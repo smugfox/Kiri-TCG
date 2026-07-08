@@ -20,6 +20,53 @@ function cssColor(name: string, fallback: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
+/**
+ * Day-one chart state, Robinhood-style: a solid accent line at today's
+ * value running the full width to a terminal dot with a soft halo. The
+ * chart exists, it just hasn't moved yet (design.md § Components).
+ */
+export function ChartBaseline({ caption }: { caption: string }) {
+  return (
+    <div
+      style={{
+        height: 220,
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        gap: 28,
+      }}
+    >
+      <div style={{ position: "relative", height: 8 }} aria-hidden>
+        <div
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 14,
+            top: "50%",
+            transform: "translateY(-50%)",
+            height: 2,
+            background: "var(--color-accent)",
+          }}
+        />
+        <span
+          style={{
+            position: "absolute",
+            right: 4,
+            top: "50%",
+            transform: "translateY(-50%)",
+            width: 8,
+            height: 8,
+            borderRadius: "50%",
+            background: "var(--color-accent)",
+            boxShadow: "0 0 0 4px color-mix(in srgb, var(--color-accent) 20%, transparent)",
+          }}
+        />
+      </div>
+      <span className="cs-set" style={{ textAlign: "center" }}>{caption}</span>
+    </div>
+  );
+}
+
 /** The Lightweight Charts area, themed per design.md § Components. */
 export function ChartArea({ data }: { data: PricePoint[] }) {
   const el = useRef<HTMLDivElement>(null);
@@ -128,31 +175,13 @@ export default function PriceChart({
       {data.length >= 2 ? (
         <ChartArea data={data} />
       ) : (
-        <div
-          style={{
-            height: 220,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-          }}
-        >
-          <span
-            aria-hidden
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: "50%",
-              background: "var(--color-accent)",
-            }}
-          />
-          <span className="cs-set">
-            {data.length === 1
+        <ChartBaseline
+          caption={
+            data.length === 1
               ? "One price point so far. History builds daily."
-              : "No price history yet. History builds daily."}
-          </span>
-        </div>
+              : "No price history yet. History builds daily."
+          }
+        />
       )}
       {stats && (
         <div className="pstats">
