@@ -201,7 +201,7 @@ export default function HoldingsTable() {
               {header("price", "Price", "right")}
               {header("pl", "P&L", "right")}
               <th scope="col">30d</th>
-              <th scope="col" aria-label="Actions" />
+              <th scope="col"><span className="visually-hidden">Actions</span></th>
             </tr>
           </thead>
           <tbody>

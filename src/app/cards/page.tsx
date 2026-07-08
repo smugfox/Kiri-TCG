@@ -132,7 +132,7 @@ export default function BrowsePage() {
       </div>
       <div className="browse-layout">
         <aside className="browse-side">{panel}</aside>
-        <main className="browse-main">
+        <div className="browse-main">
           {loading && (
             <div className="browse-grid">
               {Array.from({ length: 8 }, (_, i) => (
@@ -171,7 +171,7 @@ export default function BrowsePage() {
               }}
             />
           </div>
-        </main>
+        </div>
       </div>
       <Drawer open={filtersOpen} onClose={() => setFiltersOpen(false)} title="Filters">
         {panel}

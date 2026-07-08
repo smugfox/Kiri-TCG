@@ -1,6 +1,6 @@
 /* Kiri component styles · copied verbatim from docs/design.html; do not restyle here, change the design system first. */
 /* ============ buttons ============ */
-  .btn { font: var(--type-body); font-family: var(--font-body); border: none; cursor: pointer; height: 40px; padding: 10px 20px; display: inline-flex; align-items: center; }
+  .btn { font: var(--type-body); font-family: var(--font-body); border: none; cursor: pointer; height: 40px; padding: 10px 20px; display: inline-flex; align-items: center; white-space: nowrap; }
   .btn-primary { background: var(--color-primary); color: var(--color-on-primary); border-radius: var(--rounded-sm); }
   .btn-primary:hover, .btn-primary.is-hover { background: var(--color-primary-hover); }
   .btn-primary.is-disabled { background: var(--color-border-strong); color: var(--color-on-surface-muted); cursor: not-allowed; }
@@ -236,7 +236,7 @@
   .drawer .dh .t { font: var(--type-h3); letter-spacing: var(--type-h3-ls); }
   .drawer .dh .x { font-size: 18px; color: var(--color-on-surface-muted); cursor: pointer; background: none; border: none; }
   .fld { margin-bottom: var(--space-4); }
-  .fld .lb { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
+  .fld .lb { display: block; font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
   .drawer .factions { display: flex; gap: var(--space-3); justify-content: flex-end; margin-top: var(--space-5); }
   .selrow { display: flex; gap: var(--space-3); align-items: center; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--rounded-sm); padding: 8px 12px; }
 
@@ -337,8 +337,8 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .pdelta { display: inline-flex; align-items: center; gap: 5px; font: 500 13px/1.5 var(--font-body); font-variant-numeric: tabular-nums; letter-spacing: .02em; border-radius: var(--rounded-xs); padding: 2px 8px; }
 .pdelta.up::before { content: "▲"; font-size: 8px; line-height: 1; }
 .pdelta.down::before { content: "▼"; font-size: 8px; line-height: 1; }
-.pdelta.up { color: var(--color-trend-up); background: color-mix(in srgb, var(--color-trend-up) 12%, var(--color-surface)); }
-.pdelta.down { color: var(--color-trend-down); background: color-mix(in srgb, var(--color-trend-down) 12%, var(--color-surface)); }
+.pdelta.up { color: color-mix(in srgb, var(--color-trend-up) 70%, var(--color-on-surface)); background: color-mix(in srgb, var(--color-trend-up) 12%, var(--color-surface)); }
+.pdelta.down { color: color-mix(in srgb, var(--color-trend-down) 80%, var(--color-on-surface)); background: color-mix(in srgb, var(--color-trend-down) 12%, var(--color-surface)); }
 .pdelta.flat { color: var(--color-on-surface-muted); background: var(--color-background); }
 .range-tabs { display: inline-flex; gap: 2px; background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-full); padding: 3px; height: fit-content; align-self: flex-start; }
 .range-tabs button { font: var(--type-label); font-family: var(--font-body); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); background: transparent; border: none; border-radius: var(--rounded-full); padding: 5px 12px; cursor: pointer; }

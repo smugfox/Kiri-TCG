@@ -1,30 +1,10 @@
 "use client";
 
-import { createContext, ReactNode, useContext, useEffect, useMemo } from "react";
-import { ConvexReactClient, useConvexAuth, useQuery } from "convex/react";
+import { createContext, ReactNode, useContext, useMemo } from "react";
+import { ConvexReactClient } from "convex/react";
 import { ConvexAuthNextjsProvider } from "@convex-dev/auth/nextjs";
-import { api } from "../../convex/_generated/api";
 import { ToastProvider } from "@/components/ui/Toast";
 import { PendingAddReplayer } from "@/components/features/AddCardDrawer";
-import { initAnalytics, identify, capture, EVENTS } from "@/lib/analytics";
-
-/** PostHog boot + identify on auth; fires SIGNUP once per browser. */
-function Analytics() {
-  const { isAuthenticated } = useConvexAuth();
-  const viewer = useQuery(api.users.viewer, isAuthenticated ? {} : "skip");
-  useEffect(() => {
-    initAnalytics();
-  }, []);
-  useEffect(() => {
-    if (!viewer) return;
-    identify(viewer._id, { tier: viewer.tier });
-    if (!localStorage.getItem("kiri.signupTracked")) {
-      localStorage.setItem("kiri.signupTracked", "1");
-      capture(EVENTS.SIGNUP);
-    }
-  }, [viewer]);
-  return null;
-}
 
 /** True once NEXT_PUBLIC_CONVEX_URL is configured; UI degrades gracefully before that. */
 const ConvexReadyContext = createContext(false);
@@ -46,7 +26,6 @@ export default function Providers({ children }: { children: ReactNode }) {
         <ToastProvider>
           {children}
           <PendingAddReplayer />
-          <Analytics />
         </ToastProvider>
       </ConvexAuthNextjsProvider>
     </ConvexReadyContext.Provider>

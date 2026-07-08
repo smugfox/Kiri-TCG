@@ -7,6 +7,7 @@ import { ConvexError } from "convex/values";
 import { api } from "../../../convex/_generated/api";
 import Button from "@/components/ui/Button";
 import { useToast } from "@/components/ui/Toast";
+import { capture, EVENTS } from "@/lib/analytics";
 
 const CHECKOUT_KEY = "kiri.pendingCheckout";
 
@@ -72,6 +73,7 @@ export default function PlanCards({ showToggle = true }: { showToggle?: boolean 
       return;
     }
     setBusy(plan);
+    capture(EVENTS.CHECKOUT_STARTED, { plan, interval });
     try {
       const { url } = await createCheckout({ plan, interval });
       window.location.href = url;

@@ -238,3 +238,18 @@ export const touchViewed = mutation({
     if (card) await ctx.db.patch(cardId, { lastViewedAt: Date.now() });
   },
 });
+
+/** Sitemap feed: up to 10k card URLs, newest first. */
+export const forSitemap = query({
+  args: {},
+  handler: async (ctx) => {
+    const cards = await ctx.db.query("cards").order("desc").take(10_000);
+    const games = await ctx.db.query("games").collect();
+    const slugById = new Map(games.map((g) => [g._id, g.slug]));
+    return cards.map((card) => ({
+      gameSlug: slugById.get(card.gameId) ?? "",
+      slug: card.slug,
+      lastSyncedAt: card.lastSyncedAt,
+    }));
+  },
+});

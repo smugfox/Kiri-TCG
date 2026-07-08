@@ -49,7 +49,16 @@ export default function SettingsClient() {
     if (viewer?.name) setName(viewer.name);
   }, [viewer?.name]);
 
-  if (!ready || viewer === undefined) return null;
+  if (!ready) return null;
+  if (viewer === undefined) {
+    return (
+      <div className="page" style={{ maxWidth: 900, margin: "0 auto", padding: "var(--space-6) var(--space-5)" }} aria-busy="true">
+        {[0, 1, 2].map((i) => (
+          <span key={i} className="skel" style={{ display: "block", height: 120, marginBottom: 20, borderRadius: "var(--rounded-md)" }} />
+        ))}
+      </div>
+    );
+  }
   if (viewer === null) return null; // middleware redirects; belt and braces
 
   const openPortal = async () => {
@@ -89,12 +98,12 @@ export default function SettingsClient() {
         </div>
         <div className="scard">
           <div className="fld">
-            <div className="lb">Name</div>
-            <input className="input" style={{ width: "100%" }} value={name} onChange={(e) => setName(e.target.value)} />
+            <label className="lb" htmlFor="settings-name">Name</label>
+            <input id="settings-name" className="input" style={{ width: "100%" }} value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="fld">
-            <div className="lb">Email</div>
-            <input className="input is-disabled" style={{ width: "100%" }} value={viewer.email ?? ""} disabled />
+            <label className="lb" htmlFor="settings-email">Email</label>
+            <input id="settings-email" className="input is-disabled" style={{ width: "100%" }} value={viewer.email ?? ""} disabled />
           </div>
           <div className="srow-save">
             <Button

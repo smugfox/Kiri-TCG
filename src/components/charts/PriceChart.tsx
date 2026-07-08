@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { AreaSeries, ColorType, createChart, LineStyle } from "lightweight-charts";
+
 import { money, signedPercent } from "@/lib/format";
 
 export type PricePoint = { day: string; price: number };
@@ -73,8 +73,13 @@ export function ChartArea({ data }: { data: PricePoint[] }) {
 
   useEffect(() => {
     if (!el.current) return;
-    const accent = cssColor("--color-accent", "#7E4E2D");
-    const chart = createChart(el.current, {
+    let disposed = false;
+    let cleanup = () => {};
+    // Lazy: lightweight-charts (~45KB gz) loads only when a chart renders.
+    import("lightweight-charts").then(({ AreaSeries, ColorType, createChart, LineStyle }) => {
+      if (disposed || !el.current) return;
+      const accent = cssColor("--color-accent", "#7E4E2D");
+      const chart = createChart(el.current, {
       height: 220,
       autoSize: true,
       layout: {
@@ -105,9 +110,14 @@ export function ChartArea({ data }: { data: PricePoint[] }) {
       crosshairMarkerBackgroundColor: accent,
       priceLineVisible: false,
     });
-    series.setData(data.map(({ day, price }) => ({ time: day, value: price })));
-    chart.timeScale().fitContent();
-    return () => chart.remove();
+      series.setData(data.map(({ day, price }) => ({ time: day, value: price })));
+      chart.timeScale().fitContent();
+      cleanup = () => chart.remove();
+    });
+    return () => {
+      disposed = true;
+      cleanup();
+    };
   }, [data]);
 
   return <div ref={el} style={{ width: "100%" }} />;

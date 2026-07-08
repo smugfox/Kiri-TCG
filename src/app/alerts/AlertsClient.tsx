@@ -54,6 +54,14 @@ export default function AlertsClient() {
         </div>
       )}
 
+      {alerts === undefined && (
+        <div aria-busy="true">
+          {[0, 1, 2].map((i) => (
+            <span key={i} className="skel" style={{ display: "block", height: 52, marginBottom: 10, borderRadius: "var(--rounded-sm)" }} />
+          ))}
+        </div>
+      )}
+
       {alerts && alerts.length === 0 && (
         <EmptyState
           title="No alerts yet"
@@ -75,7 +83,7 @@ export default function AlertsClient() {
                 <th scope="col" style={{ textAlign: "right" }}>Current</th>
                 <th scope="col">Status</th>
                 <th scope="col">Last fired</th>
-                <th scope="col" aria-label="Actions" />
+                <th scope="col"><span className="visually-hidden">Actions</span></th>
               </tr>
             </thead>
             <tbody>
