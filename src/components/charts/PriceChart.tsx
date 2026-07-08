@@ -20,6 +20,32 @@ function cssColor(name: string, fallback: string): string {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 }
 
+/**
+ * Day-one chart state: a dashed hairline running to a terminal accent dot
+ * at the right edge (today), caption underneath. Reads as "the line starts
+ * here" instead of an unanchored dot (design.md § Components).
+ */
+export function ChartBaseline({ caption }: { caption: string }) {
+  return (
+    <div
+      style={{
+        height: 220,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 12,
+      }}
+    >
+      <svg width="100%" height="24" viewBox="0 0 400 24" preserveAspectRatio="none" aria-hidden>
+        <line x1="0" y1="12" x2="388" y2="12" stroke="var(--color-border-strong)" strokeWidth="1.5" strokeDasharray="4 5" />
+        <circle cx="392" cy="12" r="5" fill="var(--color-accent)" />
+      </svg>
+      <span className="cs-set">{caption}</span>
+    </div>
+  );
+}
+
 /** The Lightweight Charts area, themed per design.md § Components. */
 export function ChartArea({ data }: { data: PricePoint[] }) {
   const el = useRef<HTMLDivElement>(null);
@@ -128,31 +154,13 @@ export default function PriceChart({
       {data.length >= 2 ? (
         <ChartArea data={data} />
       ) : (
-        <div
-          style={{
-            height: 220,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-          }}
-        >
-          <span
-            aria-hidden
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: "50%",
-              background: "var(--color-accent)",
-            }}
-          />
-          <span className="cs-set">
-            {data.length === 1
+        <ChartBaseline
+          caption={
+            data.length === 1
               ? "One price point so far. History builds daily."
-              : "No price history yet. History builds daily."}
-          </span>
-        </div>
+              : "No price history yet. History builds daily."
+          }
+        />
       )}
       {stats && (
         <div className="pstats">

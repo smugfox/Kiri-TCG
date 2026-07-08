@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { ChartArea, RANGE_LABELS, type ChartRange } from "@/components/charts/PriceChart";
+import { ChartArea, ChartBaseline, RANGE_LABELS, type ChartRange } from "@/components/charts/PriceChart";
 import { money, signedPercent } from "@/lib/format";
 
 /**
@@ -55,10 +55,7 @@ export default function PortfolioHero({
       {data.length >= 2 ? (
         <ChartArea data={data} />
       ) : (
-        <div style={{ height: 220, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8 }}>
-          <span aria-hidden style={{ width: 10, height: 10, borderRadius: "50%", background: "var(--color-accent)" }} />
-          <span className="cs-set">Your portfolio charts from tonight. History builds daily.</span>
-        </div>
+        <ChartBaseline caption="Your portfolio charts from tonight. History builds daily." />
       )}
     </section>
   );

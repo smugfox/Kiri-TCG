@@ -391,7 +391,7 @@
   .fbar { display: flex; gap: var(--space-3); align-items: center; flex-wrap: wrap; margin-bottom: var(--space-3); max-width: 900px; }
   .fbar .spacer { flex: 1; }
   .stat-tile { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-5); width: 190px; }
-  .stat-tile .num { font: var(--type-h2); letter-spacing: var(--type-h2-ls); }
+  .stat-tile .num { font: var(--type-h2); letter-spacing: var(--type-h2-ls); margin-bottom: 4px; }
   .stat-tile .lbl2 { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); }
   .stat-tile .sub { margin-top: 6px; }
   .pos { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-5); width: 280px; }
@@ -461,8 +461,8 @@
   .drawer .dh { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: var(--space-5); }
   .drawer .dh .t { font: var(--type-h3); letter-spacing: var(--type-h3-ls); }
   .drawer .dh .x { font-size: 18px; color: var(--color-on-surface-muted); cursor: pointer; background: none; border: none; }
-  .drawer .fld { margin-bottom: var(--space-4); }
-  .drawer .fld .lb { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
+  .fld { margin-bottom: var(--space-4); }
+  .fld .lb { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
   .drawer .factions { display: flex; gap: var(--space-3); justify-content: flex-end; margin-top: var(--space-5); }
   .selrow { display: flex; gap: var(--space-3); align-items: center; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--rounded-sm); padding: 8px 12px; }
 
@@ -722,7 +722,9 @@
   .scard { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-5); }
   .scard .srow-save { display: flex; justify-content: flex-end; margin-top: var(--space-4); }
   .keyrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .danger-card { background: var(--color-surface); border: 1px solid color-mix(in srgb, var(--color-error) 35%, transparent); border-radius: var(--rounded-md); padding: var(--space-5); display: flex; align-items: center; gap: var(--space-4); max-width: 760px; flex-wrap: wrap; }
+  .danger-card { background: var(--color-surface); border: 1px solid color-mix(in srgb, var(--color-error) 35%, transparent); border-radius: var(--rounded-md); padding: var(--space-5); display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-6); flex-wrap: wrap; }
+  .danger-card .dd { max-width: 48ch; margin-top: 2px; }
+  .danger-card .btn { flex: none; }
   .danger-card .dinfo { flex: 1; min-width: 240px; }
   .danger-card .dt { font: 500 14px/1.4 var(--font-body); }
   .danger-card .dd { font: var(--type-body-sm); color: var(--color-on-surface-muted); }

@@ -141,15 +141,21 @@ export default function SettingsClient() {
         </div>
       </div>
 
-      <div className="danger-card">
-        <div className="dinfo">
-          <div className="dt">Delete account</div>
-          <div className="dd">
-            Removes your portfolio, watchlist, alerts, and history for good, and cancels any
-            subscription. There is no undo.
-          </div>
+      <div className="sset">
+        <div>
+          <div className="st2">Danger zone</div>
+          <div className="sd2">For leaving for good.</div>
         </div>
-        <Button variant="destructive" onClick={() => setConfirmOpen(true)}>Delete account</Button>
+        <div className="danger-card" style={{ maxWidth: "none" }}>
+          <div className="dinfo">
+            <div className="dt">Delete account</div>
+            <div className="dd">
+              Removes your portfolio, watchlist, alerts, and history for good, and cancels
+              any subscription. There is no undo.
+            </div>
+          </div>
+          <Button variant="destructive" onClick={() => setConfirmOpen(true)}>Delete account</Button>
+        </div>
       </div>
 
       <Modal
