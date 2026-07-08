@@ -12,8 +12,9 @@ import CardFrame from "@/components/features/CardFrame";
 import { RarityBadge } from "@/components/ui/Badge";
 import Button from "@/components/ui/Button";
 import Select from "@/components/ui/Select";
-import { useToast } from "@/components/ui/Toast";
 import AddCardDrawer from "@/components/features/AddCardDrawer";
+import PriceAlertRow from "@/components/features/PriceAlertRow";
+import WatchButton from "@/components/features/WatchButton";
 import { defaultLanguage, languagesOf, variantLanguage } from "@/lib/languages";
 
 export default function CardPageClient({
@@ -22,7 +23,6 @@ export default function CardPageClient({
   preloaded: Preloaded<typeof api.cards.getBySlug>;
 }) {
   const data = usePreloadedQuery(preloaded);
-  const toast = useToast();
   const touchViewed = useMutation(api.cards.touchViewed);
   const [range, setRange] = useState<ChartRange>("30d");
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
@@ -83,9 +83,7 @@ export default function CardPageClient({
           <CardFrame imageUrl={card.imageUrl} name={card.name} />
           <div style={{ display: "flex", gap: "var(--space-2)", marginTop: "var(--space-4)" }}>
             <Button onClick={() => setAddOpen(true)}>Add to portfolio</Button>
-            <Button variant="secondary" onClick={() => toast("Watchlist arrives in a later phase.")}>
-              Watch
-            </Button>
+            <WatchButton cardId={card._id} />
           </div>
         </div>
 
@@ -115,6 +113,8 @@ export default function CardPageClient({
             onRange={setRange}
             delta7d={selected?.change7d ?? null}
           />
+
+          {selected && <PriceAlertRow variantId={selected._id} />}
 
           <section>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-3)", marginBottom: "var(--space-3)", flexWrap: "wrap" }}>

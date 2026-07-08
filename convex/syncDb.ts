@@ -200,12 +200,22 @@ export const refreshCandidates = internalQuery({
       }
     };
 
-    // Rung 1: variants held in portfolios. (Rung 2, watchlist, arrives in Phase 3.)
+    // Rung 1: variants held in portfolios.
     const held = await ctx.db.query("holdings").collect();
     const heldVariantIds = [...new Set(held.map((h) => h.variantId))];
     for (const variantId of heldVariantIds) {
       const variant = await ctx.db.get(variantId);
       if (variant) push(variant.justTcgVariantId);
+    }
+
+    // Rung 2: watched cards (all their variants; alerts ride on these too).
+    const watched = await ctx.db.query("watchlist").collect();
+    for (const row of [...new Set(watched.map((w) => w.cardId))].map((cardId) => cardId)) {
+      const variants = await ctx.db
+        .query("variants")
+        .withIndex("byCard", (q) => q.eq("cardId", row))
+        .collect();
+      for (const variant of variants) push(variant.justTcgVariantId);
     }
 
     // Rung 3: variants of cards viewed in the last 7 days.

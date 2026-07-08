@@ -116,6 +116,40 @@ export default defineSchema({
     day: v.string(),
   }).index("byUserDay", ["userId", "day"]),
 
+  // watchlist: cards a user follows but does not own.
+  watchlist: defineTable({
+    userId: v.id("users"),
+    cardId: v.id("cards"),
+  })
+    .index("byUser", ["userId"])
+    .index("byUserCard", ["userId", "cardId"])
+    .index("byCard", ["cardId"]),
+
+  // alerts: above/below price thresholds per variant.
+  alerts: defineTable({
+    userId: v.id("users"),
+    variantId: v.id("variants"),
+    direction: v.union(v.literal("above"), v.literal("below")),
+    threshold: v.number(), // USD
+    active: v.boolean(),
+    lastFiredAt: v.optional(v.number()),
+    lastFiredPrice: v.optional(v.number()),
+  })
+    .index("byUser", ["userId"])
+    .index("byVariantActive", ["variantId", "active"]),
+
+  // notifications: the bell panel.
+  notifications: defineTable({
+    userId: v.id("users"),
+    kind: v.union(v.literal("alert"), v.literal("system")),
+    title: v.string(),
+    body: v.string(),
+    cardId: v.optional(v.id("cards")),
+    read: v.boolean(),
+  })
+    .index("byUserRead", ["userId", "read"])
+    .index("byUser", ["userId"]),
+
   // JustTCG request budget bookkeeping: one row per UTC day.
   syncState: defineTable({
     day: v.string(),

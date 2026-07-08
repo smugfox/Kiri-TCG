@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useConvexAuth } from "convex/react";
 import { useConvexReady } from "@/app/providers";
 import UserMenu from "./UserMenu";
+import NotificationsPanel from "./NotificationsPanel";
 
 const LINKS = [
   { href: "/cards", label: "Cards" },
@@ -24,7 +25,12 @@ function AuthedActions() {
       </>
     );
   }
-  return <UserMenu />;
+  return (
+    <>
+      <NotificationsPanel />
+      <UserMenu />
+    </>
+  );
 }
 
 export default function SiteNav() {
