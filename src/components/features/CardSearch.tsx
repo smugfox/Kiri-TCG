@@ -6,6 +6,7 @@ import { useMutation, useQuery } from "convex/react";
 import { ConvexError } from "convex/values";
 import { Search } from "lucide-react";
 import { api } from "../../../convex/_generated/api";
+import type { Id } from "../../../convex/_generated/dataModel";
 import { useConvexReady } from "@/app/providers";
 import { RarityDot } from "@/components/ui/Badge";
 import { money } from "@/lib/format";
@@ -32,11 +33,14 @@ export default function CardSearch({
   autoFocus = false,
   onSelect,
   placeholder = "Search cards across every game",
+  game,
 }: {
   autoFocus?: boolean;
   /** Override navigation, e.g. the add-card drawer selects instead of routing. */
   onSelect?: (card: Result) => void;
   placeholder?: string;
+  /** Scope results to one game (the browse page passes its game filter). */
+  game?: Id<"games">;
 }) {
   const ready = useConvexReady();
   const router = useRouter();
@@ -57,7 +61,7 @@ export default function CardSearch({
   const results = useQuery(
     api.cards.search,
     ready && debounced.length >= 2
-      ? { q: debounced, paginationOpts: { numItems: 8, cursor: null } }
+      ? { q: debounced, game, paginationOpts: { numItems: 8, cursor: null } }
       : "skip",
   );
   const requestBackfill = useMutation(api.cards.requestBackfill);

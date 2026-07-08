@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { internalMutation, internalQuery } from "./_generated/server";
-import { normalizeCondition, normalizeRarity, cardSlug } from "./lib/normalize";
+import { normalizeCondition, normalizeRarity, cardSlug, splitPrinting } from "./lib/normalize";
 import { DAILY_BUDGET, BACKFILL_BUDGET, utcDay } from "./lib/budget";
 
 /**
@@ -86,7 +86,8 @@ export const upsertCardFromApi = internalMutation({
       gameId: game._id,
       name: card.name,
       setName: card.setName,
-      number: card.number,
+      // Upstream sends the literal string "N/A" for unnumbered cards.
+      number: card.number && card.number.toUpperCase() !== "N/A" ? card.number : undefined,
       rarity: card.rarity,
       rarityTier: normalizeRarity(game.slug, card.rarity),
       slug: cardSlug(card.name, card.setName, card.number),
@@ -111,22 +112,47 @@ export const upsertCardFromApi = internalMutation({
         );
         continue;
       }
+      // Language rides in the printing label upstream; split it out so the
+      // UI can default to English and gate other languages behind a select.
+      const { printing, language } = splitPrinting(variant.printing);
       const variantFields = {
         cardId,
         condition: normalizeCondition(variant.condition),
-        printing: variant.printing ?? "Normal",
+        printing,
+        language,
         currentPrice: variant.price,
         change7d: variant.change7d,
         change30d: variant.change30d,
         change90d: variant.change90d,
         lastUpdatedAt: variant.lastUpdated ? variant.lastUpdated * 1000 : now,
       };
-      const existingVariant = await ctx.db
+      let existingVariant = await ctx.db
         .query("variants")
         .withIndex("byJustTcgId", (q) => q.eq("justTcgVariantId", variant.justTcgVariantId))
         .unique();
+      if (!existingVariant) {
+        // A collector may have added this exact version before the market
+        // listed it: upgrade the local placeholder in place so their
+        // holding starts pricing instead of duplicating the variant.
+        const siblings = await ctx.db
+          .query("variants")
+          .withIndex("byCard", (q) => q.eq("cardId", cardId))
+          .collect();
+        existingVariant =
+          siblings.find(
+            (x) =>
+              x.justTcgVariantId.startsWith("local:") &&
+              x.condition === variantFields.condition &&
+              x.printing === variantFields.printing &&
+              (x.language ?? "English") === variantFields.language,
+          ) ?? null;
+      }
       const variantId = existingVariant
-        ? (await ctx.db.patch(existingVariant._id, variantFields), existingVariant._id)
+        ? (await ctx.db.patch(existingVariant._id, {
+            justTcgVariantId: variant.justTcgVariantId,
+            ...variantFields,
+          }),
+          existingVariant._id)
         : await ctx.db.insert("variants", {
             justTcgVariantId: variant.justTcgVariantId,
             ...variantFields,
@@ -166,13 +192,21 @@ export const refreshCandidates = internalQuery({
     const ids: string[] = [];
     const seen = new Set<string>();
     const push = (justTcgVariantId: string) => {
+      // Local placeholders have no upstream counterpart to refresh.
+      if (justTcgVariantId.startsWith("local:")) return;
       if (ids.length < limit && !seen.has(justTcgVariantId)) {
         seen.add(justTcgVariantId);
         ids.push(justTcgVariantId);
       }
     };
 
-    // Rung 1 (holdings) and rung 2 (watchlist): wired in Phases 2 and 3.
+    // Rung 1: variants held in portfolios. (Rung 2, watchlist, arrives in Phase 3.)
+    const held = await ctx.db.query("holdings").collect();
+    const heldVariantIds = [...new Set(held.map((h) => h.variantId))];
+    for (const variantId of heldVariantIds) {
+      const variant = await ctx.db.get(variantId);
+      if (variant) push(variant.justTcgVariantId);
+    }
 
     // Rung 3: variants of cards viewed in the last 7 days.
     const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
@@ -198,5 +232,43 @@ export const refreshCandidates = internalQuery({
       for (const variant of stalest) push(variant.justTcgVariantId);
     }
     return ids;
+  },
+});
+
+/** Replace-style upsert of a game's set catalog from JustTCG /sets. */
+export const upsertSets = internalMutation({
+  args: {
+    gameId: v.id("games"),
+    sets: v.array(
+      v.object({
+        justTcgSetId: v.string(),
+        name: v.string(),
+        cardsCount: v.optional(v.number()),
+        releaseDate: v.optional(v.string()),
+        setValueUsd: v.optional(v.number()),
+      }),
+    ),
+  },
+  handler: async (ctx, { gameId, sets }) => {
+    let written = 0;
+    for (const set of sets) {
+      const existing = await ctx.db
+        .query("sets")
+        .withIndex("byJustTcgId", (q) => q.eq("justTcgSetId", set.justTcgSetId))
+        .unique();
+      if (existing) await ctx.db.patch(existing._id, { gameId, ...set });
+      else await ctx.db.insert("sets", { gameId, ...set });
+      written++;
+    }
+    return written;
+  },
+});
+
+/** Games with their justTcgIds, for the set-catalog seeder. */
+export const listGamesInternal = internalQuery({
+  args: {},
+  handler: async (ctx) => {
+    const games = await ctx.db.query("games").collect();
+    return games.map(({ _id, slug, justTcgId }) => ({ _id, slug, justTcgId }));
   },
 });

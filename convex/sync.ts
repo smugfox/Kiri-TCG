@@ -34,18 +34,24 @@ type ApiCard = {
  * empty state says so). Scheduled by cards.requestBackfill.
  */
 export const searchBackfill = internalAction({
-  args: { q: v.string(), gameSlug: v.optional(v.string()) },
-  handler: async (ctx, { q, gameSlug }) => {
+  args: {
+    q: v.optional(v.string()),
+    gameSlug: v.optional(v.string()),
+    setId: v.optional(v.string()),
+  },
+  handler: async (ctx, { q, gameSlug, setId }) => {
     const granted: number = await ctx.runMutation(internal.syncDb.takeBudget, {
       kind: "backfill",
       count: 1,
     });
     if (granted < 1) {
-      console.warn(`backfill: budget exhausted, "${q}" waits for tomorrow`);
+      console.warn(`backfill: budget exhausted, "${q ?? setId}" waits for tomorrow`);
       return { fetched: 0, budgetExhausted: true };
     }
 
-    const params: Record<string, string> = { q, limit: "20" };
+    const params: Record<string, string> = { limit: "20" };
+    if (q) params.q = q;
+    if (setId) params.set = setId;
     if (gameSlug) params.game = gameSlug;
     let cards: ApiCard[];
     try {
@@ -166,5 +172,51 @@ export const refreshVariants = internalAction({
       }
     }
     return { refreshed, requests };
+  },
+});
+
+type ApiSet = {
+  id: string;
+  name?: string;
+  cards_count?: number | null;
+  release_date?: string | null;
+  set_value_usd?: number | null;
+};
+
+/**
+ * Seed the per-game set catalog from JustTCG /sets. One request per game;
+ * safe to re-run (upserts). Run manually or after adding a game.
+ */
+export const seedSets = internalAction({
+  args: {},
+  handler: async (ctx) => {
+    const games: Array<{ _id: string; slug: string; justTcgId: string }> =
+      await ctx.runQuery(internal.syncDb.listGamesInternal, {});
+    const results: Record<string, number> = {};
+    for (const game of games) {
+      const granted: number = await ctx.runMutation(internal.syncDb.takeBudget, {
+        kind: "nightly",
+        count: 1,
+      });
+      if (granted < 1) {
+        console.warn(`seedSets: budget exhausted before ${game.slug}`);
+        break;
+      }
+      const res = await justTcgFetch<{ data: ApiSet[] }>("/sets", { game: game.justTcgId });
+      const sets = (res.data ?? [])
+        .filter((s) => s.id && s.name)
+        .map((s) => ({
+          justTcgSetId: s.id,
+          name: s.name as string,
+          cardsCount: s.cards_count ?? undefined,
+          releaseDate: s.release_date ?? undefined,
+          setValueUsd: s.set_value_usd ?? undefined,
+        }));
+      results[game.slug] = await ctx.runMutation(internal.syncDb.upsertSets, {
+        gameId: game._id as never,
+        sets,
+      });
+    }
+    return results;
   },
 });

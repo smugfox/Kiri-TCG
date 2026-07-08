@@ -12,4 +12,12 @@ crons.daily(
   {},
 );
 
+// Per-user portfolio totals, after prices are fresh.
+crons.daily(
+  "portfolio snapshots",
+  { hourUTC: 7, minuteUTC: 0 },
+  internal.portfolio.snapshotAll,
+  {},
+);
+
 export default crons;

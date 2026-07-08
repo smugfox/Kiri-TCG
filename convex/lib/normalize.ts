@@ -133,3 +133,41 @@ export function cardSlug(name: string, setName: string, number?: string | null):
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "");
 }
+
+/** Languages JustTCG appends to printing labels ("Normal - Japanese"). */
+const LANGUAGES = [
+  "English",
+  "Japanese",
+  "Korean",
+  "Chinese (S)",
+  "Chinese (T)",
+  "German",
+  "French",
+  "Italian",
+  "Spanish",
+  "Portuguese",
+  "Russian",
+] as const;
+
+const LANGUAGE_SET = new Set<string>(LANGUAGES);
+
+/**
+ * Split an upstream printing label into its base printing and language.
+ * "Normal - Japanese" → { printing: "Normal", language: "Japanese" };
+ * "Foil" → { printing: "Foil", language: "English" }. Only a suffix that is
+ * a known language splits, so exotic printings with hyphens stay intact.
+ */
+export function splitPrinting(raw: string | undefined | null): {
+  printing: string;
+  language: string;
+} {
+  const label = (raw ?? "Normal").trim();
+  const at = label.lastIndexOf(" - ");
+  if (at > 0) {
+    const suffix = label.slice(at + 3).trim();
+    if (LANGUAGE_SET.has(suffix)) {
+      return { printing: label.slice(0, at).trim(), language: suffix };
+    }
+  }
+  return { printing: label, language: "English" };
+}

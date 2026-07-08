@@ -19,6 +19,7 @@ export default defineSchema({
     emailAlertsEnabled: v.optional(v.boolean()),
     polarCustomerId: v.optional(v.string()),
     polarSubscriptionId: v.optional(v.string()),
+    onboardingDismissed: v.optional(v.boolean()),
   })
     .index("email", ["email"])
     .index("byPolarCustomer", ["polarCustomerId"]),
@@ -28,6 +29,20 @@ export default defineSchema({
     name: v.string(),
     justTcgId: v.string(),
   }).index("slug", ["slug"]),
+
+  // sets: the per-game set catalog, seeded from JustTCG /sets (a handful of
+  // requests, one time) so facets and set pages can show sets we haven't
+  // cached cards from yet.
+  sets: defineTable({
+    gameId: v.id("games"),
+    justTcgSetId: v.string(),
+    name: v.string(),
+    cardsCount: v.optional(v.number()),
+    releaseDate: v.optional(v.string()),
+    setValueUsd: v.optional(v.number()),
+  })
+    .index("byGame", ["gameId"])
+    .index("byJustTcgId", ["justTcgSetId"]),
 
   // cards: one row per printed card (per set/number); catalog rows are append-only.
   cards: defineTable({
@@ -53,6 +68,7 @@ export default defineSchema({
   })
     .index("byJustTcgId", ["justTcgCardId"])
     .index("byGameSlug", ["gameId", "slug"])
+    .index("byGameSet", ["gameId", "setName"])
     .index("byLastViewed", ["lastViewedAt"])
     .searchIndex("search", { searchField: "searchText", filterFields: ["gameId"] }),
 
@@ -61,7 +77,8 @@ export default defineSchema({
     cardId: v.id("cards"),
     justTcgVariantId: v.string(),
     condition: v.string(),
-    printing: v.string(),
+    printing: v.string(), // base printing: Normal, Foil, 1st Edition, ...
+    language: v.optional(v.string()), // "English" default; "Japanese", ...
     currentPrice: v.optional(v.number()),
     change7d: v.optional(v.number()),
     change30d: v.optional(v.number()),
@@ -78,6 +95,26 @@ export default defineSchema({
     price: v.number(),
     day: v.string(),
   }).index("byVariantDay", ["variantId", "day"]),
+
+  // holdings: a user's position in a variant.
+  holdings: defineTable({
+    userId: v.id("users"),
+    variantId: v.id("variants"),
+    quantity: v.number(), // 1-999
+    costBasisPerCard: v.optional(v.number()), // USD, what they paid each
+    acquiredAt: v.optional(v.number()),
+  })
+    .index("byUser", ["userId"])
+    .index("byUserVariant", ["userId", "variantId"])
+    .index("byVariant", ["variantId"]), // refresh prioritization
+
+  // portfolioSnapshots: nightly per-user total for the portfolio chart.
+  portfolioSnapshots: defineTable({
+    userId: v.id("users"),
+    totalValue: v.number(),
+    costBasis: v.number(),
+    day: v.string(),
+  }).index("byUserDay", ["userId", "day"]),
 
   // JustTCG request budget bookkeeping: one row per UTC day.
   syncState: defineTable({

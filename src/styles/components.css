@@ -364,7 +364,8 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .ctile .qadd { position: absolute; right: 8px; bottom: 8px; width: 32px; height: 32px; border-radius: var(--rounded-full); border: none; background: var(--color-primary); color: var(--color-on-primary); font-size: 16px; line-height: 1; cursor: pointer; opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s; }
 .ctile:hover .qadd, .ctile.is-hover .qadd { opacity: 1; transform: none; }
 .ctile .tnm { font: 500 14px/1.35 var(--font-body); margin-bottom: 2px; }
-.ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; }
+.ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; min-width: 0; }
+.ctile .tst .badge-dot { flex: none; }
 .ctile .tpr { display: flex; align-items: center; justify-content: space-between; font: 500 14px/1.4 var(--font-body); font-variant-numeric: tabular-nums; }
 
 /* ============ bulk / filter / sort / tag / comparison ============ */
@@ -374,7 +375,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .bulkbar button { background: none; border: none; color: var(--color-on-primary); font: var(--type-body-sm); font-family: var(--font-body); cursor: pointer; padding: 6px 10px; border-radius: var(--rounded-full); }
 .bulkbar button:hover { background: color-mix(in srgb, var(--color-on-primary) 12%, transparent); }
 .bulkbar button.bdanger { color: color-mix(in srgb, var(--color-error) 55%, var(--color-on-primary)); }
-.fpanel { width: 260px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-2) var(--space-4) var(--space-3); }
+.fpanel { width: 280px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-2) var(--space-4) var(--space-3); }
 .fpanel .fph { display: flex; justify-content: space-between; align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
 .fpanel .fph .t { font: 500 14px/1.4 var(--font-body); }
 .fpanel .fph a { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); text-decoration: none; }
@@ -383,7 +384,14 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .fgroup .gh { display: flex; justify-content: space-between; align-items: center; font: 500 13px/1.4 var(--font-body); cursor: pointer; }
 .fgroup .frow { display: flex; align-items: center; gap: 10px; margin-top: var(--space-2); font: var(--type-body-sm); cursor: pointer; }
 .fgroup .frow .n { margin-left: auto; color: var(--color-on-surface-muted); font: var(--type-caption); font-variant-numeric: tabular-nums; }
+.fgroup .frow .ck { flex: 1; min-width: 0; }
+.fgroup .frow .fname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fgroup .frow .n { flex: none; }
 .fgroup .fbadges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: var(--space-2); }
+.fpanel .fmini { height: 32px; width: 100%; font: var(--type-body-sm); font-family: var(--font-body); background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-xs); padding: 6px 10px; margin-top: var(--space-2); }
+.fpanel .fmini::placeholder { color: var(--color-on-surface-muted); }
+.fpanel .fscroll { max-height: 240px; overflow-y: auto; margin-top: var(--space-1); padding-right: var(--space-2); scrollbar-gutter: stable; }
+.fpanel .fhint { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-top: var(--space-2); display: block; }
 .sortctl { display: inline-flex; align-items: stretch; border: 1px solid var(--color-border); border-radius: var(--rounded-sm); overflow: hidden; background: var(--color-surface-raised); height: 36px; }
 .sortctl .ssel { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; font: var(--type-body-sm); cursor: pointer; }
 .sortctl .ssel .k { color: var(--color-on-surface-muted); }
@@ -417,6 +425,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 /* Native select inside the fselect shell */
 .fselect { position: relative; }
 .fselect select { appearance: none; background: transparent; border: none; font: inherit; color: inherit; padding: 10px 34px 10px 14px; cursor: pointer; width: 100%; }
+.input:focus-visible, .csearch .inp:focus-visible, .fpanel .fmini:focus-visible { border-color: var(--color-accent); outline: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent); outline-offset: 1px; }
 .fselect select:focus-visible { outline: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent); outline-offset: 1px; border-radius: var(--rounded-sm); }
 .fselect .caret-svg { position: absolute; right: 12px; pointer-events: none; }
 .ck input:focus-visible + .ckbox, .ck input:focus-visible + .rdot { outline: 2px solid color-mix(in srgb, var(--color-accent) 30%, transparent); outline-offset: 2px; }
@@ -451,7 +460,22 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .errdemo .et { font: var(--type-h1); letter-spacing: var(--type-h1-ls); margin-bottom: var(--space-3); }
 .errdemo .ed { font: var(--type-body); color: var(--color-on-surface-muted); margin-bottom: var(--space-5); }
 
+/* ============ onboarding checklist ============ */
+.obc { width: 360px; max-width: 100%; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-5); }
+.obc .ot { font: 500 15px/1.4 var(--font-body); margin-bottom: var(--space-3); display: flex; justify-content: space-between; align-items: baseline; }
+.obc .ot .oc { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); font-variant-numeric: tabular-nums; font-weight: 400; }
+.obc .prog { margin-bottom: var(--space-3); width: 100%; }
+.obrow { display: flex; gap: 10px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--color-border); font: var(--type-body-sm); }
+.obrow:last-child { border-bottom: none; }
+.obrow .oc2 { width: 20px; height: 20px; border-radius: 50%; border: 1.5px solid var(--color-border-strong); flex: none; display: flex; align-items: center; justify-content: center; background: var(--color-surface-raised); }
+.obrow .oc2 svg { width: 11px; height: 11px; }
+.obrow.done .oc2 { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.obrow.done .otx { color: var(--color-on-surface-muted); text-decoration: line-through; }
+.obrow.next .otx { font-weight: 500; }
+.obrow .ochev { margin-left: auto; color: var(--color-on-surface-muted); }
+
 /* ============ browse page (app adaptation) ============ */
+.app-drawer .fpanel { width: 100%; }
 .browse-layout { display: flex; gap: var(--space-6); align-items: flex-start; }
 .browse-side { flex: none; position: sticky; top: 88px; }
 .browse-main { flex: 1; min-width: 0; }
@@ -468,3 +492,20 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
   .filters-chip { display: inline-flex; }
 }
 a.btn { text-decoration: none; }
+
+/* ============ portfolio page (app adaptation) ============ */
+.portfolio-page { max-width: 1080px; margin: 0 auto; padding: var(--space-6) var(--space-5); display: grid; gap: var(--space-6); }
+.portfolio-split { display: flex; gap: var(--space-6); align-items: flex-start; flex-wrap: wrap; }
+.portfolio-split > .main { flex: 1 1 560px; min-width: 0; display: grid; gap: var(--space-6); }
+.portfolio-split > .side { flex: 0 1 360px; }
+.holdings-mobile { display: none; }
+@media (max-width: 640px) {
+  .holdings-desktop { display: none; }
+  .holdings-mobile { display: block; }
+}
+@media (max-width: 640px) {
+  .portfolio-split > .main, .portfolio-split > .side { flex: 1 1 100%; }
+  .obc { width: 100%; }
+  .pstats { flex-wrap: wrap; gap: var(--space-4); }
+  .stat-tile { flex: 1 1 150px; width: auto; }
+}
