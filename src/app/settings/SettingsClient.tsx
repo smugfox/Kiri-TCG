@@ -10,16 +10,31 @@ import { useConvexReady } from "@/app/providers";
 import Button from "@/components/ui/Button";
 import Switch from "@/components/ui/Switch";
 import Modal from "@/components/ui/Modal";
-import { Badge } from "@/components/ui/Badge";
 import { useToast } from "@/components/ui/Toast";
 
 const TIER_LABEL = { free: "Collector · Free", trader: "Trader", dealer: "Dealer" } as const;
+
+/** Usage against a free cap, using the design system's progress-bar anatomy. */
+function UsageMeter({ name, used, cap }: { name: string; used: number; cap: number }) {
+  return (
+    <div className="prog" style={{ flex: 1, minWidth: 150, width: "auto" }}>
+      <div className="ph">
+        <span style={{ color: "var(--color-on-surface-muted)" }}>{name}</span>
+        <span className="r">{used} / {cap}</span>
+      </div>
+      <div className="track" role="progressbar" aria-valuenow={used} aria-valuemin={0} aria-valuemax={cap} aria-label={`${name}: ${used} of ${cap} used`}>
+        <div className="fill" style={{ width: `${Math.min(100, (used / cap) * 100)}%`, minWidth: used > 0 ? 6 : 0 }} />
+      </div>
+    </div>
+  );
+}
 
 export default function SettingsClient() {
   const ready = useConvexReady();
   const toast = useToast();
   const { signOut } = useAuthActions();
   const viewer = useQuery(api.users.viewer, ready ? {} : "skip");
+  const usage = useQuery(api.users.usage, ready ? {} : "skip");
   const updateProfile = useMutation(api.users.updateProfile);
   const setEmailAlerts = useMutation(api.users.setEmailAlerts);
   const createPortalSession = useAction(api.billing.createPortalSession);
@@ -128,16 +143,24 @@ export default function SettingsClient() {
           <div className="sd2">Plan, invoices, and cancellation live in the customer portal.</div>
         </div>
         <div className="scard">
-          <div style={{ display: "flex", alignItems: "center", gap: "var(--space-3)", flexWrap: "wrap" }}>
-            <Badge>{TIER_LABEL[viewer.tier as keyof typeof TIER_LABEL] ?? viewer.tier}</Badge>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "var(--space-4)", flexWrap: "wrap" }}>
+            <span style={{ font: "500 16px/1.4 var(--font-body)" }}>
+              {TIER_LABEL[viewer.tier as keyof typeof TIER_LABEL] ?? viewer.tier}
+            </span>
             {viewer.tier === "free" ? (
-              <Link href="/pricing" className="btn btn-secondary" style={{ textDecoration: "none" }}>
+              <Link href="/pricing" className="btn btn-secondary" style={{ textDecoration: "none", flex: "none" }}>
                 See plans
               </Link>
             ) : (
               <Button variant="secondary" onClick={openPortal}>Manage subscription</Button>
             )}
           </div>
+          {usage && usage.holdingsCap !== null && usage.alertsCap !== null && (
+            <div style={{ display: "flex", gap: "var(--space-6)", flexWrap: "wrap", marginTop: "var(--space-4)" }}>
+              <UsageMeter name="Portfolio" used={usage.holdingsRows} cap={usage.holdingsCap} />
+              <UsageMeter name="Active alerts" used={usage.activeAlerts} cap={usage.alertsCap} />
+            </div>
+          )}
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import { ConvexError, v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
-import { requireUser } from "./lib/access";
+import { requireUser, FREE_LIMITS } from "./lib/access";
 
 /** The signed-in user, or null. Nav and settings read this. */
 export const viewer = query({
@@ -77,5 +77,29 @@ export const dismissOnboarding = mutation({
   handler: async (ctx) => {
     const { userId } = await requireUser(ctx);
     await ctx.db.patch(userId, { onboardingDismissed: true });
+  },
+});
+
+/** Live usage against the free caps, for the settings billing card. */
+export const usage = query({
+  args: {},
+  handler: async (ctx) => {
+    const { userId, user } = await requireUser(ctx);
+    const holdings = await ctx.db
+      .query("holdings")
+      .withIndex("byUser", (q) => q.eq("userId", userId))
+      .collect();
+    const alerts = await ctx.db
+      .query("alerts")
+      .withIndex("byUser", (q) => q.eq("userId", userId))
+      .collect();
+    const tier = user.tier ?? "free";
+    return {
+      tier,
+      holdingsRows: holdings.length,
+      activeAlerts: alerts.filter((a) => a.active).length,
+      holdingsCap: tier === "free" ? FREE_LIMITS.holdings : null,
+      alertsCap: tier === "free" ? FREE_LIMITS.alerts : null,
+    };
   },
 });
