@@ -63,7 +63,10 @@ export default function CardPageClient({
   if (data === null) notFound();
   if (!data) return null;
   const { card, game, variants } = data;
-  const freshest = Math.max(...variants.map((x) => x.lastUpdatedAt), 0);
+  const freshest = Math.max(
+    ...variants.filter((x) => x.currentPrice !== undefined).map((x) => x.lastUpdatedAt),
+    0,
+  );
 
   return (
     <div className="page" style={{ maxWidth: 1080, margin: "0 auto", padding: "var(--space-6) var(--space-5)" }}>

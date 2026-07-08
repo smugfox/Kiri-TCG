@@ -19,6 +19,7 @@ const CONDITION_ORDER = ["NM", "LP", "MP", "HP", "DMG"];
 const PENDING_KEY = "kiri.pendingAdd";
 
 export type DrawerCard = {
+  _id: Id<"cards">;
   name: string;
   setName: string;
   number?: string;
@@ -35,7 +36,8 @@ export type DrawerVariant = {
 };
 
 type PendingAdd = {
-  variantId: Id<"variants">;
+  variantId?: Id<"variants">;
+  spec?: { cardId: Id<"cards">; condition: string; printing: string; language: string };
   quantity: number;
   costBasisPerCard?: number;
   acquiredAt?: number;
@@ -57,6 +59,7 @@ export function PendingAddReplayer() {
       const pending = JSON.parse(raw) as PendingAdd;
       add({
         variantId: pending.variantId,
+        spec: pending.spec,
         quantity: pending.quantity,
         costBasisPerCard: pending.costBasisPerCard,
         acquiredAt: pending.acquiredAt,
@@ -110,17 +113,15 @@ export default function AddCardDrawer({
     () => variants.filter((x) => variantLanguage(x) === language),
     [variants, language],
   );
-  const conditions = useMemo(
-    () => CONDITION_ORDER.filter((c) => pool.some((x) => x.condition === c)),
-    [pool],
-  );
-  const printings = useMemo(
-    () =>
-      [...new Set(pool.filter((x) => x.condition === condition).map((x) => x.printing))].sort(
-        (a, b) => (a === "Normal" ? -1 : b === "Normal" ? 1 : a.localeCompare(b)),
-      ),
-    [pool, condition],
-  );
+  // The full condition ladder is always offered: a collector's copy exists
+  // even when the market has no listing for it. Printings stay grounded in
+  // what this card is known to have in the chosen language.
+  const conditions = CONDITION_ORDER;
+  const printings = useMemo(() => {
+    const known = [...new Set(pool.map((x) => x.printing))];
+    if (known.length === 0) known.push("Normal");
+    return known.sort((a, b) => (a === "Normal" ? -1 : b === "Normal" ? 1 : a.localeCompare(b)));
+  }, [pool]);
 
   // Reset to smart defaults each time the drawer opens (US-003).
   useEffect(() => {
@@ -140,13 +141,17 @@ export default function AddCardDrawer({
   }, [printings, printing]);
 
   const selected = pool.find((x) => x.condition === condition && x.printing === printing);
+  // No market listing for this exact version: the add still works via spec,
+  // creating an unpriced local variant (excluded from totals, honestly).
+  const unpriced = !selected;
 
   const submit = async () => {
-    if (!selected || !card) return;
+    if (!card) return;
     const costBasisPerCard = pricePaid.trim() ? parseFloat(pricePaid.replace(/[$,]/g, "")) : undefined;
     const acquiredAt = dateAcquired ? new Date(dateAcquired + "T00:00:00Z").getTime() : undefined;
     const payload = {
-      variantId: selected._id,
+      variantId: selected?._id,
+      spec: selected ? undefined : { cardId: card._id, condition, printing, language },
       quantity,
       costBasisPerCard: Number.isFinite(costBasisPerCard) ? costBasisPerCard : undefined,
       acquiredAt,
@@ -180,7 +185,7 @@ export default function AddCardDrawer({
       actions={
         <>
           <Button variant="secondary" onClick={onClose}>Cancel</Button>
-          <Button onClick={submit} loading={saving} disabled={!selected}>
+          <Button onClick={submit} loading={saving}>
             Add {quantity} {quantity === 1 ? "card" : "cards"}
           </Button>
         </>
@@ -286,6 +291,13 @@ export default function AddCardDrawer({
           onChange={(e) => setDateAcquired(e.target.value)}
         />
       </div>
+
+      {unpriced && (
+        <div className="cs-set" style={{ marginTop: "var(--space-2)" }}>
+          No market price for this version yet. It counts in your collection and
+          stays out of your totals until pricing appears.
+        </div>
+      )}
 
       {limitHit && <UpgradePrompt />}
     </Drawer>

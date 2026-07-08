@@ -5,28 +5,76 @@ import { requireUser, requireCapacity } from "./lib/access";
 
 const MAX_QUANTITY = 999;
 
+const CONDITIONS = ["NM", "LP", "MP", "HP", "DMG"];
+
 /**
  * Add a position. Adding a variant you already hold merges: quantities sum
  * and cost basis becomes the weighted average of both lots (US-003).
+ *
+ * A collector's copy may not exist in the market data (nobody is selling an
+ * NM Japanese copy right now). `spec` covers that: it resolves to the real
+ * variant when one exists, otherwise creates a local unpriced placeholder
+ * (justTcgVariantId "local:…"). Placeholders are excluded from totals with
+ * the honest excluded-count, skipped by the nightly refresh, and upgraded
+ * in place if the market variant appears later.
  */
 export const add = mutation({
   args: {
-    variantId: v.id("variants"),
+    variantId: v.optional(v.id("variants")),
+    spec: v.optional(
+      v.object({
+        cardId: v.id("cards"),
+        condition: v.string(),
+        printing: v.string(),
+        language: v.string(),
+      }),
+    ),
     quantity: v.number(),
     costBasisPerCard: v.optional(v.number()),
     acquiredAt: v.optional(v.number()),
   },
-  handler: async (ctx, { variantId, quantity, costBasisPerCard, acquiredAt }) => {
+  handler: async (ctx, { variantId, spec, quantity, costBasisPerCard, acquiredAt }) => {
     const { userId, user } = await requireUser(ctx);
     if (!Number.isInteger(quantity) || quantity < 1 || quantity > MAX_QUANTITY) {
       throw new ConvexError({ code: "BAD_REQUEST", message: `Quantity must be 1-${MAX_QUANTITY}.` });
     }
-    const variant = await ctx.db.get(variantId);
+
+    let variant = variantId ? await ctx.db.get(variantId) : null;
+    if (!variant && spec) {
+      if (!CONDITIONS.includes(spec.condition) || !spec.printing.trim() || !spec.language.trim()) {
+        throw new ConvexError({ code: "BAD_REQUEST", message: "That isn't a version we recognize." });
+      }
+      const card = await ctx.db.get(spec.cardId);
+      if (!card) throw new ConvexError({ code: "NOT_FOUND", message: "That card no longer exists." });
+      const siblings = await ctx.db
+        .query("variants")
+        .withIndex("byCard", (q) => q.eq("cardId", spec.cardId))
+        .collect();
+      variant =
+        siblings.find(
+          (x) =>
+            x.condition === spec.condition &&
+            x.printing === spec.printing &&
+            (x.language ?? "English") === spec.language,
+        ) ?? null;
+      if (!variant) {
+        const placeholderId = await ctx.db.insert("variants", {
+          cardId: spec.cardId,
+          justTcgVariantId: `local:${spec.cardId}:${spec.condition}:${spec.printing}:${spec.language}`,
+          condition: spec.condition,
+          printing: spec.printing,
+          language: spec.language,
+          lastUpdatedAt: Date.now(),
+        });
+        variant = await ctx.db.get(placeholderId);
+      }
+    }
     if (!variant) throw new ConvexError({ code: "NOT_FOUND", message: "That printing no longer exists." });
+    const resolvedVariantId = variant._id;
 
     const existing = await ctx.db
       .query("holdings")
-      .withIndex("byUserVariant", (q) => q.eq("userId", userId).eq("variantId", variantId))
+      .withIndex("byUserVariant", (q) => q.eq("userId", userId).eq("variantId", resolvedVariantId))
       .unique();
 
     if (existing) {
@@ -52,7 +100,7 @@ export const add = mutation({
     await requireCapacity(ctx, "holdings", userId, user);
     const holdingId = await ctx.db.insert("holdings", {
       userId,
-      variantId,
+      variantId: resolvedVariantId,
       quantity,
       costBasisPerCard,
       acquiredAt,

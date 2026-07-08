@@ -125,12 +125,33 @@ export const upsertCardFromApi = internalMutation({
         change90d: variant.change90d,
         lastUpdatedAt: variant.lastUpdated ? variant.lastUpdated * 1000 : now,
       };
-      const existingVariant = await ctx.db
+      let existingVariant = await ctx.db
         .query("variants")
         .withIndex("byJustTcgId", (q) => q.eq("justTcgVariantId", variant.justTcgVariantId))
         .unique();
+      if (!existingVariant) {
+        // A collector may have added this exact version before the market
+        // listed it: upgrade the local placeholder in place so their
+        // holding starts pricing instead of duplicating the variant.
+        const siblings = await ctx.db
+          .query("variants")
+          .withIndex("byCard", (q) => q.eq("cardId", cardId))
+          .collect();
+        existingVariant =
+          siblings.find(
+            (x) =>
+              x.justTcgVariantId.startsWith("local:") &&
+              x.condition === variantFields.condition &&
+              x.printing === variantFields.printing &&
+              (x.language ?? "English") === variantFields.language,
+          ) ?? null;
+      }
       const variantId = existingVariant
-        ? (await ctx.db.patch(existingVariant._id, variantFields), existingVariant._id)
+        ? (await ctx.db.patch(existingVariant._id, {
+            justTcgVariantId: variant.justTcgVariantId,
+            ...variantFields,
+          }),
+          existingVariant._id)
         : await ctx.db.insert("variants", {
             justTcgVariantId: variant.justTcgVariantId,
             ...variantFields,
@@ -170,6 +191,8 @@ export const refreshCandidates = internalQuery({
     const ids: string[] = [];
     const seen = new Set<string>();
     const push = (justTcgVariantId: string) => {
+      // Local placeholders have no upstream counterpart to refresh.
+      if (justTcgVariantId.startsWith("local:")) return;
       if (ids.length < limit && !seen.has(justTcgVariantId)) {
         seen.add(justTcgVariantId);
         ids.push(justTcgVariantId);

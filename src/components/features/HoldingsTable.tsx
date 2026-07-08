@@ -119,7 +119,11 @@ export default function HoldingsTable() {
     () => (rows ?? []).filter((r) => r.card.name.toLowerCase().includes(filter.trim().toLowerCase())),
     [rows, filter],
   );
-  const freshest = Math.max(0, ...(rows ?? []).map((r) => r.lastUpdatedAt));
+  // Freshness speaks for market prices only; local placeholders don't count.
+  const freshest = Math.max(
+    0,
+    ...(rows ?? []).filter((r) => r.currentPrice !== undefined).map((r) => r.lastUpdatedAt),
+  );
   const pageCount = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const header = (key: SortKey, label: string, align?: "right") => {

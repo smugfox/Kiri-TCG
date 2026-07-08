@@ -151,13 +151,13 @@ function QuickAddHost({ card, onClose }: { card: CardTileData | null; onClose: (
     api.cards.getBySlug,
     ready && card ? { gameSlug: card.gameSlug, slug: card.slug } : "skip",
   );
-  if (!card) return null;
+  if (!card || !data) return null;
   return (
     <AddCardDrawer
-      open={data != null}
+      open
       onClose={onClose}
-      card={card}
-      variants={data?.variants ?? []}
+      card={data.card}
+      variants={data.variants}
     />
   );
 }
