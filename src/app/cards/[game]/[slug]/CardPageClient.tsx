@@ -121,7 +121,7 @@ export default function CardPageClient({
               <h2 style={{ font: "var(--type-h4)", letterSpacing: "var(--type-h4-ls)" }}>
                 Prices by condition
               </h2>
-              {languages.length > 1 && (
+              {(languages.length > 1 || activeLanguage !== "English") && (
                 <Select
                   aria-label="Language"
                   value={activeLanguage}

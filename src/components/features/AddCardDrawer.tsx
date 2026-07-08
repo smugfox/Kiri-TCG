@@ -213,7 +213,7 @@ export default function AddCardDrawer({
         </div>
       </div>
 
-      {languages.length > 1 && (
+      {(languages.length > 1 || language !== "English") && (
         <div className="fld">
           <div className="lb">Language</div>
           <Select
