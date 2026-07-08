@@ -170,11 +170,13 @@ export const evaluate = internalMutation({
       if (!card) continue;
       await ctx.db.patch(alert._id, { lastFiredAt: Date.now(), lastFiredPrice: price });
       const dollars = (n: number) => `$${n.toFixed(2)}`;
+      // Title and body render as separate lines in the panel; the body
+      // never repeats the name.
       await ctx.db.insert("notifications", {
         userId: alert.userId,
         kind: "alert",
         title: card.name,
-        body: `${card.name} ${alert.direction === "above" ? "passed" : "fell below"} your ${dollars(alert.threshold)} alert · now ${dollars(price)}`,
+        body: `${alert.direction === "above" ? "Passed" : "Fell below"} your ${dollars(alert.threshold)} alert · now ${dollars(price)}`,
         cardId: card._id,
         read: false,
       });

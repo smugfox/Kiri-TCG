@@ -98,10 +98,10 @@ export default function NotificationsPanel() {
               >
                 {n.kind === "alert" ? "▲" : "ℹ"}
               </span>
-              <div>
-                <div className="nt">
-                  <b>{n.title}</b>
-                  {n.body.startsWith(n.title) ? n.body.slice(n.title.length) : ` ${n.body}`}
+              <div style={{ minWidth: 0 }}>
+                <div className="nt"><b>{n.title}</b></div>
+                <div className="nt" style={{ color: "var(--color-on-surface-muted)" }}>
+                  {n.body.startsWith(n.title) ? n.body.slice(n.title.length).replace(/^ /, "") : n.body}
                 </div>
                 <div className="ntime">{relativeTime(n.createdAt)}</div>
               </div>

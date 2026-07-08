@@ -207,7 +207,7 @@
   }
 
 /* ============ feedback & overlays ============ */
-  .alert { --sem: var(--color-info); background: color-mix(in srgb, var(--sem) 12%, var(--color-surface)); border: 1px solid color-mix(in srgb, var(--sem) 35%, transparent); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); max-width: 420px; }
+  .alert { --sem: var(--color-info); background: color-mix(in srgb, var(--sem) 12%, var(--color-surface)); border: 1px solid color-mix(in srgb, var(--sem) 35%, transparent); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); }
   .alert .ic { color: var(--sem); margin-right: 4px; }
   .toast { background: var(--color-primary); color: var(--color-on-primary); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); display: inline-flex; box-shadow: var(--shadow-float); }
   .tip-wrap { position: relative; display: inline-block; margin-top: var(--space-6); }

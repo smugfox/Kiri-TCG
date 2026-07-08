@@ -434,7 +434,7 @@
   .alloc .v { font-weight: 500; color: var(--color-on-surface); font-variant-numeric: tabular-nums; }
 
   /* ============ feedback & overlays ============ */
-  .alert { --sem: var(--color-info); background: color-mix(in srgb, var(--sem) 12%, var(--color-surface)); border: 1px solid color-mix(in srgb, var(--sem) 35%, transparent); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); max-width: 420px; }
+  .alert { --sem: var(--color-info); background: color-mix(in srgb, var(--sem) 12%, var(--color-surface)); border: 1px solid color-mix(in srgb, var(--sem) 35%, transparent); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); }
   .alert .ic { color: var(--sem); margin-right: 4px; }
   .toast { background: var(--color-primary); color: var(--color-on-primary); border-radius: var(--rounded-sm); padding: 12px 16px; font: var(--type-body-sm); display: inline-flex; box-shadow: var(--shadow-float); }
   .tip-wrap { position: relative; display: inline-block; margin-top: var(--space-6); }
@@ -1567,7 +1567,7 @@
     <div class="nh">Notifications <a href="#navigation">Mark all read</a></div>
     <div class="nitem unread">
       <span class="nico" style="background:color-mix(in srgb, var(--color-trend-up) 14%, var(--color-surface));color:var(--color-trend-up)">▲</span>
-      <div><div class="nt"><b>Kiri, Mist Courser</b> passed your $50.00 alert · now $52.40</div><div class="ntime">12 minutes ago</div></div>
+      <div><div class="nt"><b>Kiri, Mist Courser</b></div><div class="nt" style="color:var(--color-on-surface-muted)">Passed your $50.00 alert · now $52.40</div><div class="ntime">12 minutes ago</div></div>
     </div>
     <div class="nitem unread">
       <span class="nico" style="background:color-mix(in srgb, var(--color-info) 12%, var(--color-surface));color:var(--color-info)">ℹ</span>
@@ -1575,7 +1575,7 @@
     </div>
     <div class="nitem">
       <span class="nico" style="background:color-mix(in srgb, var(--color-trend-down) 12%, var(--color-surface));color:var(--color-trend-down)">▼</span>
-      <div><div class="nt"><b>Paper Crane Scout</b> fell 8% this week</div><div class="ntime">Yesterday</div></div>
+      <div><div class="nt"><b>Paper Crane Scout</b></div><div class="nt" style="color:var(--color-on-surface-muted)">Fell 8% this week</div><div class="ntime">Yesterday</div></div>
     </div>
     <div class="nfoot"><a href="#navigation">View all notifications</a></div>
   </div>
@@ -2131,10 +2131,10 @@
 
   <h3 class="group">Alerts &amp; toast</h3>
   <div class="comp-row" style="flex-direction:column">
-    <div class="alert" style="--sem:var(--color-info)"><span class="ic">ℹ</span> New set “Origins II” previews begin next week.</div>
-    <div class="alert" style="--sem:var(--color-success)"><span class="ic">✓</span> Deck saved to your collection.</div>
-    <div class="alert" style="--sem:var(--color-warning)"><span class="ic">⚠</span> This deck is 2 cards under the 60-card minimum.</div>
-    <div class="alert" style="--sem:var(--color-error)"><span class="ic">✗</span> Card could not be added: collection limit reached.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-info)"><span class="ic">ℹ</span> New set “Origins II” previews begin next week.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-success)"><span class="ic">✓</span> Deck saved to your collection.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-warning)"><span class="ic">⚠</span> This deck is 2 cards under the 60-card minimum.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-error)"><span class="ic">✗</span> Card could not be added: collection limit reached.</div>
     <div><span class="toast">Deck exported · View file</span></div>
   </div>
 
