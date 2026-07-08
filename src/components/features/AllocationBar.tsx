@@ -15,7 +15,8 @@ export default function AllocationBar({
 }: {
   allocation: Array<{ gameSlug: string; gameName: string; value: number; percent: number }>;
 }) {
-  if (allocation.length === 0) return null;
+  // One game = one full-width segment = says nothing (design.md rule).
+  if (allocation.length < 2) return null;
   return (
     <div className="alloc" style={{ width: "100%" }}>
       <div className="bar" role="img" aria-label="Portfolio allocation by game">
