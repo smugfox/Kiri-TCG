@@ -29,9 +29,12 @@ JustTCG API for prices (free tier; per-variant priceHistory + 7/30/90d stats) ·
 
 ```
 npm install
-npx convex dev        # terminal 1: local backend (keep running)
-npx next dev -p 3100  # terminal 2: the app
+npm run dev:all       # app + Convex backend in one terminal
 ```
+
+Or separately: `npx convex dev` (terminal 1, local backend) and `npm run dev`
+(terminal 2, the app). Both must be running; without the Convex process,
+pages render but sign-in and all data calls fail with "fetch failed".
 
 `.env.local` is created by `npx convex dev`. Set secrets in the Convex env
 (`npx convex env set KEY value`), never in client code.
