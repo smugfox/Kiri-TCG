@@ -23,18 +23,33 @@ export const ensureDemoData = mutation({
     if (existing) return "already-seeded";
     if (!user.name) await ctx.db.patch(userId, { name: "Demo Collector" });
 
-    // Prefer recently priced variants, one per distinct card.
+    // Build a believable, good-looking collection: prefer cards with real
+    // images, spread across games, in a $3-$1,500 band, one variant per card.
     const recent = await ctx.db
       .query("variants")
       .withIndex("byLastUpdated")
       .order("desc")
-      .take(300);
-    const priced = recent.filter((v) => (v.currentPrice ?? 0) > 1);
-    const seenCards = new Set<string>();
-    const picks: typeof priced = [];
+      .take(400);
+    const priced = recent.filter((v) => (v.currentPrice ?? 0) >= 3 && (v.currentPrice ?? 0) <= 1500);
+    const withCards: Array<{ variant: (typeof priced)[number]; hasImage: boolean; gameId: string }> = [];
     for (const variant of priced) {
+      const card = await ctx.db.get(variant.cardId);
+      if (!card) continue;
+      withCards.push({ variant, hasImage: !!card.imageUrl, gameId: card.gameId });
+    }
+    withCards.sort(
+      (a, b) =>
+        Number(b.hasImage) - Number(a.hasImage) ||
+        (b.variant.currentPrice ?? 0) - (a.variant.currentPrice ?? 0)
+    );
+    const seenCards = new Set<string>();
+    const perGame = new Map<string, number>();
+    const picks: typeof priced = [];
+    for (const { variant, gameId } of withCards) {
       if (seenCards.has(variant.cardId)) continue;
+      if ((perGame.get(gameId) ?? 0) >= 3) continue;
       seenCards.add(variant.cardId);
+      perGame.set(gameId, (perGame.get(gameId) ?? 0) + 1);
       picks.push(variant);
       if (picks.length >= 12) break;
     }
@@ -54,9 +69,9 @@ export const ensureDemoData = mutation({
       });
     }
 
-    // Watchlist: the next five distinct cards.
+    // Watchlist: the next five distinct cards (imaged ones first).
     let watched = 0;
-    for (const variant of priced) {
+    for (const { variant } of withCards) {
       if (seenCards.has(variant.cardId)) continue;
       seenCards.add(variant.cardId);
       await ctx.db.insert("watchlist", { userId, cardId: variant.cardId });
