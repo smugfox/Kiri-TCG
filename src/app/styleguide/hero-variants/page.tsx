@@ -221,16 +221,13 @@ export default function HeroVariants() {
 
         .hv-visual { flex: 1 1 340px; position: relative; min-height: 330px; display: flex; align-items: center; justify-content: center; }
         .hv-fan { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-        .hv-card { position: absolute; width: 128px; height: 179px; border-radius: var(--rounded-sm); box-shadow: 0 10px 24px rgba(50,32,20,.22); transition: transform .15s ease-out; }
+        .hv-card { position: absolute; width: 128px; height: 179px; border-radius: var(--rounded-sm); box-shadow: 0 10px 24px rgba(50,32,20,.22); }
         .hv-back { position: absolute; inset: 0; border-radius: inherit; display: flex; align-items: center; justify-content: center; background: var(--gradient-haku); border: 1px solid rgba(50,32,20,.25); }
         .hv-cardimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; border: 1px solid rgba(50,32,20,.35); }
         .hv-card .hv-gem { width: 22px; height: 22px; background: rgba(50,32,20,.45); transform: rotate(45deg); border-radius: 3px; }
         .hv-card.c1 { transform: translateX(-96px) rotate(-9deg); }
         .hv-card.c2 { transform: translateY(-14px) rotate(-1deg); }
         .hv-card.c3 { transform: translateX(96px) rotate(8deg); }
-        .hv-visual:hover .hv-card.c1 { transform: translateX(-112px) rotate(-12deg); }
-        .hv-visual:hover .hv-card.c2 { transform: translateY(-22px) rotate(-1deg); }
-        .hv-visual:hover .hv-card.c3 { transform: translateX(112px) rotate(11deg); }
 
         .hv-panel { position: relative; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: var(--rounded-md); box-shadow: var(--shadow-float); padding: 20px 24px; width: 260px; transform: translateY(84px); }
         .hv-plabel { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
@@ -274,7 +271,6 @@ export default function HeroVariants() {
           .hv-spark path { animation: none; stroke-dashoffset: 0; }
           .hv-tickrow { animation: none; }
           .hv-dot { animation: none; }
-          .hv-card { transition: none; }
         }
         @media (max-width: 900px) {
           .hv-visual { min-height: 300px; }
