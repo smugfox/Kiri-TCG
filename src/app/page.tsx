@@ -83,7 +83,7 @@ export default function Home() {
             <div className="st">Free until it outgrows the shoebox</div>
             <div className="si">A real portfolio for up to 100 cards, free forever. Trader unlocks the rest.</div>
           </div>
-          <Link className="act" href="/pricing">Compare plans →</Link>
+          <Link className="btn btn-secondary sm" href="/pricing" style={{ textDecoration: "none" }}>Compare plans</Link>
         </div>
         <PlanCards showToggle={false} />
       </section>

@@ -57,7 +57,7 @@ export default function Styleguide() {
         <Button>Add to deck</Button>
         <Button disabled>Add to deck</Button>
         <Button loading>Adding…</Button>
-        <Button variant="secondary">Browse cards →</Button>
+        <Button variant="secondary">Browse cards</Button>
         <Button variant="ghost">View rules</Button>
         <Button variant="destructive">Delete deck</Button>
         <Button variant="inverted">Create your account</Button>
@@ -110,7 +110,7 @@ export default function Styleguide() {
         <Alert kind="warning">This deck is 2 cards under the 60-card minimum.</Alert>
         <Alert kind="error">Card could not be added: collection limit reached.</Alert>
       </div>
-      <Banner kind="warning" action={<a href="#s">Status page →</a>}>Price updates are delayed while our data provider is under maintenance.</Banner>
+      <Banner kind="warning" action={<a href="#s">Status page</a>}>Price updates are delayed while our data provider is under maintenance.</Banner>
       <Row>
         <Button variant="secondary" onClick={() => toast("Deck exported · View file")}>Show toast</Button>
         <Tooltip text="Prices refresh nightly"><Button variant="secondary" size="sm">Hover me</Button></Tooltip>

@@ -585,15 +585,29 @@ a.btn { text-decoration: none; }
   .stat-tile { flex: 1 1 150px; width: auto; }
 }
 
-/* ============ mobile refinements ============ */
-@media (max-width: 640px) {
+/* ============ responsive: tablet ≤1024 ============ */
+/* Below 1024px, fixed-width card components stretch to the container's full
+   width and stack one per row instead of wrapping into orphaned rows. */
+@media (max-width: 1024px) {
   .mhero, .mhero-lite { padding: var(--space-7) 0; }
-  /* feature cards: well hugs its vignette instead of a fixed 200px stage */
-  .fcard { width: 100%; }
-  .fcard .well { height: auto; padding: var(--space-4); }
+  /* feature card goes horizontal: vignette well beside a vertically centered caption */
+  .fcard { width: 100%; display: flex; align-items: stretch; }
+  .fcard .well { width: 44%; flex: none; height: auto; padding: var(--space-5); }
+  .fcard .cap { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .plan, .pos { width: 100%; }
+  .pchart, .pchart.hero { width: 100%; }
+  /* compact stat tiles pair up rather than orphan */
+  .stat-tile { flex: 1 1 40%; width: auto; }
+}
+
+/* ============ responsive: phones ≤640 ============ */
+@media (max-width: 640px) {
+  /* feature cards restack vertically; the well hugs its vignette */
+  .fcard { display: block; }
+  .fcard .well { width: auto; padding: var(--space-4); }
   .fcard .well .mini { max-width: none; }
-  /* plan cards: full-width, tighter internals */
-  .plan { width: 100%; padding: var(--space-5); }
+  /* plan cards: tighter internals */
+  .plan { padding: var(--space-5); }
   .plan ul { margin: var(--space-3) 0 var(--space-4); padding-top: var(--space-3); }
   .footer-demo { padding: var(--space-7) var(--space-5); }
   .ctaband { padding: var(--space-7) var(--space-5); }
