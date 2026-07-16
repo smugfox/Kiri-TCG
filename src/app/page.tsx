@@ -32,8 +32,6 @@ export default function Home() {
         <HeroShowcase />
       </section>
 
-      <MarketTicker bleed />
-
       <section style={{ padding: "var(--space-7) 0" }}>
         <div style={{ display: "flex", gap: "var(--space-4)", flexWrap: "wrap" }}>
           <div className="fcard">
@@ -103,6 +101,8 @@ export default function Home() {
           <Link href="/signin" className="btn btn-inverted">Start tracking free</Link>
         </div>
       </section>
+
+      <MarketTicker bleed aboveFooter />
     </div>
   );
 }

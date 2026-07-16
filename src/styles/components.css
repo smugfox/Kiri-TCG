@@ -649,18 +649,27 @@ a.btn { text-decoration: none; }
 .market-ticker .tick i.down { color: #E09A8C; }
 @keyframes ticker-scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 .ticker-bleed { margin-inline: calc(50% - 50vw); }
+/* docked above the site footer: swallow the footer's top margin so the two
+   brand-950 bands sit flush and read as one dark anchor */
+.market-ticker.above-footer { margin-bottom: calc(-1 * var(--space-9)); border-bottom: none; }
 
 .theme-toggle { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: none; border: none; border-radius: var(--rounded-sm); color: var(--color-on-surface-muted); cursor: pointer; transition: background .15s, color .15s; }
 .theme-toggle:hover { background: var(--color-border); color: var(--color-on-surface); }
 
-@media (max-width: 1024px) { .hero-visual { min-height: 300px; } }
+/* stacked below the copy: top-align the fan and tighten the box so the
+   composition hugs its content instead of floating in dead space */
+@media (max-width: 1024px) {
+  .hero-visual { min-height: 0; height: 300px; }
+  .card-fan { align-items: flex-start; }
+  .pfpanel { transform: translateY(60px); }
+}
 @media (max-width: 640px) {
-  /* compact phone version: smaller fan, tighter panel */
-  .hero-visual { min-height: 240px; margin-top: var(--space-2); }
+  /* compact phone version: smaller fan, tighter panel, shallower overlap */
+  .hero-visual { height: 250px; }
   .card-fan img { width: 100px; height: 140px; }
   .card-fan img.f1 { transform: translateX(-76px) rotate(-9deg); }
   .card-fan img.f3 { transform: translateX(76px) rotate(8deg); }
-  .pfpanel { transform: translateY(58px); padding: 14px 18px; width: min(240px, 84%); }
+  .pfpanel { transform: translateY(52px); padding: 14px 18px; width: min(220px, 84%); }
   .pfpanel .pval { font-size: 24px; }
 }
 @media (prefers-reduced-motion: reduce) {

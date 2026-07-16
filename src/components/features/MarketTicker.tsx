@@ -15,7 +15,7 @@ const TICKS: ReadonlyArray<readonly [string, string, string, boolean]> = [
   ["Charizard VMAX", "$88.10", "-1.2%", false],
 ];
 
-export default function MarketTicker({ bleed = false }: { bleed?: boolean }) {
+export default function MarketTicker({ bleed = false, aboveFooter = false }: { bleed?: boolean; aboveFooter?: boolean }) {
   const row = (key: string) => (
     <div className="trow" key={key} aria-hidden={key === "b"}>
       {TICKS.map(([name, price, delta, up]) => (
@@ -26,7 +26,7 @@ export default function MarketTicker({ bleed = false }: { bleed?: boolean }) {
     </div>
   );
   return (
-    <div className={`market-ticker ${bleed ? "ticker-bleed" : ""}`} role="marquee" aria-label="Card market movers">
+    <div className={`market-ticker ${bleed ? "ticker-bleed" : ""} ${aboveFooter ? "above-footer" : ""}`} role="marquee" aria-label="Card market movers">
       {row("a")}
       {row("b")}
     </div>
