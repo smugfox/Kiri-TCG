@@ -64,7 +64,8 @@ export default function StatTiles({ summary }: { summary: Summary }) {
           <div className="num" style={{ font: "var(--type-h3)", letterSpacing: "var(--type-h3-ls)" }}>
             <Link
               href={`/cards/${summary.topMover.gameSlug}/${summary.topMover.slug}`}
-              style={{ color: "inherit", textDecoration: "none" }}
+              title={summary.topMover.name}
+              style={{ color: "inherit", textDecoration: "none", display: "block", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
             >
               {summary.topMover.name}
             </Link>

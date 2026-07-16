@@ -1,5 +1,6 @@
 import { mutation } from "./_generated/server";
 import { getAuthUserId } from "@convex-dev/auth/server";
+import { utcDay } from "./lib/budget";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -87,6 +88,34 @@ export const ensureDemoData = mutation({
         direction: "above" as const,
         threshold: Math.round(price * 1.15 * 100) / 100,
         active: true,
+      });
+    }
+
+    // Backfill 90 days of portfolio snapshots so the value chart draws
+    // immediately instead of waiting for the nightly cron. A gentle upward
+    // random walk that ends exactly at today's real totals.
+    let totalValue = 0;
+    let costBasis = 0;
+    for (let i = 0; i < picks.length; i++) {
+      const qty = quantities[i] ?? 1;
+      totalValue += (picks[i].currentPrice ?? 5) * qty;
+      costBasis += (picks[i].currentPrice ?? 5) * (0.65 + (i % 5) * 0.08) * qty;
+    }
+    costBasis = Math.round(costBasis * 100) / 100;
+    const days = 90;
+    const values: number[] = [totalValue];
+    for (let i = 1; i <= days; i++) {
+      const prev = values[i - 1];
+      // walking backwards in time: mostly drift down with noise
+      const step = 1 - 0.0022 + (Math.random() - 0.5) * 0.012;
+      values.push(prev * step);
+    }
+    for (let i = days; i >= 0; i--) {
+      await ctx.db.insert("portfolioSnapshots", {
+        userId,
+        totalValue: Math.round(values[i] * 100) / 100,
+        costBasis,
+        day: utcDay(now - i * DAY),
       });
     }
 
