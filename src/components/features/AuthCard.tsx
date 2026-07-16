@@ -1,61 +1,63 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { useMutation } from "convex/react";
+import { api } from "@/../convex/_generated/api";
 import { useConvexReady } from "@/app/providers";
 import Button from "@/components/ui/Button";
-import Input from "@/components/ui/Input";
-import FormField from "@/components/ui/FormField";
 import Alert from "@/components/ui/Alert";
 
+/**
+ * Portfolio-demo auth card: the primary action is an anonymous demo
+ * account pre-seeded with a sample collection (no personal data stored).
+ * Google remains as a real sign-in for the site owner; Apple and magic
+ * links were removed because their providers are not configured.
+ */
 function AuthCardInner({ next }: { next: string }) {
   const { signIn } = useAuthActions();
-  const [email, setEmail] = useState("");
-  const [linkSent, setLinkSent] = useState(false);
+  const router = useRouter();
+  const ensureDemoData = useMutation(api.demo.ensureDemoData);
+  const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function oauth(provider: "google" | "apple") {
+  async function demo() {
+    setError(null);
+    setBusy(true);
+    try {
+      await signIn("anonymous");
+      await ensureDemoData();
+      router.push(next);
+    } catch {
+      setError("The demo could not start. Try again in a moment.");
+      setBusy(false);
+    }
+  }
+
+  async function google() {
     setError(null);
     try {
-      await signIn(provider, { redirectTo: next });
+      await signIn("google", { redirectTo: next });
     } catch {
       setError("Sign-in could not start. Try again in a moment.");
     }
   }
 
-  async function magicLink(e: FormEvent) {
-    e.preventDefault();
-    setError(null);
-    try {
-      await signIn("resend", { email, redirectTo: next });
-      setLinkSent(true);
-    } catch {
-      setError("The sign-in link could not be sent. Check the address and try again.");
-    }
-  }
-
   return (
     <div className="auth">
-      <div className="at">Welcome back</div>
+      <div className="at">Explore Kiri</div>
       <div className="oauth">
-        <Button variant="secondary" onClick={() => oauth("google")}>Continue with Google</Button>
-        <Button variant="secondary" onClick={() => oauth("apple")}>Continue with Apple</Button>
+        <Button onClick={demo} loading={busy} disabled={busy}>
+          {busy ? "Setting up your demo…" : "Explore the demo"}
+        </Button>
+        <Button variant="secondary" onClick={google} disabled={busy}>Continue with Google</Button>
       </div>
-      <div className="divider">or</div>
-      {linkSent ? (
-        <Alert kind="success">Sign-in link sent. Check your email; the link works once and expires in 15 minutes.</Alert>
-      ) : (
-        <form onSubmit={magicLink}>
-          <FormField label="Email">
-            <Input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" style={{ width: "100%" }} />
-          </FormField>
-          <Button type="submit" className="full" style={{ width: "100%", justifyContent: "center", marginTop: "var(--space-4)" }}>
-            Send sign-in link
-          </Button>
-        </form>
-      )}
       {error && <div style={{ marginTop: "var(--space-3)" }}><Alert kind="error">{error}</Alert></div>}
-      <div className="afoot">New here? Signing in creates your account.</div>
+      <div className="afoot">
+        The demo is an anonymous account pre-filled with a sample collection; nothing personal is
+        stored. Google sign-in saves only your name and email in this portfolio project&apos;s database.
+      </div>
     </div>
   );
 }
@@ -65,7 +67,7 @@ export default function AuthCard({ next = "/portfolio" }: { next?: string }) {
   if (!ready) {
     return (
       <div className="auth">
-        <div className="at">Welcome back</div>
+        <div className="at">Explore Kiri</div>
         <Alert kind="info">Sign-in activates once the Convex backend is provisioned (run npx convex dev).</Alert>
       </div>
     );
