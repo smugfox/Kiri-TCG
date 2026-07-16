@@ -59,7 +59,7 @@ export default function NotificationsPanel() {
           className="npanel"
           role="dialog"
           aria-label="Notifications"
-          style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", zIndex: 40 }}
+          style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", zIndex: 200 }}
         >
           <div className="nh">
             Notifications

@@ -56,7 +56,7 @@ export default function Kebab({ items, label = "Row actions" }: { items: KebabIt
         ⋮
       </button>
       {open && pos && (
-        <div className="kmenu" role="menu" style={{ position: "fixed", top: pos.top, left: pos.left, zIndex: 30 }}>
+        <div className="kmenu" role="menu" style={{ position: "fixed", top: pos.top, left: pos.left, zIndex: 200 }}>
           {items.map((item, i) => (
             <a
               key={i}

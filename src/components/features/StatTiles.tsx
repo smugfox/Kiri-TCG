@@ -74,7 +74,7 @@ export default function StatTiles({ summary }: { summary: Summary }) {
             <span className={`pdelta ${summary.topMover.change7d >= 0 ? "up" : "down"}`} style={{ whiteSpace: "nowrap" }}>
               {signedPercent(summary.topMover.change7d).slice(1)} · 7d
             </span>
-            <Sparkline points={summary.topMover.sparkline} width={64} height={22} />
+            <Sparkline points={summary.topMover.sparkline} width={90} height={28} />
           </div>
         </div>
       )}

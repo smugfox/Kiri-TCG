@@ -10,7 +10,7 @@ import "@/styles/components.css";
 
 const newsreader = Newsreader({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
   variable: "--font-newsreader",
 });
