@@ -1,5 +1,7 @@
 import Link from "next/link";
 import PlanCards from "@/components/features/PlanCards";
+import HeroShowcase from "@/components/features/HeroShowcase";
+import MarketTicker from "@/components/features/MarketTicker";
 import AuthedRedirect from "./AuthedRedirect";
 
 export const metadata = {
@@ -13,18 +15,24 @@ export default function Home() {
     <div className="page" style={{ maxWidth: 1080, margin: "0 auto", padding: "0 var(--space-5)" }}>
       <AuthedRedirect />
 
-      <section className="mhero">
-        <span className="chip">The stock app for your card collection</span>
-        <h1 className="mtitle">Know what your collection is worth.</h1>
-        <p className="msub">
-          Track prices across Magic, Pokémon, Yu-Gi-Oh, and Sorcery. Add cards in
-          seconds, follow every swing, and trade with confidence.
-        </p>
-        <div className="mcta">
-          <Link href="/signin" className="btn btn-primary">Start tracking free</Link>
-          <Link href="/cards" className="btn btn-secondary">Browse card prices</Link>
+      <section className="mhero hero-flex">
+        <div className="hero-copy">
+          <span className="chip">The stock app for your card collection</span>
+          <h1 className="mtitle">Know what your collection is <em>worth.</em></h1>
+          <p className="msub">
+            Track prices across Magic, Pokémon, Yu-Gi-Oh, and Sorcery. Add cards in
+            seconds, follow every swing, and trade with confidence.
+          </p>
+          <div className="mcta">
+            <Link href="/signin" className="btn btn-primary">Start tracking free</Link>
+            <Link href="/cards" className="btn btn-secondary">Browse card prices</Link>
+          </div>
+          <div className="hero-fresh"><span className="dot" /> 23,412 prices refreshed last night</div>
         </div>
+        <HeroShowcase />
       </section>
+
+      <MarketTicker bleed />
 
       <section style={{ padding: "var(--space-7) 0" }}>
         <div style={{ display: "flex", gap: "var(--space-4)", flexWrap: "wrap" }}>

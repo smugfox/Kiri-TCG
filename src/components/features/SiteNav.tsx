@@ -11,6 +11,7 @@ import UserMenu from "./UserMenu";
 import NotificationsPanel from "./NotificationsPanel";
 import CardSearch from "./CardSearch";
 import BrandLockup from "./BrandLockup";
+import ThemeToggle from "./ThemeToggle";
 
 const LINKS = [
   { href: "/cards", label: "Cards" },
@@ -102,6 +103,7 @@ export default function SiteNav() {
           </button>
         </span>
         <span className="nav-actions">
+          <ThemeToggle />
           {ready ? <AuthedActions /> : (
             <>
               <Link href="/signin">Login</Link>
@@ -117,6 +119,7 @@ export default function SiteNav() {
         <div className="mobile-sheet" role="dialog" aria-modal="true" aria-label="Menu">
           <div className="mnav">
             <span className="brand"><BrandLockup /></span>
+            <ThemeToggle />
             <button className="mclose" aria-label="Close menu" onClick={() => setSheetOpen(false)}>✕</button>
           </div>
           <div className="msheet">

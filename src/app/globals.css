@@ -121,6 +121,8 @@ body {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
+  /* full-bleed strips (market-ticker) use 50vw margins; never scroll sideways */
+  overflow-x: clip;
 }
 body > main { flex: 1 0 auto; }
 a { color: inherit; }

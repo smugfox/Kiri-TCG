@@ -35,8 +35,14 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <AuthShell>
-      <html lang="en" data-theme="light" className={`${newsreader.variable} ${geist.variable}`}>
+      <html lang="en" data-theme="light" suppressHydrationWarning className={`${newsreader.variable} ${geist.variable}`}>
         <body>
+          <script
+            // apply the persisted theme before first paint so there is no flash
+            dangerouslySetInnerHTML={{
+              __html: `try{if(localStorage.getItem('kiri-theme')==='dark')document.documentElement.dataset.theme='dark'}catch(e){}`,
+            }}
+          />
           <Providers>
             <SiteNav />
             <StaleBanner />

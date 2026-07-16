@@ -24,6 +24,9 @@ import Banner from "@/components/ui/Banner";
 import Modal from "@/components/ui/Modal";
 import Drawer from "@/components/ui/Drawer";
 import { useToast } from "@/components/ui/Toast";
+import HeroShowcase from "@/components/features/HeroShowcase";
+import MarketTicker from "@/components/features/MarketTicker";
+import ThemeToggle from "@/components/features/ThemeToggle";
 
 const Row = ({ children }: { children: React.ReactNode }) => (
   <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "center", margin: "16px 0 40px" }}>{children}</div>
@@ -123,6 +126,13 @@ export default function Styleguide() {
           action={<Button>Add your first card</Button>}
         />
       </Row>
+
+      <H>Hero showcase & market ticker</H>
+      <div style={{ maxWidth: 480, paddingBottom: 96 }}><HeroShowcase /></div>
+      <div style={{ margin: "0 0 40px" }}><MarketTicker /></div>
+
+      <H>Theme toggle</H>
+      <Row><ThemeToggle /></Row>
 
       <H>Overlays</H>
       <Row>
