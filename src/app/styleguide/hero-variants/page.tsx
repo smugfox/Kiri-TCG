@@ -63,35 +63,28 @@ function PortfolioPanel({ dark = false }: { dark?: boolean }) {
 }
 
 /**
- * Real card art, one game per card, resolved from free APIs:
- * MTG: Scryfall (api.scryfall.com/cards/named?exact=Lightning Bolt)
- * Pokémon: Pokémon TCG API (api.pokemontcg.io/v2/cards/base1-4)
- * One Piece: OPTCG API (optcgapi.com /api/sets/OP-01/)
- */
-/**
- * Self-hosted copies (public/cards/) because Bandai referer-blocks hotlinks.
- * Sources: Scryfall /cards/lea/161 (Alpha Bolt, Christopher Rush art),
- * Pokémon TCG API base1-4 hires, Bandai JP card list OP01-003 (every
- * public One Piece image carries Bandai's SAMPLE watermark; JP is faintest).
+ * High-value chase cards, one per tracked game, self-hosted in public/cards/.
+ * Sources: Scryfall /cards/ltr/246 (The One Ring, ~$99), Pokémon TCG API
+ * swsh7-215 hires (Umbreon VMAX alt art, the modern chase), TCGplayer
+ * product 522585 via its search API (Philosopher's Stone Alpha foil, ~$3,900).
  */
 const FACES: Array<{ src: string; name: string }> = [
-  { src: "/cards/lightning-bolt.jpg", name: "Lightning Bolt, Magic: The Gathering" },
-  { src: "/cards/charizard.png", name: "Charizard, Pokémon Base Set" },
-  { src: "/cards/luffy.png", name: "Monkey D. Luffy, One Piece Card Game" },
+  { src: "/cards/the-one-ring.jpg", name: "The One Ring, Magic: The Gathering" },
+  { src: "/cards/umbreon-vmax.png", name: "Umbreon VMAX alternate art, Pokémon Evolving Skies" },
+  { src: "/cards/philosophers-stone.jpg", name: "Philosopher's Stone, Sorcery: Contested Realm Alpha" },
 ];
 
-function CardFan({ dark = false, reveal = false }: { dark?: boolean; reveal?: boolean }) {
+function CardFan({ dark = false, faces = false }: { dark?: boolean; faces?: boolean }) {
   return (
-    <div className={`hv-fan ${dark ? "dark" : ""} ${reveal ? "reveal" : ""}`} aria-hidden={!reveal}>
+    <div className={`hv-fan ${dark ? "dark" : ""}`} aria-hidden={!faces}>
       {(["c1", "c2", "c3"] as const).map((cls, i) => (
         <div className={`hv-card ${cls}`} key={cls}>
-          <div className="hv-flip">
-            <span className="hv-face hv-back"><span className="hv-gem" /></span>
-            {reveal && (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img className="hv-face hv-front" src={FACES[i].src} alt={FACES[i].name} loading="lazy" />
-            )}
-          </div>
+          {faces ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="hv-cardimg" src={FACES[i].src} alt={FACES[i].name} loading="lazy" />
+          ) : (
+            <span className="hv-back"><span className="hv-gem" /></span>
+          )}
         </div>
       ))}
     </div>
@@ -99,14 +92,14 @@ function CardFan({ dark = false, reveal = false }: { dark?: boolean; reveal?: bo
 }
 
 const TICKS = [
-  ["Lightning Bolt", "$52.40", "+4.8%", true],
-  ["Charizard VMAX", "$88.10", "-1.2%", false],
+  ["The One Ring", "$98.65", "+1.6%", true],
+  ["Umbreon VMAX", "$1,318.00", "+2.1%", true],
   ["Blue-Eyes White Dragon", "$34.75", "+2.3%", true],
-  ["Sol Ring", "$18.02", "+1.1%", true],
+  ["Philosopher's Stone", "$3,898.96", "+0.8%", true],
   ["Pikachu ex", "$21.60", "-0.4%", false],
   ["Dark Magician", "$12.95", "+0.9%", true],
-  ["Black Lotus", "$11,240.00", "+0.6%", true],
-  ["Grim Reaper", "$7.85", "+3.2%", true],
+  ["Lightning Bolt", "$52.40", "+4.8%", true],
+  ["Charizard VMAX", "$88.10", "-1.2%", false],
 ] as const;
 
 function Ticker() {
@@ -196,12 +189,12 @@ export default function HeroVariants() {
         </div>
       </section>
 
-      <VariantLabel n="03" name="Ticker tape" note="light hero plus a live market strip; hover the fan to flip real cards from Scryfall, Pokémon TCG API, and OPTCG API" />
+      <VariantLabel n="03" name="Ticker tape" note="light hero plus a live market strip; chase cards from Scryfall, the Pokémon TCG API, and TCGplayer" />
       <section className="hv-canvas">
         <div className="hv-hero">
           <HeroCopy />
           <div className="hv-visual">
-            <CardFan reveal />
+            <CardFan faces />
             <PortfolioPanel />
           </div>
         </div>
@@ -226,17 +219,11 @@ export default function HeroVariants() {
         .hv-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-success); animation: hv-pulse 2.4s ease-out infinite; }
         @keyframes hv-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success) 45%, transparent); } 70% { box-shadow: 0 0 0 7px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 
-        .hv-visual { flex: 1 1 340px; position: relative; min-height: 330px; display: flex; align-items: center; justify-content: center; perspective: 1200px; }
+        .hv-visual { flex: 1 1 340px; position: relative; min-height: 330px; display: flex; align-items: center; justify-content: center; }
         .hv-fan { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-        .hv-card { position: absolute; width: 128px; height: 179px; border-radius: var(--rounded-sm); box-shadow: 0 10px 24px rgba(50,32,20,.22); transition: transform .3s ease-out; }
-        .hv-flip { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .6s ease-out; border-radius: inherit; }
-        .hv-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: inherit; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .hv-back { background: var(--gradient-haku); border: 1px solid rgba(50,32,20,.25); }
-        .hv-front { transform: rotateY(180deg); object-fit: cover; width: 100%; height: 100%; border: 1px solid rgba(50,32,20,.35); }
-        .hv-fan.reveal .c1 .hv-flip { transition-delay: 0s; }
-        .hv-fan.reveal .c2 .hv-flip { transition-delay: .07s; }
-        .hv-fan.reveal .c3 .hv-flip { transition-delay: .14s; }
-        .hv-visual:hover .hv-fan.reveal .hv-flip { transform: rotateY(180deg); }
+        .hv-card { position: absolute; width: 128px; height: 179px; border-radius: var(--rounded-sm); box-shadow: 0 10px 24px rgba(50,32,20,.22); transition: transform .15s ease-out; }
+        .hv-back { position: absolute; inset: 0; border-radius: inherit; display: flex; align-items: center; justify-content: center; background: var(--gradient-haku); border: 1px solid rgba(50,32,20,.25); }
+        .hv-cardimg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; border-radius: inherit; border: 1px solid rgba(50,32,20,.35); }
         .hv-card .hv-gem { width: 22px; height: 22px; background: rgba(50,32,20,.45); transform: rotate(45deg); border-radius: 3px; }
         .hv-card.c1 { transform: translateX(-96px) rotate(-9deg); }
         .hv-card.c2 { transform: translateY(-14px) rotate(-1deg); }
@@ -247,7 +234,7 @@ export default function HeroVariants() {
 
         .hv-panel { position: relative; background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); border-radius: var(--rounded-md); box-shadow: var(--shadow-float); padding: 20px 24px; width: 260px; transform: translateY(84px); }
         .hv-plabel { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
-        .hv-pval { font: 400 30px/1.2 var(--font-heading); letter-spacing: -0.015em; display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; }
+        .hv-pval { font: 400 30px/1.2 var(--font-heading); letter-spacing: -0.015em; display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
         .hv-delta { font: 600 12px/1 var(--font-body); color: var(--color-trend-up); background: color-mix(in srgb, var(--color-trend-up) 12%, var(--color-surface)); border-radius: var(--rounded-xs); padding: 4px 6px; }
         .hv-spark { width: 100%; height: 44px; display: block; }
         .hv-spark path { stroke-dasharray: 1; stroke-dashoffset: 1; animation: hv-draw .6s ease-out .25s forwards; }
@@ -288,7 +275,6 @@ export default function HeroVariants() {
           .hv-tickrow { animation: none; }
           .hv-dot { animation: none; }
           .hv-card { transition: none; }
-          .hv-flip { transition: none; }
         }
         @media (max-width: 900px) {
           .hv-visual { min-height: 300px; }
