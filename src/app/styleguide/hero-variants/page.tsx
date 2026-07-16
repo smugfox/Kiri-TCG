@@ -62,12 +62,38 @@ function PortfolioPanel({ dark = false }: { dark?: boolean }) {
   );
 }
 
-function CardFan({ dark = false }: { dark?: boolean }) {
+/**
+ * Real card art, one game per card, resolved from free APIs:
+ * MTG: Scryfall (api.scryfall.com/cards/named?exact=Lightning Bolt)
+ * Pokémon: Pokémon TCG API (api.pokemontcg.io/v2/cards/base1-4)
+ * One Piece: OPTCG API (optcgapi.com /api/sets/OP-01/)
+ */
+/**
+ * Self-hosted copies (public/cards/) because Bandai referer-blocks hotlinks.
+ * Sources: Scryfall /cards/lea/161 (Alpha Bolt, Christopher Rush art),
+ * Pokémon TCG API base1-4 hires, Bandai JP card list OP01-003 (every
+ * public One Piece image carries Bandai's SAMPLE watermark; JP is faintest).
+ */
+const FACES: Array<{ src: string; name: string }> = [
+  { src: "/cards/lightning-bolt.jpg", name: "Lightning Bolt, Magic: The Gathering" },
+  { src: "/cards/charizard.png", name: "Charizard, Pokémon Base Set" },
+  { src: "/cards/luffy.png", name: "Monkey D. Luffy, One Piece Card Game" },
+];
+
+function CardFan({ dark = false, reveal = false }: { dark?: boolean; reveal?: boolean }) {
   return (
-    <div className={`hv-fan ${dark ? "dark" : ""}`} aria-hidden>
-      <div className="hv-card c1"><span className="hv-gem" /></div>
-      <div className="hv-card c2"><span className="hv-gem" /></div>
-      <div className="hv-card c3"><span className="hv-gem" /></div>
+    <div className={`hv-fan ${dark ? "dark" : ""} ${reveal ? "reveal" : ""}`} aria-hidden={!reveal}>
+      {(["c1", "c2", "c3"] as const).map((cls, i) => (
+        <div className={`hv-card ${cls}`} key={cls}>
+          <div className="hv-flip">
+            <span className="hv-face hv-back"><span className="hv-gem" /></span>
+            {reveal && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className="hv-face hv-front" src={FACES[i].src} alt={FACES[i].name} loading="lazy" />
+            )}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -170,12 +196,12 @@ export default function HeroVariants() {
         </div>
       </section>
 
-      <VariantLabel n="03" name="Ticker tape" note="light hero plus a live market strip, leaning into the stock-app voice" />
+      <VariantLabel n="03" name="Ticker tape" note="light hero plus a live market strip; hover the fan to flip real cards from Scryfall, Pokémon TCG API, and OPTCG API" />
       <section className="hv-canvas">
         <div className="hv-hero">
           <HeroCopy />
           <div className="hv-visual">
-            <CardFan />
+            <CardFan reveal />
             <PortfolioPanel />
           </div>
         </div>
@@ -200,9 +226,17 @@ export default function HeroVariants() {
         .hv-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--color-success); animation: hv-pulse 2.4s ease-out infinite; }
         @keyframes hv-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success) 45%, transparent); } 70% { box-shadow: 0 0 0 7px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
 
-        .hv-visual { flex: 1 1 340px; position: relative; min-height: 330px; display: flex; align-items: center; justify-content: center; }
+        .hv-visual { flex: 1 1 340px; position: relative; min-height: 330px; display: flex; align-items: center; justify-content: center; perspective: 1200px; }
         .hv-fan { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
-        .hv-card { position: absolute; width: 128px; height: 179px; border-radius: var(--rounded-sm); background: var(--gradient-haku); border: 1px solid rgba(50,32,20,.25); box-shadow: 0 10px 24px rgba(50,32,20,.22); display: flex; align-items: center; justify-content: center; transition: transform .3s ease-out; }
+        .hv-card { position: absolute; width: 128px; height: 179px; border-radius: var(--rounded-sm); box-shadow: 0 10px 24px rgba(50,32,20,.22); transition: transform .3s ease-out; }
+        .hv-flip { position: absolute; inset: 0; transform-style: preserve-3d; transition: transform .6s ease-out; border-radius: inherit; }
+        .hv-face { position: absolute; inset: 0; backface-visibility: hidden; border-radius: inherit; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .hv-back { background: var(--gradient-haku); border: 1px solid rgba(50,32,20,.25); }
+        .hv-front { transform: rotateY(180deg); object-fit: cover; width: 100%; height: 100%; border: 1px solid rgba(50,32,20,.35); }
+        .hv-fan.reveal .c1 .hv-flip { transition-delay: 0s; }
+        .hv-fan.reveal .c2 .hv-flip { transition-delay: .07s; }
+        .hv-fan.reveal .c3 .hv-flip { transition-delay: .14s; }
+        .hv-visual:hover .hv-fan.reveal .hv-flip { transform: rotateY(180deg); }
         .hv-card .hv-gem { width: 22px; height: 22px; background: rgba(50,32,20,.45); transform: rotate(45deg); border-radius: 3px; }
         .hv-card.c1 { transform: translateX(-96px) rotate(-9deg); }
         .hv-card.c2 { transform: translateY(-14px) rotate(-1deg); }
@@ -235,7 +269,8 @@ export default function HeroVariants() {
         .hv-panel.dark .hv-plabel, .hv-panel.dark .hv-pfoot { color: rgba(234,231,226,.6); }
         .hv-panel.dark .hv-delta { color: #A3BD90; background: rgba(163,189,144,.14); }
         .hv-panel.dark .hv-pfoot b { color: #A3BD90; }
-        .hv-fan.dark .hv-card { border-color: rgba(197,166,129,.45); box-shadow: 0 12px 28px rgba(0,0,0,.5); }
+        .hv-fan.dark .hv-back { border-color: rgba(197,166,129,.45); }
+        .hv-fan.dark .hv-card { box-shadow: 0 12px 28px rgba(0,0,0,.5); }
 
         /* variant 03: ticker */
         .hv-ticker { display: flex; overflow: hidden; background: var(--color-brand-950); border-top: 1px solid var(--color-border-strong); padding: 10px 0; }
@@ -253,6 +288,7 @@ export default function HeroVariants() {
           .hv-tickrow { animation: none; }
           .hv-dot { animation: none; }
           .hv-card { transition: none; }
+          .hv-flip { transition: none; }
         }
         @media (max-width: 900px) {
           .hv-visual { min-height: 300px; }
