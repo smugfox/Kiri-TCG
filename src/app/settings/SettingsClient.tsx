@@ -6,7 +6,7 @@ import { useAction, useMutation, useQuery } from "convex/react";
 import { useAuthActions } from "@convex-dev/auth/react";
 import { ConvexError } from "convex/values";
 import { api } from "../../../convex/_generated/api";
-import { useConvexReady } from "@/app/providers";
+import { useAuthedReady } from "@/app/providers";
 import Button from "@/components/ui/Button";
 import Switch from "@/components/ui/Switch";
 import Modal from "@/components/ui/Modal";
@@ -30,7 +30,7 @@ function UsageMeter({ name, used, cap }: { name: string; used: number; cap: numb
 }
 
 export default function SettingsClient() {
-  const ready = useConvexReady();
+  const ready = useAuthedReady();
   const toast = useToast();
   const { signOut } = useAuthActions();
   const viewer = useQuery(api.users.viewer, ready ? {} : "skip");

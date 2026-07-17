@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { useAuthedReady } from "@/app/providers";
 import { ChartArea, ChartBaseline, RANGE_LABELS, type ChartRange } from "@/components/charts/PriceChart";
 import { money, signedPercent } from "@/lib/format";
 
@@ -19,7 +20,8 @@ export default function PortfolioHero({
   dayChangePercent: number | null;
 }) {
   const [range, setRange] = useState<ChartRange>("30d");
-  const history = useQuery(api.portfolio.history, { range });
+  const authed = useAuthedReady();
+  const history = useQuery(api.portfolio.history, authed ? { range } : "skip");
   const data = history ?? [];
 
   return (

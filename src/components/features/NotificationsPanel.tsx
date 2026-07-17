@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { Bell } from "lucide-react";
 import { api } from "../../../convex/_generated/api";
+import { useAuthedReady } from "@/app/providers";
 import { relativeTime } from "@/lib/format";
 import { capture, EVENTS } from "@/lib/analytics";
 
@@ -18,10 +19,11 @@ export default function NotificationsPanel() {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLSpanElement>(null);
   const router = useRouter();
-  const unread = useQuery(api.notifications.unreadCount, {}) ?? 0;
+  const authed = useAuthedReady();
+  const unread = useQuery(api.notifications.unreadCount, authed ? {} : "skip") ?? 0;
   const notifications = useQuery(
     api.notifications.list,
-    open ? { paginationOpts: { numItems: 8, cursor: null } } : "skip",
+    authed && open ? { paginationOpts: { numItems: 8, cursor: null } } : "skip",
   );
   const markRead = useMutation(api.notifications.markRead);
 

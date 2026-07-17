@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { useConvexReady } from "@/app/providers";
+import { useAuthedReady } from "@/app/providers";
 import { useToast } from "@/components/ui/Toast";
 import { capture, EVENTS } from "@/lib/analytics";
 import PortfolioHero from "@/components/features/PortfolioHero";
@@ -16,7 +16,7 @@ import CardSearch from "@/components/features/CardSearch";
 import EmptyState from "@/components/ui/EmptyState";
 
 export default function PortfolioClient() {
-  const ready = useConvexReady();
+  const ready = useAuthedReady();
   const summary = useQuery(api.portfolio.summary, ready ? {} : "skip");
   const viewer = useQuery(api.users.viewer, ready ? {} : "skip");
   const toast = useToast();

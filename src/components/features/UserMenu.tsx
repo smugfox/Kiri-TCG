@@ -55,7 +55,18 @@ export default function UserMenu() {
             <Link role="menuitem" href="/portfolio" onClick={() => setOpen(false)}>My portfolio</Link>
             <Link role="menuitem" href="/alerts" onClick={() => setOpen(false)}>Price alerts</Link>
             <Link role="menuitem" href="/settings" onClick={() => setOpen(false)}>Settings</Link>
-            <a role="menuitem" className="danger" style={{ cursor: "pointer" }} onClick={() => { setOpen(false); void signOut(); }}>Sign out</a>
+            <a
+              role="menuitem"
+              className="danger"
+              style={{ cursor: "pointer" }}
+              onClick={async () => {
+                setOpen(false);
+                // full-page navigation: clears every live subscription so no
+                // authed query is left to re-run (and throw) without a session
+                await signOut().catch(() => {});
+                window.location.assign("/");
+              }}
+            >Sign out</a>
           </div>
         </div>
       )}

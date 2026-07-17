@@ -30,6 +30,18 @@ function Analytics() {
 const ConvexReadyContext = createContext(false);
 export const useConvexReady = () => useContext(ConvexReadyContext);
 
+/**
+ * True only while a signed-in session exists. Queries behind requireUser must
+ * gate on this (not just useConvexReady): on sign-out a still-mounted page's
+ * subscriptions re-run unauthenticated and the server's UNAUTHORIZED throw
+ * would land in render as the 500 error page.
+ */
+export const useAuthedReady = () => {
+  const ready = useConvexReady();
+  const { isAuthenticated } = useConvexAuth();
+  return ready && isAuthenticated;
+};
+
 export default function Providers({ children }: { children: ReactNode }) {
   const url = process.env.NEXT_PUBLIC_CONVEX_URL;
   const client = useMemo(() => (url ? new ConvexReactClient(url) : null), [url]);
