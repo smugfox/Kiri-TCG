@@ -403,20 +403,27 @@ const SORCERY_FALLBACK: Array<{ name: string; rarity: string; foil: boolean }> =
   { name: "Browse", rarity: "Unique", foil: true },
 ];
 
-function sorceryDemoCard(name: string, rarity: string, hasFoil: boolean): DemoCard {
+function sorceryDemoCard(name: string, rarity: string, hasFoil: boolean, imageSlug?: string): DemoCard {
   const id = `demo-sorcery-alpha-${idToken(name)}`;
   const band = SORCERY_PRICE_BANDS[rarity] ?? SORCERY_PRICE_BANDS.Ordinary;
   const rand = mulberry32(hashSeed(`price:${id}`));
   const price = round2(band[0] + rand() * (band[1] - band[0]));
   const variants = [demoVariant(`${id}-normal`, "Normal", price)];
   if (hasFoil) variants.push(demoVariant(`${id}-foil`, "Foil", round2(price * (2 + rand()))));
+  // Card art lives on Curiosa's CDN (the official deck builder), addressed by
+  // the API's variant slug: https://d27a44hjr9gen3.cloudfront.net/cards/<slug>.png
+  const imageUrl = imageSlug
+    ? `https://d27a44hjr9gen3.cloudfront.net/cards/${imageSlug}.png`
+    : name === "Philosopher's Stone"
+      ? PHILOSOPHERS_STONE_IMAGE
+      : undefined;
   return {
     justTcgCardId: id,
     name,
     setName: "Alpha",
     // The API's variant slug prefix is not a collector number; omit number.
     rarity,
-    imageUrl: name === "Philosopher's Stone" ? PHILOSOPHERS_STONE_IMAGE : undefined,
+    imageUrl,
     variants,
   };
 }
@@ -446,8 +453,10 @@ async function fetchSorcery(): Promise<DemoCard[]> {
     const pinned = rarity === "Unique" ? bucket.filter((c) => c.name === "Philosopher's Stone") : [];
     const rest = bucket.filter((c) => c.name !== "Philosopher's Stone");
     for (const card of [...pinned, ...rest].slice(0, 10)) {
-      const hasFoil = (card.set?.variants ?? []).some((x) => x.finish === "Foil");
-      out.push(sorceryDemoCard(card.name, card.rarity, hasFoil));
+      const variants = card.set?.variants ?? [];
+      const hasFoil = variants.some((x) => x.finish === "Foil");
+      const imageSlug = variants.find((x) => x.finish === "Standard")?.slug ?? variants[0]?.slug;
+      out.push(sorceryDemoCard(card.name, card.rarity, hasFoil, imageSlug));
     }
   }
   return out;
