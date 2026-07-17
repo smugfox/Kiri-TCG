@@ -323,7 +323,8 @@
 
   /* ============ navigation ============ */
   .nav-demo { background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-md); height: 72px; padding: 0 var(--space-6); display: flex; align-items: center; gap: 28px; }
-  .nav-demo .brand { font: 500 20px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-right: var(--space-4); }
+  .nav-demo .brand { display: inline-flex; align-items: center; gap: 3px; font: 600 17px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); margin-right: var(--space-4); }
+  .nav-demo .brand .brand-loupe { width: 26px; height: 26px; flex: none; }
   .nav-demo a { font: 500 16px/1.4 var(--font-body); color: var(--color-on-surface-muted); text-decoration: none; transition: color .15s, border-color .15s; padding-bottom: 4px; border-bottom: 2px solid transparent; }
   .nav-demo a:hover, .nav-demo a.active { color: var(--color-on-surface); }
   .nav-demo a.active { border-bottom-color: var(--color-accent); }
@@ -593,7 +594,8 @@
   /* ============ mobile patterns ============ */
   .phone { width: 375px; max-width: 100%; border: 1px solid var(--color-border-strong); border-radius: 20px; overflow: hidden; background: var(--color-background); }
   .mnav { height: 60px; display: flex; align-items: center; gap: var(--space-3); padding: 0 16px; border-bottom: 1px solid var(--color-border); }
-  .mnav .brand { font: 500 17px/1.3 var(--font-heading); letter-spacing: -0.015em; flex: 1; }
+  .mnav .brand { display: flex; align-items: center; gap: 3px; font: 600 15px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); flex: 1; }
+  .mnav .brand .brand-loupe { width: 23px; height: 23px; flex: none; }
   .burger { width: 44px; height: 44px; display: flex; flex-direction: column; gap: 5px; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; }
   .burger span { width: 18px; height: 2px; background: var(--color-on-surface); }
   .mclose { width: 44px; height: 44px; background: none; border: none; font-size: 18px; color: var(--color-on-surface); cursor: pointer; }
@@ -805,7 +807,19 @@
   .footer-demo { background-color: #2B1C13; background-image: radial-gradient(rgba(245,244,242,.06) 1px, transparent 1.5px); background-size: 22px 22px; border-radius: var(--rounded-lg); padding: var(--space-8) var(--space-7) var(--space-6); color: #EAE7E2; }
   .footer-demo .cols { display: grid; grid-template-columns: 1.6fr 1fr 1.1fr 1fr 1fr; gap: var(--space-6); }
   @media (max-width: 860px) { .footer-demo .cols { grid-template-columns: 1fr 1fr; } }
-  .fbrand .wordmark { font: 500 24px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-bottom: var(--space-3); }
+  .fbrand .wordmark { display: inline-flex; align-items: center; gap: 4px; font: 600 20px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; margin-bottom: var(--space-3); }
+  .fbrand .wordmark .brand-loupe { width: 30px; height: 30px; flex: none; }
+  .brandrow { display: flex; align-items: center; gap: var(--space-7); flex-wrap: wrap; }
+  .brandrow .spec { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start; }
+  .brandrow .spec .k { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); }
+  .lockup-a { display: inline-flex; align-items: center; gap: 4px; font: 600 24px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); }
+  .lockup-a .brand-loupe { width: 36px; height: 36px; flex: none; }
+  .lockup-b { display: inline-flex; align-items: center; gap: 3px; font: 600 17px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); }
+  .lockup-b .brand-loupe { width: 26px; height: 26px; flex: none; }
+  .lockup-c { display: inline-flex; align-items: center; gap: 3px; font: 600 15px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); }
+  .lockup-c .brand-loupe { width: 23px; height: 23px; flex: none; }
+  .darkpanel { background: var(--color-brand-950, #2B1C13); border-radius: var(--rounded-md); padding: var(--space-6); display: inline-flex; }
+  .darkpanel .lockup-a { color: #EAE7E2; }
   .fbrand .tag { font: 400 16px/1.5 var(--font-heading); color: rgba(234,231,226,.8); max-width: 24ch; margin-bottom: var(--space-5); }
   .fsocial { display: flex; gap: var(--space-4); }
   .fsocial svg { width: 20px; height: 20px; color: #EAE7E2; opacity: .9; }
@@ -839,6 +853,7 @@
   <div class="brandline">Kiri DS</div>
   <a href="#all">All components</a>
   <div class="sect">Foundations</div>
+  <a href="#brand">Brand</a>
   <a href="#colors">Colors</a>
   <a href="#typography">Typography</a>
   <a href="#spacing">Spacing</a>
@@ -872,6 +887,415 @@
 </header>
 
 <!-- ================= COLORS ================= -->
+<section id="brand">
+  <h2>Brand</h2>
+  <p class="intro">The Kiri mark: the bronze jeweler's loupe beside the tracked small-caps wordmark ("All-Caps Small-Caps Trailed"). Newsreader SemiBold, uppercase, +0.125em tracking, a 1.5:1 icon-to-text ratio at every size.</p>
+  <h3 class="group">Lockup &middot; master and context sizes, 1.5:1 icon-to-text</h3>
+  <div class="comp-row">
+    <div class="comp-item"><div class="brandrow">
+      <div class="spec"><span class="k">Master &middot; 36/24</span><span class="lockup-a"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span></div>
+      <div class="spec"><span class="k">Nav &middot; 26/17</span><span class="lockup-b"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span></div>
+      <div class="spec"><span class="k">Mobile &middot; 23/15</span><span class="lockup-c"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span></div>
+    </div><span class="lbl">wordmark color is on-surface (theme-aware); the loupe's bronze and Urushi are fixed brand colors</span></div>
+  </div>
+  <h3 class="group">On the dark anchor &middot; footer and cta-band grounds</h3>
+  <div class="comp-row">
+    <div class="comp-item"><div class="darkpanel"><span class="lockup-a"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span></div>
+    <span class="lbl">on brand-950 the wordmark runs paper cream; never recolor the loupe</span></div>
+  </div>
+</section>
 <section id="colors">
   <h2>Colors</h2>
   <p class="intro">Natural materials named in Japanese: Urushi lacquer ink, Haku bronze accents, Suna sand and Kami paper surfaces. Toggle dark mode (top right) to see the inverted roasted-brown set.</p>
@@ -1093,7 +1517,7 @@
     <div class="icell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy</div>
     <div class="icell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>check</div>
     <div class="icell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>chevron-down</div>
-    <div class="icell"><span style="font-size:20px;line-height:1">⬖</span>brand glyph · custom</div>
+    <div class="icell"><span style="font-size:11px;line-height:1.3;text-align:center">see<br>Brand</span>loupe · brand mark</div>
   </div>
 </section>
 
@@ -1454,10 +1878,107 @@
   <h2>Navigation</h2>
   <p class="intro">Header bars, dropdowns, mega menus, page tabs, pagination, and row-action menus.</p>
 
-  <h3 class="group">Navigation · 72px bar, 16px links</h3>
-  <h3 class="group" style="margin-top:0">Authed app nav · active underline + center search well</h3>
+  <h3 class="group">Authed app nav · active underline + center search well</h3>
   <div class="nav-demo" style="margin-bottom:var(--space-6)">
-    <span class="brand">⬖ Kiri</span>
+    <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
     <a href="#navigation">Cards</a><a href="#navigation" class="active">Portfolio</a><a href="#navigation">Watchlist</a><a href="#navigation">Pricing</a>
     <span class="nav-search"><span class="well"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search any card<span class="kbd">⌘K</span></span></span>
     <span class="bellwrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
@@ -1465,7 +1986,105 @@
   </div>
 
   <div class="nav-demo">
-    <span class="brand">⬖ Kiri</span>
+    <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
     <a href="#navigation">Products <svg class="caret-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a><a href="#navigation">Cards</a><a href="#navigation">Decks</a><a href="#navigation">Events</a><a href="#navigation">Pricing</a>
     <span class="spacer"></span>
     <a href="#navigation">EN <svg class="caret-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
@@ -1476,7 +2095,105 @@
   <h3 class="group">Navigation · dropdown open in the header</h3>
   <div class="navdd">
     <div class="nav-demo">
-      <span class="brand">⬖ Kiri</span>
+      <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
       <a href="#navigation" class="active">Products <svg class="caret-svg up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a><a href="#navigation">Cards</a><a href="#navigation">Decks</a><a href="#navigation">Events</a><a href="#navigation">Pricing</a>
       <span class="spacer"></span>
       <a href="#navigation">EN <svg class="caret-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
@@ -1546,7 +2263,105 @@
     <div class="comp-item">
       <div class="phone">
         <div class="mnav">
-          <span class="brand">⬖ Kiri</span>
+          <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
           <span class="bellwrap" style="border:none;background:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ndot">3</span></span>
           <button class="burger"><span></span><span></span><span></span></button>
         </div>
@@ -1556,7 +2371,105 @@
     <div class="comp-item">
       <div class="phone">
         <div class="mnav">
-          <span class="brand">⬖ Kiri</span>
+          <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
           <button class="mclose">✕</button>
         </div>
         <div class="msheet">
@@ -2368,7 +3281,105 @@
   <div class="footer-demo">
     <div class="cols">
       <div class="fbrand">
-        <div class="wordmark">⬖ Kiri</div>
+        <div class="wordmark"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></div>
         <div class="tag">The fastest way to build, track, and trade your collection.</div>
         <div class="fsocial">
           <a href="#footer-comp" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
@@ -2526,6 +3537,7 @@
     'rarity ladder': ['rarity', 'badge-rarity'],
     'panel cards': ['card'],
     'content cards': ['card-featured', 'card-standard', 'card-compact', 'card-action', 'notch'],
+    'lockup': ['loupe lockup', 'wordmark'], 'dark anchor': ['loupe lockup', 'brand-950'],
     'card grid tile': ['card-tile'],
     'navigation': ['nav', 'dropdown-menu'],
     'mobile navigation': ['nav-mobile', 'nav-sheet'],
