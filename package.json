@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:all": "concurrently -n web,convex -c blue,yellow \"next dev\" \"convex dev\"",
-    "build": "npx convex codegen && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
