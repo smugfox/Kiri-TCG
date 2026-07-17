@@ -222,13 +222,12 @@ export default function NewsVariants() {
         /* content cards, ported verbatim from docs/design.html (source of truth) */
         .ccard { position: relative; background: var(--color-surface); border-radius: var(--rounded-lg); cursor: pointer; }
         .ccard .cover { position: relative; overflow: hidden; border-radius: var(--rounded-lg) var(--rounded-lg) 0 0; }
-        .ccard .img { position: absolute; inset: 0; background: repeating-linear-gradient(100deg, rgba(245,244,242,.04) 0 2px, transparent 2px 9px), var(--gradient-haku); transition: transform .6s ease; }
-        .ccard:hover .img { transform: scale(1.045); }
-        .meta-onimg { position: absolute; top: var(--space-4); left: var(--space-4); z-index: 2; font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: #F5F4F2; opacity: .9; text-shadow: 0 1px 4px rgba(43,28,19,.55); }
+        .ccard .img { position: absolute; inset: 0; background: repeating-linear-gradient(100deg, rgba(245,244,242,.04) 0 2px, transparent 2px 9px), var(--gradient-haku); }
+        .meta-onimg { position: absolute; top: var(--space-3); left: var(--space-3); z-index: 2; font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: #F5F4F2; background: rgba(26,18,14,.65); padding: 3px 10px; border-radius: var(--rounded-full); }
         .ccard-featured { width: 100%; height: 400px; }
         .ccard-featured.tall { height: 460px; }
         .ccard-featured .cover { position: absolute; inset: 0; border-radius: var(--rounded-lg); }
-        .ccard-featured .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(50,32,20,0) 30%, rgba(43,28,19,.6) 100%); }
+        .ccard-featured .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,18,14,.18) 0%, rgba(26,18,14,.28) 30%, rgba(26,18,14,.55) 55%, rgba(26,18,14,.93) 100%); }
         .ccard-featured .float-chip { position: absolute; top: var(--space-4); left: var(--space-4); z-index: 2; background: var(--color-surface); }
         .ccard-featured .ov-content { position: absolute; left: 0; bottom: 0; z-index: 1; padding: var(--space-6); max-width: 64%; color: #F5F4F2; }
         .ccard-featured .ov-content .meta { font: var(--type-caption); letter-spacing: var(--type-caption-ls); opacity: .85; margin-bottom: var(--space-3); }
@@ -251,7 +250,7 @@ export default function NewsVariants() {
         .ccard:hover .caction { background: var(--color-surface-raised); border-color: var(--color-border-strong); }
         .ccard:hover .caction .txt { max-width: 110px; opacity: 1; margin-right: 6px; }
         @media (prefers-reduced-motion: reduce) {
-          .ccard .img, .caction, .caction .txt { transition: none; }
+          .caction, .caction .txt { transition: none; }
         }
       `}</style>
     </div>
