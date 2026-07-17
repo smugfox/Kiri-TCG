@@ -127,8 +127,12 @@
   .stabs button { font: var(--type-label); font-family: var(--font-body); letter-spacing: var(--type-label-ls); text-transform: uppercase; padding: 4px 10px; border: none; border-radius: var(--rounded-full); background: transparent; color: var(--color-on-surface-muted); cursor: pointer; }
   .stabs button.active { background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border-strong); padding: 3px 9px; }
   .sbody { padding: var(--space-5); }
+  /* per-story theme override: the preview re-scopes the tokens and paints its own ground */
+  .sbody[data-theme] { background: var(--color-background); color: var(--color-on-surface); transition: background .15s, color .15s; }
+  .sthem { font-size: 13px; line-height: 1; padding: 4px 8px; border: none; border-radius: var(--rounded-full); background: transparent; color: var(--color-on-surface-muted); cursor: pointer; }
+  .sthem:hover { color: var(--color-on-surface); background: var(--color-border); }
   .codepane { position: relative; background: var(--color-surface-raised); }
-  .codepane pre { margin: 0; padding: var(--space-4); overflow: auto; max-height: 460px; font: 11.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .codepane pre { margin: 0; padding: var(--space-4); overflow-y: auto; max-height: 460px; font: 11.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; overflow-wrap: break-word; }
   .codepane .ccopy { position: absolute; top: 8px; right: 8px; font: var(--type-caption); font-family: var(--font-body); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--rounded-xs); padding: 3px 8px; cursor: pointer; color: var(--color-on-surface); z-index: 1; }
   .docspane { padding: var(--space-5); background: var(--color-surface-raised); }
   .docspane .dnote { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-3); }
@@ -2614,6 +2618,11 @@
     ['Preview', 'HTML', 'CSS', 'Docs'].forEach(function(t, ti){
       var b = document.createElement('button'); b.textContent = t; if (!ti) b.className = 'active'; tabs.appendChild(b);
     });
+    // per-story light/dark preview toggle (scopes tokens to this story only)
+    var them = document.createElement('button'); them.className = 'sthem'; them.textContent = '☾';
+    them.setAttribute('aria-label', 'Toggle this preview between light and dark');
+    them.title = 'Preview in the other theme';
+    tabs.appendChild(them);
     bar.appendChild(title); bar.appendChild(tabs);
     var body = document.createElement('div'); body.className = 'sbody';
     content.forEach(function(n){ body.appendChild(n); });
@@ -2623,8 +2632,15 @@
     var storyTitle = h.textContent;
     h.remove();
     var built = false, docsBuilt = false;
+    them.addEventListener('click', function(e){
+      e.stopPropagation();
+      var cur = body.dataset.theme || document.documentElement.dataset.theme || 'light';
+      var next = cur === 'dark' ? 'light' : 'dark';
+      body.dataset.theme = next;
+      them.textContent = next === 'dark' ? '☀' : '☾';
+    });
     tabs.addEventListener('click', function(e){
-      if (e.target.tagName !== 'BUTTON') return;
+      if (e.target.tagName !== 'BUTTON' || e.target === them) return;
       tabs.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b === e.target); });
       var t = e.target.textContent;
       if (!built && (t === 'HTML' || t === 'CSS')) {
