@@ -21,7 +21,7 @@ export default function CardFrame({ imageUrl, name }: { imageUrl?: string; name:
         fontSize: 40,
       }}
     >
-      {!imageUrl && <span aria-hidden>⬖</span>}
+      {!imageUrl && <span aria-hidden style={{ width: 22, height: 22, background: "rgba(50,32,20,.45)", transform: "rotate(45deg)", borderRadius: 3 }} />}
     </div>
   );
 }

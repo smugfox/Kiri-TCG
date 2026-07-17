@@ -41,7 +41,7 @@ export default function UserMenu() {
 
   return (
     <span ref={ref} style={{ position: "relative", display: "inline-flex" }}>
-      <button className="avt s40" aria-label="Account menu" aria-expanded={open} onClick={() => setOpen(!open)} style={{ border: "none", cursor: "pointer", overflow: "hidden" }}>
+      <button className="avt s40" aria-label="Account menu" aria-expanded={open} onClick={() => setOpen(!open)} style={{ cursor: "pointer", overflow: "hidden" }}>
         {viewer?.image ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={viewer.image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "inherit" }} />

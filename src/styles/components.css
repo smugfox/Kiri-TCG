@@ -142,7 +142,10 @@
   .banner .ic { color: var(--sem); flex: none; }
   .banner .bact { font-weight: 500; color: var(--sem); text-decoration: none; white-space: nowrap; }
   .banner .bx { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--color-on-surface-muted); cursor: pointer; font-size: 14px; }
-  .avt { border-radius: var(--rounded-full); background: var(--color-accent-muted); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-body); font-weight: 500; flex: none; }
+  .avt { border-radius: var(--rounded-full); background: var(--color-accent-muted); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-body); font-weight: 500; flex: none; border: 1px solid var(--color-border-strong); }
+  /* interactive avatars (user-menu trigger) lift slightly on hover */
+  button.avt { transition: transform .15s ease-out, box-shadow .15s ease-out; }
+  button.avt:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(50,32,20,.22); }
   .avt.s24 { width: 24px; height: 24px; font-size: 9px; }
   .avt.s32 { width: 32px; height: 32px; font-size: 11px; }
   .avt.s40 { width: 40px; height: 40px; font-size: 13px; }
@@ -538,7 +541,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .errdemo .ed, .error-page .ed { font: var(--type-body); color: var(--color-on-surface-muted); margin-bottom: var(--space-5); }
 
 /* ============ onboarding checklist ============ */
-.obc { width: 360px; max-width: 100%; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-5); }
+.obc { width: min(440px, 100%); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-5); }
 .obc .ot { font: 500 15px/1.4 var(--font-body); margin-bottom: var(--space-3); display: flex; justify-content: space-between; align-items: baseline; }
 .obc .ot .oc { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); font-variant-numeric: tabular-nums; font-weight: 400; }
 .obc .prog { margin-bottom: var(--space-3); width: 100%; }
