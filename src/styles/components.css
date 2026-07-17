@@ -230,7 +230,7 @@
   .skel-row:last-of-type { border-radius: 0 0 var(--rounded-md) var(--rounded-md); }
   .empty { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-lg); padding: var(--space-7); text-align: center; width: 100%; min-height: 320px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .empty > * { max-width: 44ch; }
-  .empty .well { width: 64px; height: 64px; border-radius: var(--rounded-md); background: var(--color-border); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: 26px; color: var(--color-accent); }
+  .empty .well { width: 64px; height: 64px; border-radius: var(--rounded-md); background: var(--color-well); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); font-size: 26px; color: var(--color-accent); }
   .empty .t { font: var(--type-h3); letter-spacing: var(--type-h3-ls); margin-bottom: var(--space-2); }
   .empty .d { font: var(--type-body-sm); color: var(--color-on-surface-muted); margin-bottom: var(--space-5); }
   .modal-demo { background: var(--scrim); border-radius: var(--rounded-md); padding: var(--space-7); display: flex; justify-content: center; }
@@ -507,7 +507,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 
 /* ============ feature cards ============ */
 .fcard { width: 300px; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--rounded-md); overflow: hidden; }
-.fcard .well { background: var(--color-border); height: 200px; padding: var(--space-5); display: flex; align-items: center; justify-content: center; }
+.fcard .well { background: var(--color-well); height: 200px; padding: var(--space-5); display: flex; align-items: center; justify-content: center; }
 .fcard .cap { padding: var(--space-4) var(--space-5) var(--space-5); }
 .fcard .cap .t { font: 500 20px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-bottom: var(--space-1); }
 .fcard .cap .d { font: var(--type-body-sm); color: var(--color-on-surface-muted); }
@@ -515,6 +515,10 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .mini .mrow { font: var(--type-body-sm); padding: 10px 14px; border-top: 1px solid var(--color-border); display: flex; align-items: center; gap: 8px; }
 .mini .mrow:first-child { border-top: none; }
 .mrow.dim { color: var(--color-on-surface-muted); }
+/* dark: the bronze-tinted shadow dies on dark ground and --color-border matches the
+   mini's own surface, so the raised plane needs an edge and its dividers a step up */
+[data-theme="dark"] .mini { border: 1px solid var(--color-border-strong); box-shadow: 0 6px 18px rgba(0,0,0,.4); }
+[data-theme="dark"] .mini .mrow { border-top-color: color-mix(in srgb, var(--color-border-strong) 60%, transparent); }
 
 /* ============ settings ============ */
 .sset { display: grid; grid-template-columns: 220px 1fr; gap: var(--space-6); max-width: 760px; }

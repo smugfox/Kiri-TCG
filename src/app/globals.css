@@ -13,6 +13,7 @@
     --color-on-surface-muted: #66625F;
     --color-border: #EAE3D7;
     --color-border-strong: #DCCBB3;
+    --color-well: #EAE3D7;
     --color-success: #5C7350;
     --color-warning: #A9741B;
     --color-error: #A22727;
@@ -97,6 +98,7 @@
     --color-on-surface-muted: #ABA59E;
     --color-border: #413026;
     --color-border-strong: #694F3E;
+    --color-well: #1A120E;
     --color-success: #A3BD90;
     --color-warning: #D6AC5E;
     --color-error: #E09A8C;
