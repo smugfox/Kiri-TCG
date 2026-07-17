@@ -44,7 +44,6 @@ export default function NewsPage() {
                 <div className="eyebrow" style={{ font: "var(--type-label)", letterSpacing: "var(--type-label-ls)", textTransform: "uppercase", color: "var(--color-on-surface-muted)", marginBottom: "var(--space-2)" }}>{desk.eyebrow}</div>
                 <div style={{ font: "var(--type-h3)", letterSpacing: "var(--type-h3-ls)" }}>{desk.title}</div>
               </div>
-              <Link className="btn btn-secondary sm" href="/news" style={{ textDecoration: "none" }}>View all</Link>
             </div>
             <div className="news-grid4">
               {desk.items.slice(0, 4).map((a) => <CompactCard key={a.slug} a={a} />)}

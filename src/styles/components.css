@@ -709,7 +709,7 @@ a.btn { text-decoration: none; }
 .ncap path { fill: var(--color-background); }
 .nbody { position: relative; background: var(--color-background); padding: 6px 0 0 2px; }
 .nbody::before { content: ""; position: absolute; top: -12px; right: 0; width: 12px; height: 12px; background: radial-gradient(circle at 0 0, rgba(0,0,0,0) 12px, var(--color-background) 12px); }
-.caction { display: inline-flex; align-items: center; height: 40px; padding: 0 13px; background: transparent; border: 1px solid transparent; border-radius: var(--rounded-full); font: var(--type-body-sm); font-family: var(--font-body); color: var(--color-on-surface); }
+.caction { display: inline-flex; align-items: center; height: 40px; padding: 0 13px; background: transparent; border: 1px solid transparent; border-radius: var(--rounded-full); font: var(--type-body-sm); font-family: var(--font-body); color: var(--color-on-surface); transition: background .3s, border-color .3s; }
 .caction .txt { max-width: 0; opacity: 0; overflow: hidden; white-space: nowrap; margin-right: 0; transition: max-width .35s ease, opacity .3s ease, margin .35s ease; }
 .caction .arr { font-size: 16px; line-height: 1; }
 .ccard:hover .caction { background: var(--color-surface-raised); border: 1px solid var(--color-border-strong); }

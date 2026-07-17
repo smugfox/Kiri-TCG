@@ -27,7 +27,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <header
           className="article-hero"
           style={{
-            backgroundImage: `linear-gradient(180deg, rgba(26,18,14,.25) 0%, rgba(26,18,14,.35) 40%, rgba(26,18,14,.94) 100%)${article.cover ? `, url(${article.cover})` : ", var(--gradient-haku)"}`,
+            backgroundImage: `linear-gradient(180deg, rgba(26,18,14,.18) 0%, rgba(26,18,14,.28) 30%, rgba(26,18,14,.55) 55%, rgba(26,18,14,.93) 100%)${article.cover ? `, url(${article.cover})` : ", var(--gradient-haku)"}`,
           }}
         >
           <Link href="/news" className="chip ah-chip" style={{ textDecoration: "none" }}>News · {article.category}</Link>

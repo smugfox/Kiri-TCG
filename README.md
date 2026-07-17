@@ -5,7 +5,7 @@ Design system and product planning for **Kiri**, a TCG portfolio web app: Robinh
 ## What's here
 
 - `docs/design.md` · the design system source of truth: YAML tokens + prose spec ([design.md format](https://github.com/google-labs-code/design.md)). Coding agents build from this.
-- `docs/design.html` · the human-readable mirror: a self-contained, Storybook-style guide (77 stories, Preview / HTML / CSS / Docs tabs, hash-routed pages, light/dark). The two files always change together.
+- `docs/design.html` · the human-readable mirror: a self-contained, Storybook-style guide (83 stories, Preview / HTML / CSS / Docs tabs, hash-routed pages, light/dark). The two files always change together.
 - `memory/` · Claude Code memory files (project decisions, build log, working preferences).
 - `.env.example` · copy to `.env` and add the JustTCG API key (not committed).
 
@@ -38,6 +38,16 @@ pages render but sign-in and all data calls fail with "fetch failed".
 
 `.env.local` is created by `npx convex dev`. Set secrets in the Convex env
 (`npx convex env set KEY value`), never in client code.
+
+## Demo data (no API key needed)
+
+```
+npx convex run demoCatalog:seedAll   # ~200 cards with real art + synthetic history
+npx convex run demoPurge:purgeAll    # remove any old JustTCG-synced rows
+```
+
+The sign-in page's "Explore the demo" creates an anonymous account seeded
+with a sample portfolio from this catalog. See docs/demo-catalog.md.
 
 ## Launch checklist (production)
 

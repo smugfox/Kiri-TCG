@@ -44,3 +44,9 @@ Upstream rarity strings are pre-filtered to labels that
 design system's six-tier ladder without "unknown rarity" warnings. All demo
 variants are Near Mint; printings are `Normal` and, where a real foil price
 exists, `Foil`.
+
+## Undoing an old JustTCG sync
+
+`npx convex run demoPurge:purgeAll` removes every card, variant, set, and
+dependent row that did not come from this demo catalog (anything not keyed
+`demo-*`), in batches. Users are kept; demo accounts re-seed themselves.

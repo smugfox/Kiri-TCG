@@ -1,3 +1,10 @@
+> **Superseded (Jul 17, 2026).** This handoff predates the portfolio-prototype
+> pivot: the app now runs keyless via the demo catalog
+> (`npx convex run demoCatalog:seedAll`, see docs/demo-catalog.md and the
+> README), sign-in is demo-first (anonymous accounts), /news exists, and the
+> project deploys to Vercel + Convex cloud. Treat the seeding and env steps
+> below as historical.
+
 # Handoff · July 8, 2026
 
 Written for picking the build up on the laptop. State of the world, how to
