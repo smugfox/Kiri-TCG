@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useConvexReady } from "@/app/providers";
 import { useToast } from "@/components/ui/Toast";
@@ -23,6 +23,17 @@ export default function PortfolioClient() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const upgradedToastShown = useRef(false);
+  const ensureDemoData = useMutation(api.demo.ensureDemoData);
+  const demoHealFired = useRef(false);
+
+  // Legacy anonymous sessions predate the demo seeder (or caught a partial
+  // run): heal them to the full demo shape the first time they land here.
+  const needsDemoHeal = viewer?.isAnonymous === true && viewer?.demoSeededAt === null;
+  useEffect(() => {
+    if (!needsDemoHeal || demoHealFired.current) return;
+    demoHealFired.current = true;
+    void ensureDemoData().catch(() => {});
+  }, [needsDemoHeal, ensureDemoData]);
 
   // ?upgraded=1 confirms once the webhook has actually landed (tier is
   // reactive), then cleans the param so refreshes stay quiet.
