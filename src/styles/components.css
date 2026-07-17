@@ -78,7 +78,7 @@
   .badge-dot::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--tier); flex: none; }
   .rmap-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; padding: 7px 0; }
   .rmap-row .g { width: 190px; flex: none; font: var(--type-body-sm); font-weight: 500; }
-  .cchip { font: var(--type-caption); letter-spacing: var(--type-caption-ls); border: 1px solid var(--color-border-strong); color: var(--color-on-surface-muted); border-radius: var(--rounded-full); padding: 1px 8px; display: inline-flex; }
+  .cchip { font: var(--type-caption); letter-spacing: var(--type-caption-ls); border: 1px solid var(--color-border-strong); color: var(--color-on-surface-muted); border-radius: var(--rounded-full); padding: 1px 8px; display: inline-flex; white-space: nowrap; }
   .fresh { display: inline-flex; align-items: center; gap: 6px; font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-full); padding: 4px 10px; }
   .fresh svg { width: 12px; height: 12px; }
 
@@ -314,7 +314,7 @@ table.htable th .sort { font-size: 9px; margin-left: 3px; }
 .h-card { display: flex; align-items: center; gap: 10px; }
 .h-thumb { width: 28px; height: 39px; border-radius: 3px; background: var(--gradient-haku); flex: none; }
 .h-nm { font: 500 13px/1.4 var(--font-body); }
-.h-set { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); }
+.h-set { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); display: block; max-width: 30ch; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .pl { font-variant-numeric: tabular-nums; font-weight: 500; }
 .pl.up { color: var(--color-trend-up); }
 .pl.down { color: var(--color-trend-down); }

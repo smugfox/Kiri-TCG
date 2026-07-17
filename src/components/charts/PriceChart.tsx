@@ -99,6 +99,10 @@ export function ChartArea({ data }: { data: PricePoint[] }) {
       },
       timeScale: { borderColor: cssColor("--color-border", "#EAE3D7") },
       rightPriceScale: { borderVisible: false },
+      localization: {
+        // $ with thousands separators; cents only where they matter
+        priceFormatter: (p: number) => (p >= 1000 ? `$${Math.round(p).toLocaleString("en-US")}` : `$${p.toFixed(2)}`),
+      },
       handleScroll: false,
       handleScale: false,
     });
@@ -109,6 +113,9 @@ export function ChartArea({ data }: { data: PricePoint[] }) {
       bottomColor: "rgba(126,78,45,0)",
       crosshairMarkerBackgroundColor: accent,
       priceLineVisible: false,
+      // the serif value above the chart is the source of truth; the axis
+      // badge only collided with tick labels
+      lastValueVisible: false,
     });
       series.setData(data.map(({ day, price }) => ({ time: day, value: price })));
       chart.timeScale().fitContent();
