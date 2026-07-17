@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { money, signedPercent } from "@/lib/format";
 
@@ -71,6 +71,18 @@ export function ChartBaseline({ caption }: { caption: string }) {
 export function ChartArea({ data }: { data: PricePoint[] }) {
   const el = useRef<HTMLDivElement>(null);
 
+  // Chart colors are baked in at creation, so re-create when the theme flips
+  // to re-resolve the semantic tokens (dark mode: light-bronze line on
+  // subtle dark gridlines instead of light-mode values on a dark ground).
+  const [theme, setTheme] = useState("light");
+  useEffect(() => {
+    const root = document.documentElement;
+    setTheme(root.dataset.theme ?? "light");
+    const observer = new MutationObserver(() => setTheme(root.dataset.theme ?? "light"));
+    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!el.current) return;
     let disposed = false;
@@ -125,7 +137,7 @@ export function ChartArea({ data }: { data: PricePoint[] }) {
       disposed = true;
       cleanup();
     };
-  }, [data]);
+  }, [data, theme]);
 
   return <div ref={el} style={{ width: "100%" }} />;
 }

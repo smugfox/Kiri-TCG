@@ -53,6 +53,12 @@ export default function BrowsePage() {
     });
   }, [results, filters.rarities, sort, dir]);
 
+  // The demo catalog is small: drain the cursor in the background so the
+  // pager shows every page number instead of "1 2 …". Capped defensively.
+  useEffect(() => {
+    if (status === "CanLoadMore" && results.length < 1000) loadMore(PAGE_SIZE * 4);
+  }, [status, results.length, loadMore]);
+
   const pageCount = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const clamped = Math.min(page, pageCount);
   const visible = filtered.slice((clamped - 1) * PAGE_SIZE, clamped * PAGE_SIZE);
