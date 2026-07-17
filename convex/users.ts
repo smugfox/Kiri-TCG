@@ -19,6 +19,8 @@ export const viewer = query({
       tier: user.tier ?? "free",
       emailAlertsEnabled: user.emailAlertsEnabled ?? true,
       polarCustomerId: user.polarCustomerId ?? null,
+      isAnonymous: user.isAnonymous ?? false,
+      demoSeededAt: user.demoSeededAt ?? null,
     };
   },
 });

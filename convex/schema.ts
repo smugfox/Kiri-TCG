@@ -20,6 +20,7 @@ export default defineSchema({
     polarCustomerId: v.optional(v.string()),
     polarSubscriptionId: v.optional(v.string()),
     onboardingDismissed: v.optional(v.boolean()),
+    demoSeededAt: v.optional(v.number()),
   })
     .index("email", ["email"])
     .index("byPolarCustomer", ["polarCustomerId"]),
