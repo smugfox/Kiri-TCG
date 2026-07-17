@@ -102,6 +102,7 @@ export const ARTICLES: Article[] = [
     title: "Set Review: Edge of Eternities for Collectors, Not Players",
     standfirst: "The playables are obvious. The collectibles are not. What to pull, hold, and ignore from the new set.",
     date: "Jun 28, 2026", read: "10 min read", category: "Sets",
+    cover: "https://cards.scryfall.io/art_crop/front/1/2/120be808-ff3b-4fca-96a1-4db6b9825856.jpg",
     author: "Robin Fox", role: "Sets Desk",
     body: [
       { type: "p", text: "Set reviews written for players tell you what wins games this quarter. This one is about what holds value in five years, and the answer starts with print-run math rather than power level." },
@@ -113,6 +114,7 @@ export const ARTICLES: Article[] = [
     title: "Five Storage Mistakes Quietly Eating Your Collection's Value",
     standfirst: "Sunlight is not the only enemy. The five habits that turn near mint into moderately played, and the cheap fixes.",
     date: "Jun 24, 2026", read: "6 min read", category: "Collecting",
+    cover: "https://cards.scryfall.io/art_crop/front/a/0/a0931eb3-b403-4b1a-ad46-a7b0a51bb9a4.jpg",
     author: "Robin Fox", role: "Collector's Desk",
     body: [
       { type: "p", text: "Condition drift is the silent tax on every binder. None of these five mistakes feel like damage while you are making them, which is exactly why they cost collectors more per year than any market dip." },
@@ -124,6 +126,7 @@ export const ARTICLES: Article[] = [
     title: "Why Nightly Prices Beat Live Tickers for Collectors",
     standfirst: "Live tickers optimize for traders. Collectors need a trustworthy close, and there is a reason ours lands at night.",
     date: "Jun 20, 2026", read: "8 min read", category: "Market",
+    cover: "https://cards.scryfall.io/art_crop/front/c/3/c3fd1a59-4ade-459f-90d2-1fc67d6d1384.jpg",
     author: "Robin Fox", role: "Market Desk",
     body: [
       { type: "p", text: "A live price feels more honest than a nightly one until you watch a thin market print three fake swings in an afternoon off two sales and a delisting. Card markets are not equities; most cards trade a handful of times a day, and intraday noise is mostly noise." },
