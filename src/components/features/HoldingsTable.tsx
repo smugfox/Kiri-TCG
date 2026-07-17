@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
+import { useAuthedReady } from "@/app/providers";
 import type { Id } from "../../../convex/_generated/dataModel";
 import Sparkline from "@/components/charts/Sparkline";
 import FreshnessChip from "@/components/features/FreshnessChip";
@@ -23,11 +24,13 @@ type SortKey = "name" | "price" | "pl";
 type Row = NonNullable<ReturnType<typeof useHoldingsPage>["rows"]>[number];
 
 function useHoldingsPage(sort: SortKey, dir: "asc" | "desc", offset: number) {
-  const result = useQuery(api.holdings.list, {
-    sort,
-    dir,
-    paginationOpts: { numItems: PAGE_SIZE, cursor: offset > 0 ? String(offset) : null },
-  });
+  const authed = useAuthedReady();
+  const result = useQuery(
+    api.holdings.list,
+    authed
+      ? { sort, dir, paginationOpts: { numItems: PAGE_SIZE, cursor: offset > 0 ? String(offset) : null } }
+      : "skip",
+  );
   return { rows: result?.page, total: result?.total ?? 0, loading: result === undefined };
 }
 

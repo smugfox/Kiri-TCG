@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
-import { useConvexReady } from "@/app/providers";
+import { useAuthedReady } from "@/app/providers";
 import Sparkline from "@/components/charts/Sparkline";
 import Kebab from "@/components/ui/Kebab";
 import EmptyState from "@/components/ui/EmptyState";
@@ -14,7 +14,7 @@ import { useToast } from "@/components/ui/Toast";
 import { money, signedPercent } from "@/lib/format";
 
 export default function WatchlistClient() {
-  const ready = useConvexReady();
+  const ready = useAuthedReady();
   const router = useRouter();
   const toast = useToast();
   const rows = useQuery(api.watchlist.list, ready ? {} : "skip");

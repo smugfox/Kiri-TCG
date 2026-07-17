@@ -6,7 +6,7 @@ import { useMutation, useQuery } from "convex/react";
 import { ConvexError } from "convex/values";
 import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
-import { useConvexReady } from "@/app/providers";
+import { useAuthedReady } from "@/app/providers";
 import Switch from "@/components/ui/Switch";
 import Kebab from "@/components/ui/Kebab";
 import Banner from "@/components/ui/Banner";
@@ -16,7 +16,7 @@ import { useToast } from "@/components/ui/Toast";
 import { money, relativeTime } from "@/lib/format";
 
 export default function AlertsClient() {
-  const ready = useConvexReady();
+  const ready = useAuthedReady();
   const router = useRouter();
   const toast = useToast();
   const alerts = useQuery(api.alerts.list, ready ? {} : "skip");
