@@ -17,6 +17,7 @@ const LINKS = [
   { href: "/cards", label: "Cards" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/watchlist", label: "Watchlist" },
+  { href: "/news", label: "News" },
   { href: "/pricing", label: "Pricing" },
 ];
 

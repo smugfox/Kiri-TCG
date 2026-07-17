@@ -20,6 +20,7 @@ export default function SiteFooter() {
             <div className="h">Cards</div>
             <Link href="/cards">Card database</Link>
             <Link href="/watchlist">Watchlist</Link>
+            <Link href="/news">News</Link>
           </div>
           <div className="fcol">
             <div className="h">Account</div>
