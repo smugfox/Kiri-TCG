@@ -27,7 +27,7 @@ export default function StatTiles({ summary }: { summary: Summary }) {
     <div style={{ display: "flex", gap: "var(--space-4)", flexWrap: "wrap" }}>
       <div className="stat-tile">
         <div className="num" style={{ fontVariantNumeric: "tabular-nums" }}>
-          {summary.costBasis !== null ? money(summary.costBasis) : "·"}
+          {summary.costBasis !== null ? money(summary.costBasis, 1_000) : "·"}
         </div>
         <div className="lbl2">Cost basis</div>
         {summary.costBasis === null && <div className="sub cs-set">Add price paid to track P&L</div>}
@@ -41,7 +41,8 @@ export default function StatTiles({ summary }: { summary: Summary }) {
             color: summary.unrealizedPl === null ? undefined : `var(--color-trend-${plUp ? "up" : "down"})`,
           }}
         >
-          {summary.unrealizedPl !== null ? signedMoney(summary.unrealizedPl) : "·"}
+          {/* tiles are narrow: drop cents from $1,000 so the serif number never spills */}
+          {summary.unrealizedPl !== null ? signedMoney(summary.unrealizedPl, 1_000) : "·"}
         </div>
         <div className="lbl2">Unrealized P&L</div>
         {summary.plPercent !== null && (
@@ -64,7 +65,8 @@ export default function StatTiles({ summary }: { summary: Summary }) {
           <div className="num" style={{ font: "var(--type-h3)", letterSpacing: "var(--type-h3-ls)" }}>
             <Link
               href={`/cards/${summary.topMover.gameSlug}/${summary.topMover.slug}`}
-              style={{ color: "inherit", textDecoration: "none" }}
+              title={summary.topMover.name}
+              style={{ color: "inherit", textDecoration: "none", display: "block", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}
             >
               {summary.topMover.name}
             </Link>
@@ -74,7 +76,7 @@ export default function StatTiles({ summary }: { summary: Summary }) {
             <span className={`pdelta ${summary.topMover.change7d >= 0 ? "up" : "down"}`} style={{ whiteSpace: "nowrap" }}>
               {signedPercent(summary.topMover.change7d).slice(1)} · 7d
             </span>
-            <Sparkline points={summary.topMover.sparkline} width={64} height={22} />
+            <Sparkline points={summary.topMover.sparkline} width={90} height={28} />
           </div>
         </div>
       )}

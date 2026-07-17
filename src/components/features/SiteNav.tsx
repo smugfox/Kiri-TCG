@@ -10,8 +10,11 @@ import { useFocusTrap } from "@/lib/useFocusTrap";
 import UserMenu from "./UserMenu";
 import NotificationsPanel from "./NotificationsPanel";
 import CardSearch from "./CardSearch";
+import BrandLockup from "./BrandLockup";
+import ThemeToggle from "./ThemeToggle";
 
 const LINKS = [
+  { href: "/news", label: "News" },
   { href: "/cards", label: "Cards" },
   { href: "/portfolio", label: "Portfolio" },
   { href: "/watchlist", label: "Watchlist" },
@@ -91,7 +94,7 @@ export default function SiteNav() {
   return (
     <>
       <nav className="nav-demo site-nav" aria-label="Main">
-        <Link href="/" className="brand" style={{ textDecoration: "none" }}>⬖ Kiri</Link>
+        <Link href="/" className="brand" style={{ textDecoration: "none" }} aria-label="Kiri home"><BrandLockup /></Link>
         <span className="nav-links">{links}</span>
         <span className="nav-search">
           <button onClick={() => setSearchOpen(true)} aria-label="Search any card (Command K)">
@@ -101,6 +104,7 @@ export default function SiteNav() {
           </button>
         </span>
         <span className="nav-actions">
+          <ThemeToggle />
           {ready ? <AuthedActions /> : (
             <>
               <Link href="/signin">Login</Link>
@@ -115,7 +119,8 @@ export default function SiteNav() {
       {sheetOpen && (
         <div className="mobile-sheet" role="dialog" aria-modal="true" aria-label="Menu">
           <div className="mnav">
-            <span className="brand">⬖ Kiri</span>
+            <span className="brand"><BrandLockup /></span>
+            <ThemeToggle />
             <button className="mclose" aria-label="Close menu" onClick={() => setSheetOpen(false)}>✕</button>
           </div>
           <div className="msheet">

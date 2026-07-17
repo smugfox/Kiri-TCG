@@ -6,6 +6,7 @@ import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
 import { useConvexReady } from "@/app/providers";
 import { useToast } from "@/components/ui/Toast";
+import { capture, EVENTS } from "@/lib/analytics";
 import PortfolioHero from "@/components/features/PortfolioHero";
 import StatTiles from "@/components/features/StatTiles";
 import AllocationBar from "@/components/features/AllocationBar";
@@ -31,6 +32,7 @@ export default function PortfolioClient() {
     if (!upgraded || upgradedToastShown.current) return;
     if (tier && tier !== "free") {
       upgradedToastShown.current = true;
+      capture(EVENTS.SUBSCRIBED, { tier });
       toast(`Welcome to ${tier === "trader" ? "Trader" : "Dealer"}. Limits are off.`);
       router.replace("/portfolio");
     }
@@ -69,6 +71,7 @@ export default function PortfolioClient() {
 
   return (
     <div className="portfolio-page">
+      <h1 className="visually-hidden">Portfolio</h1>
       <PortfolioHero totalValue={summary.totalValue} dayChangePercent={summary.dayChangePercent} />
       <div className="portfolio-split">
         <div className="main">

@@ -77,6 +77,13 @@ export const add = mutation({
       .withIndex("byUserVariant", (q) => q.eq("userId", userId).eq("variantId", resolvedVariantId))
       .unique();
 
+    // Card totals before/after, for the magic-moment funnel events.
+    const allRows = await ctx.db
+      .query("holdings")
+      .withIndex("byUser", (q) => q.eq("userId", userId))
+      .collect();
+    const cardsBefore = allRows.reduce((n, r) => n + r.quantity, 0);
+
     if (existing) {
       const newQuantity = Math.min(existing.quantity + quantity, MAX_QUANTITY);
       // Weighted-average cost basis across lots; a lot without a price
@@ -94,7 +101,7 @@ export const add = mutation({
         costBasisPerCard: costBasis,
         acquiredAt: acquiredAt ?? existing.acquiredAt,
       });
-      return { holdingId: existing._id, merged: true };
+      return { holdingId: existing._id, merged: true, cardsBefore, cardsAfter: cardsBefore + quantity };
     }
 
     await requireCapacity(ctx, "holdings", userId, user);
@@ -105,7 +112,7 @@ export const add = mutation({
       costBasisPerCard,
       acquiredAt,
     });
-    return { holdingId, merged: false };
+    return { holdingId, merged: false, cardsBefore, cardsAfter: cardsBefore + quantity };
   },
 });
 

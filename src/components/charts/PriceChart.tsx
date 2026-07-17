@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { AreaSeries, ColorType, createChart, LineStyle } from "lightweight-charts";
+import { useEffect, useRef, useState } from "react";
+
 import { money, signedPercent } from "@/lib/format";
 
 export type PricePoint = { day: string; price: number };
@@ -71,10 +71,27 @@ export function ChartBaseline({ caption }: { caption: string }) {
 export function ChartArea({ data }: { data: PricePoint[] }) {
   const el = useRef<HTMLDivElement>(null);
 
+  // Chart colors are baked in at creation, so re-create when the theme flips
+  // to re-resolve the semantic tokens (dark mode: light-bronze line on
+  // subtle dark gridlines instead of light-mode values on a dark ground).
+  const [theme, setTheme] = useState("light");
+  useEffect(() => {
+    const root = document.documentElement;
+    setTheme(root.dataset.theme ?? "light");
+    const observer = new MutationObserver(() => setTheme(root.dataset.theme ?? "light"));
+    observer.observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
   useEffect(() => {
     if (!el.current) return;
-    const accent = cssColor("--color-accent", "#7E4E2D");
-    const chart = createChart(el.current, {
+    let disposed = false;
+    let cleanup = () => {};
+    // Lazy: lightweight-charts (~45KB gz) loads only when a chart renders.
+    import("lightweight-charts").then(({ AreaSeries, ColorType, createChart, LineStyle }) => {
+      if (disposed || !el.current) return;
+      const accent = cssColor("--color-accent", "#7E4E2D");
+      const chart = createChart(el.current, {
       height: 220,
       autoSize: true,
       layout: {
@@ -94,6 +111,10 @@ export function ChartArea({ data }: { data: PricePoint[] }) {
       },
       timeScale: { borderColor: cssColor("--color-border", "#EAE3D7") },
       rightPriceScale: { borderVisible: false },
+      localization: {
+        // $ with thousands separators; cents only where they matter
+        priceFormatter: (p: number) => (p >= 1000 ? `$${Math.round(p).toLocaleString("en-US")}` : `$${p.toFixed(2)}`),
+      },
       handleScroll: false,
       handleScale: false,
     });
@@ -104,11 +125,19 @@ export function ChartArea({ data }: { data: PricePoint[] }) {
       bottomColor: "rgba(126,78,45,0)",
       crosshairMarkerBackgroundColor: accent,
       priceLineVisible: false,
+      // the serif value above the chart is the source of truth; the axis
+      // badge only collided with tick labels
+      lastValueVisible: false,
     });
-    series.setData(data.map(({ day, price }) => ({ time: day, value: price })));
-    chart.timeScale().fitContent();
-    return () => chart.remove();
-  }, [data]);
+      series.setData(data.map(({ day, price }) => ({ time: day, value: price })));
+      chart.timeScale().fitContent();
+      cleanup = () => chart.remove();
+    });
+    return () => {
+      disposed = true;
+      cleanup();
+    };
+  }, [data, theme]);
 
   return <div ref={el} style={{ width: "100%" }} />;
 }

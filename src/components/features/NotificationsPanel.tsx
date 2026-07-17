@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "convex/react";
 import { Bell } from "lucide-react";
 import { api } from "../../../convex/_generated/api";
 import { relativeTime } from "@/lib/format";
+import { capture, EVENTS } from "@/lib/analytics";
 
 /**
  * The bell with its notification-dot counter and the 320px panel
@@ -58,7 +59,7 @@ export default function NotificationsPanel() {
           className="npanel"
           role="dialog"
           aria-label="Notifications"
-          style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", zIndex: 40 }}
+          style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", zIndex: 200 }}
         >
           <div className="nh">
             Notifications
@@ -81,6 +82,7 @@ export default function NotificationsPanel() {
               style={{ cursor: n.cardPath ? "pointer" : "default" }}
               onClick={() => {
                 if (!n.read) markRead({ ids: [n._id] });
+                if (n.kind === "alert") capture(EVENTS.ALERT_FIRED_OPENED);
                 if (n.cardPath) {
                   setOpen(false);
                   router.push(n.cardPath);

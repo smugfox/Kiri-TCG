@@ -24,6 +24,9 @@ import Banner from "@/components/ui/Banner";
 import Modal from "@/components/ui/Modal";
 import Drawer from "@/components/ui/Drawer";
 import { useToast } from "@/components/ui/Toast";
+import HeroShowcase from "@/components/features/HeroShowcase";
+import MarketTicker from "@/components/features/MarketTicker";
+import ThemeToggle from "@/components/features/ThemeToggle";
 
 const Row = ({ children }: { children: React.ReactNode }) => (
   <div style={{ display: "flex", gap: 16, flexWrap: "wrap", alignItems: "center", margin: "16px 0 40px" }}>{children}</div>
@@ -57,7 +60,7 @@ export default function Styleguide() {
         <Button>Add to deck</Button>
         <Button disabled>Add to deck</Button>
         <Button loading>Adding…</Button>
-        <Button variant="secondary">Browse cards →</Button>
+        <Button variant="secondary">Browse cards</Button>
         <Button variant="ghost">View rules</Button>
         <Button variant="destructive">Delete deck</Button>
         <Button variant="inverted">Create your account</Button>
@@ -110,7 +113,7 @@ export default function Styleguide() {
         <Alert kind="warning">This deck is 2 cards under the 60-card minimum.</Alert>
         <Alert kind="error">Card could not be added: collection limit reached.</Alert>
       </div>
-      <Banner kind="warning" action={<a href="#s">Status page →</a>}>Price updates are delayed while our data provider is under maintenance.</Banner>
+      <Banner kind="warning" action={<a href="#s">Status page</a>}>Price updates are delayed while our data provider is under maintenance.</Banner>
       <Row>
         <Button variant="secondary" onClick={() => toast("Deck exported · View file")}>Show toast</Button>
         <Tooltip text="Prices refresh nightly"><Button variant="secondary" size="sm">Hover me</Button></Tooltip>
@@ -123,6 +126,13 @@ export default function Styleguide() {
           action={<Button>Add your first card</Button>}
         />
       </Row>
+
+      <H>Hero showcase & market ticker</H>
+      <div style={{ maxWidth: 480, paddingBottom: 96 }}><HeroShowcase /></div>
+      <div style={{ margin: "0 0 40px" }}><MarketTicker /></div>
+
+      <H>Theme toggle</H>
+      <Row><ThemeToggle /></Row>
 
       <H>Overlays</H>
       <Row>

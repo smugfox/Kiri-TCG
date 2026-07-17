@@ -9,7 +9,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   }, [error]);
   return (
     <div className="page" style={{ maxWidth: 720, margin: "0 auto", padding: "var(--space-9) var(--space-5)" }}>
-      <div className="errdemo">
+      <div className="error-page">
         <div className="ee">Error 500</div>
         <div className="et">Something broke on our side.</div>
         <div className="ed">Your collection is safe. Try again, and if it keeps happening we&apos;re already looking into it.</div>

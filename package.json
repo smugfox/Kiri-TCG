@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "predev": "node -e \"require('fs').copyFileSync('docs/design.html','public/design.html')\"",
     "dev": "next dev",
-    "build": "next build",
+    "dev:all": "concurrently -n web,convex -c blue,yellow \"npm:dev\" \"convex dev\"",
+    "build": "node -e \"require('fs').copyFileSync('docs/design.html','public/design.html')\" && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -19,6 +21,7 @@
     "lightweight-charts": "^5.2.0",
     "lucide-react": "^1.23.0",
     "next": "^16.2.10",
+    "posthog-js": "^1.398.6",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "resend": "^6.17.1"
@@ -27,6 +30,7 @@
     "@types/node": "^26.1.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "concurrently": "^10.0.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.10",
     "typescript": "^6.0.3",

@@ -156,7 +156,7 @@ export default function CardSearch({
           {loading &&
             [0, 1, 2].map((i) => (
               <div className="cs-row" key={i} aria-hidden>
-                <span className="skel" style={{ width: 34, height: 47, borderRadius: 4 }} />
+                <span className="skel" style={{ width: 34, height: 47, borderRadius: "var(--rounded-xs)" }} />
                 <span style={{ flex: 1 }}>
                   <span className="skel" style={{ display: "block", height: 12, width: "60%", marginBottom: 8 }} />
                   <span className="skel" style={{ display: "block", height: 9, width: "38%" }} />

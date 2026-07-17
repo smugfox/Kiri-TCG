@@ -14,6 +14,7 @@ import Select from "@/components/ui/Select";
 import { useToast } from "@/components/ui/Toast";
 import UpgradePrompt from "@/components/features/UpgradePrompt";
 import { defaultLanguage, languagesOf, variantLanguage } from "@/lib/languages";
+import { capture, EVENTS } from "@/lib/analytics";
 
 const CONDITION_ORDER = ["NM", "LP", "MP", "HP", "DMG"];
 const PENDING_KEY = "kiri.pendingAdd";
@@ -164,7 +165,9 @@ export default function AddCardDrawer({
     }
     setSaving(true);
     try {
-      await add(payload);
+      const result = await add(payload);
+      if (result.cardsBefore === 0 && result.cardsAfter > 0) capture(EVENTS.FIRST_CARD_ADDED);
+      if (result.cardsBefore < 10 && result.cardsAfter >= 10) capture(EVENTS.TENTH_CARD_ADDED);
       toast(`Added ${quantity} × ${card.name} to your portfolio.`);
       onClose();
     } catch (err) {

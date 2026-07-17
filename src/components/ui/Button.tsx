@@ -26,7 +26,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   return (
     <button
       ref={ref}
-      className={`btn ${variantClass[variant]} ${size === "sm" ? "sm" : ""} ${disabled && variant === "primary" ? "is-disabled" : ""} ${className}`}
+      className={`btn ${variantClass[variant]} ${size === "sm" ? "sm" : ""} ${disabled ? "is-disabled" : ""} ${className}`}
       disabled={disabled || loading}
       aria-busy={loading || undefined}
       {...rest}

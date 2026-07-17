@@ -38,7 +38,7 @@ export default function OnboardingChecklist({
         Get set up <span className="oc">{doneCount} of {steps.length}</span>
       </div>
       <div className="prog">
-        <div className="track" role="progressbar" aria-valuenow={doneCount} aria-valuemin={0} aria-valuemax={steps.length}>
+        <div className="track" role="progressbar" aria-label="Setup progress" aria-valuenow={doneCount} aria-valuemin={0} aria-valuemax={steps.length}>
           <div className="fill" style={{ width: `${(doneCount / steps.length) * 100}%` }} />
         </div>
       </div>

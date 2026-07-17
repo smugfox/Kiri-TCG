@@ -11,9 +11,15 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { game, slug } = await params;
   const data = await fetchQuery(api.cards.getBySlug, { gameSlug: game, slug });
   if (!data) return { title: "Card not found" };
+  const description = `Current ${data.card.name} (${data.card.setName}) prices by condition and printing, with daily history.`;
   return {
     title: `${data.card.name} price`, // layout template appends "· Kiri"
-    description: `Current ${data.card.name} (${data.card.setName}) prices by condition and printing, with daily history.`,
+    description,
+    openGraph: {
+      title: `${data.card.name} price · Kiri`,
+      description,
+      type: "website",
+    },
   };
 }
 

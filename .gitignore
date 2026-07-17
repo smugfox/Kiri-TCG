@@ -12,9 +12,9 @@ out/
 next-env.d.ts
 
 # convex
-convex/_generated/
 .convex/
 
 # misc
 .DS_Store
 *.tsbuildinfo
+public/design.html

@@ -87,6 +87,12 @@
     --color-on-surface-muted: #ABA59E;
     --color-border: #413026;
     --color-border-strong: #694F3E;
+    --color-success: #A3BD90;
+    --color-warning: #D6AC5E;
+    --color-error: #E09A8C;
+    --color-info: #9DB1E3;
+    --color-trend-up: #A3BD90;
+    --color-trend-down: #E09A8C;
     --shadow-float: 0 8px 32px rgba(0,0,0,0.5);
   }
 
@@ -95,7 +101,8 @@
   body { background: var(--color-background); color: var(--color-on-surface); font: var(--type-body); transition: background .25s, color .25s; }
   .layout { display: flex; gap: var(--space-7); max-width: 1280px; margin: 0 auto; padding: 0 var(--space-6); }
   .sidenav { position: sticky; top: 0; align-self: flex-start; max-height: 100vh; overflow-y: auto; width: 200px; flex: none; padding: var(--space-7) var(--space-2) var(--space-7) 0; }
-  .sidenav .brandline { font: var(--type-h4); letter-spacing: var(--type-h4-ls); margin-bottom: var(--space-5); }
+  .sidenav .brandline { font: var(--type-h4); letter-spacing: var(--type-h4-ls); margin-bottom: var(--space-5); display: flex; align-items: center; gap: 7px; }
+  .sidenav .brandline .brand-loupe { width: 24px; height: 24px; flex: none; }
   .sidenav .sect { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin: var(--space-5) 0 var(--space-2); }
   .sidenav a { display: block; font: var(--type-body-sm); color: var(--color-on-surface-muted); text-decoration: none; padding: 4px 0; transition: color .15s; }
   .sidenav a:hover { color: var(--color-on-surface); }
@@ -121,8 +128,12 @@
   .stabs button { font: var(--type-label); font-family: var(--font-body); letter-spacing: var(--type-label-ls); text-transform: uppercase; padding: 4px 10px; border: none; border-radius: var(--rounded-full); background: transparent; color: var(--color-on-surface-muted); cursor: pointer; }
   .stabs button.active { background: var(--color-surface-raised); color: var(--color-on-surface); border: 1px solid var(--color-border-strong); padding: 3px 9px; }
   .sbody { padding: var(--space-5); }
+  /* per-story theme override: the preview re-scopes the tokens and paints its own ground */
+  .sbody[data-theme] { background: var(--color-background); color: var(--color-on-surface); transition: background .15s, color .15s; }
+  .sthem { font-size: 13px; line-height: 1; padding: 4px 8px; border: none; border-radius: var(--rounded-full); background: transparent; color: var(--color-on-surface-muted); cursor: pointer; }
+  .sthem:hover { color: var(--color-on-surface); background: var(--color-border); }
   .codepane { position: relative; background: var(--color-surface-raised); }
-  .codepane pre { margin: 0; padding: var(--space-4); overflow: auto; max-height: 460px; font: 11.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .codepane pre { margin: 0; padding: var(--space-4); overflow-y: auto; max-height: 460px; font: 11.5px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap; overflow-wrap: break-word; }
   .codepane .ccopy { position: absolute; top: 8px; right: 8px; font: var(--type-caption); font-family: var(--font-body); background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--rounded-xs); padding: 3px 8px; cursor: pointer; color: var(--color-on-surface); z-index: 1; }
   .docspane { padding: var(--space-5); background: var(--color-surface-raised); }
   .docspane .dnote { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-3); }
@@ -179,7 +190,7 @@
   .elev-card .lbl2 { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); display: block; margin-bottom: var(--space-1); }
 
   /* ============ buttons ============ */
-  .btn { font: var(--type-body); font-family: var(--font-body); border: none; cursor: pointer; height: 40px; padding: 10px 20px; display: inline-flex; align-items: center; }
+  .btn { font: var(--type-body); font-family: var(--font-body); border: none; cursor: pointer; height: 40px; padding: 10px 20px; display: inline-flex; align-items: center; white-space: nowrap; }
   .btn-primary { background: var(--color-primary); color: var(--color-on-primary); border-radius: var(--rounded-sm); }
   .btn-primary:hover, .btn-primary.is-hover { background: var(--color-primary-hover); }
   .btn-primary.is-disabled { background: var(--color-border-strong); color: var(--color-on-surface-muted); cursor: not-allowed; }
@@ -255,12 +266,11 @@
   .card p { font: var(--type-body-sm); color: var(--color-on-surface-muted); }
   .ccard { position: relative; background: var(--color-surface); border-radius: var(--rounded-lg); cursor: pointer; }
   .ccard .cover { position: relative; overflow: hidden; border-radius: var(--rounded-lg) var(--rounded-lg) 0 0; }
-  .ccard .img { position: absolute; inset: 0; background: repeating-linear-gradient(100deg, rgba(245,244,242,.04) 0 2px, transparent 2px 9px), var(--gradient-haku); transition: transform .6s ease; }
-  .ccard:hover .img, .ccard.is-hover-state .img { transform: scale(1.045); }
-  .meta-onimg { position: absolute; top: var(--space-4); left: var(--space-4); z-index: 2; font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: #F5F4F2; opacity: .9; }
+  .ccard .img { position: absolute; inset: 0; background: repeating-linear-gradient(100deg, rgba(245,244,242,.04) 0 2px, transparent 2px 9px), var(--gradient-haku); }
+  .meta-onimg { position: absolute; top: var(--space-3); left: var(--space-3); z-index: 2; font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: #F5F4F2; background: rgba(26,18,14,.65); padding: 3px 10px; border-radius: var(--rounded-full); }
   .ccard-featured { width: min(680px, 100%); height: 400px; }
   .ccard-featured .cover { position: absolute; inset: 0; border-radius: var(--rounded-lg); }
-  .ccard-featured .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(50,32,20,0) 30%, rgba(43,28,19,.6) 100%); }
+  .ccard-featured .scrim { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,18,14,.18) 0%, rgba(26,18,14,.28) 30%, rgba(26,18,14,.55) 55%, rgba(26,18,14,.93) 100%); }
   .ccard-featured .float-chip { position: absolute; top: var(--space-4); left: var(--space-4); z-index: 2; background: var(--color-surface); }
   .ccard-featured .ov-content { position: absolute; left: 0; bottom: 0; z-index: 1; padding: var(--space-6); max-width: 64%; color: #F5F4F2; }
   .ccard-featured .ov-content .meta { font: var(--type-caption); letter-spacing: var(--type-caption-ls); opacity: .85; margin-bottom: var(--space-3); }
@@ -274,6 +284,7 @@
   .ccard .body-block .ttl { font: var(--type-h3); letter-spacing: var(--type-h3-ls); margin-bottom: var(--space-2); }
   .ccard .body-block .exc { font: var(--type-body-sm); color: var(--color-on-surface-muted); }
   .ccard-compact .body-block { padding-bottom: var(--space-7); }
+  .ccard-compact .body-block .ttl { font-size: 20px; }
   .notch { position: absolute; right: 0; bottom: 0; z-index: 3; display: flex; align-items: stretch; }
   .ncap { display: block; width: 44px; height: 46px; flex: none; }
   .ncap path { fill: var(--color-background); transition: fill .25s; }
@@ -313,7 +324,8 @@
 
   /* ============ navigation ============ */
   .nav-demo { background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-md); height: 72px; padding: 0 var(--space-6); display: flex; align-items: center; gap: 28px; }
-  .nav-demo .brand { font: 500 20px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-right: var(--space-4); }
+  .nav-demo .brand { display: inline-flex; align-items: center; gap: 3px; font: 600 17px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); margin-right: var(--space-4); }
+  .nav-demo .brand .brand-loupe { width: 26px; height: 26px; flex: none; }
   .nav-demo a { font: 500 16px/1.4 var(--font-body); color: var(--color-on-surface-muted); text-decoration: none; transition: color .15s, border-color .15s; padding-bottom: 4px; border-bottom: 2px solid transparent; }
   .nav-demo a:hover, .nav-demo a.active { color: var(--color-on-surface); }
   .nav-demo a.active { border-bottom-color: var(--color-accent); }
@@ -370,7 +382,7 @@
   .prose ol li { margin-bottom: var(--space-2); }
   .side { width: 280px; flex: none; display: flex; flex-direction: column; gap: var(--space-6); }
   .author { display: flex; gap: var(--space-3); align-items: center; }
-  .author .av { width: 48px; height: 48px; border-radius: var(--rounded-full); background: var(--gradient-haku); color: #F5F4F2; display: flex; align-items: center; justify-content: center; font: var(--type-body-sm); flex: none; }
+  .author .av { width: 48px; height: 48px; border-radius: var(--rounded-full); background: var(--gradient-haku); color: #F5F4F2; display: flex; align-items: center; justify-content: center; font: var(--type-body-sm); flex: none; border: 1px solid var(--color-border-strong); }
   .author .nm { font: var(--type-body-sm); font-weight: 500; }
   .author .rl { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); }
   .side-list .slbl { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); padding-bottom: var(--space-2); border-bottom: 1px solid var(--color-border-strong); margin-bottom: var(--space-2); }
@@ -418,8 +430,8 @@
   .pdelta { display: inline-flex; align-items: center; gap: 5px; font: 500 13px/1.5 var(--font-body); font-variant-numeric: tabular-nums; letter-spacing: .02em; border-radius: var(--rounded-xs); padding: 2px 8px; }
   .pdelta.up::before { content: "▲"; font-size: 8px; line-height: 1; }
   .pdelta.down::before { content: "▼"; font-size: 8px; line-height: 1; }
-  .pdelta.up { color: var(--color-trend-up); background: color-mix(in srgb, var(--color-trend-up) 12%, var(--color-surface)); }
-  .pdelta.down { color: var(--color-trend-down); background: color-mix(in srgb, var(--color-trend-down) 12%, var(--color-surface)); }
+  .pdelta.up { color: color-mix(in srgb, var(--color-trend-up) 70%, var(--color-on-surface)); background: color-mix(in srgb, var(--color-trend-up) 12%, var(--color-surface)); }
+  .pdelta.down { color: color-mix(in srgb, var(--color-trend-down) 80%, var(--color-on-surface)); background: color-mix(in srgb, var(--color-trend-down) 12%, var(--color-surface)); }
   .pdelta.flat { color: var(--color-on-surface-muted); background: var(--color-background); }
   .range-tabs { display: inline-flex; gap: 2px; background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--rounded-full); padding: 3px; height: fit-content; align-self: flex-start; }
   .range-tabs button { font: var(--type-label); font-family: var(--font-body); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); background: transparent; border: none; border-radius: var(--rounded-full); padding: 5px 12px; cursor: pointer; }
@@ -469,7 +481,7 @@
   .drawer .dh .t { font: var(--type-h3); letter-spacing: var(--type-h3-ls); }
   .drawer .dh .x { font-size: 18px; color: var(--color-on-surface-muted); cursor: pointer; background: none; border: none; }
   .fld { margin-bottom: var(--space-4); }
-  .fld .lb { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
+  .fld .lb { display: block; font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); margin-bottom: 6px; }
   .drawer .factions { display: flex; gap: var(--space-3); justify-content: flex-end; margin-top: var(--space-5); }
   .selrow { display: flex; gap: var(--space-3); align-items: center; background: var(--color-surface); border: 1px solid var(--color-border-strong); border-radius: var(--rounded-sm); padding: 8px 12px; }
 
@@ -507,7 +519,7 @@
   .ctile { width: 200px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-3); position: relative; transition: border-color .15s, transform .3s; }
   .ctile:hover, .ctile.is-hover { border-color: var(--color-border-strong); transform: translateY(-2px); }
   .ctile .cimg { aspect-ratio: 63 / 88; border-radius: var(--rounded-sm); background: var(--gradient-haku); margin-bottom: var(--space-3); position: relative; display: flex; align-items: center; justify-content: center; color: #F5F4F2; font-size: 26px; }
-  .ctile .qadd { position: absolute; right: 8px; bottom: 8px; width: 32px; height: 32px; border-radius: var(--rounded-full); border: none; background: var(--color-primary); color: var(--color-on-primary); font-size: 16px; line-height: 1; cursor: pointer; opacity: 0; transform: translateY(4px); transition: opacity .25s, transform .25s; }
+  .ctile .qadd { position: absolute; right: 8px; bottom: 8px; width: 32px; height: 32px; border-radius: var(--rounded-full); border: none; background: var(--color-primary); color: var(--color-on-primary); font-size: 16px; line-height: 1; cursor: pointer; opacity: 0; transform: translateY(4px); transition: opacity .15s, transform .15s; }
   .ctile:hover .qadd, .ctile.is-hover .qadd { opacity: 1; transform: none; }
   .ctile .tnm { font: 500 14px/1.35 var(--font-body); margin-bottom: 2px; }
   .ctile .tst { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); margin-bottom: var(--space-2); display: flex; gap: 6px; align-items: center; min-width: 0; }
@@ -525,11 +537,14 @@
   .acc-i + .acc-i { border-top: 1px solid var(--color-border); }
   .acc-q { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); padding: 16px 20px; font: 500 16px/1.4 var(--font-body); cursor: pointer; }
   .acc-a { padding: 0 20px 16px; font: var(--type-body-sm); color: var(--color-on-surface-muted); max-width: 60ch; }
-  .banner { --sem: var(--color-warning); display: flex; align-items: center; gap: var(--space-3); background: color-mix(in srgb, var(--sem) 10%, var(--color-surface)); border-top: 1px solid color-mix(in srgb, var(--sem) 30%, transparent); border-bottom: 1px solid color-mix(in srgb, var(--sem) 30%, transparent); padding: 12px 24px; font: var(--type-body-sm); }
+  .banner { --sem: var(--color-warning); position: relative; display: flex; align-items: center; justify-content: center; gap: var(--space-3); background: color-mix(in srgb, var(--sem) 10%, var(--color-surface)); border: 1px solid color-mix(in srgb, var(--sem) 30%, transparent); border-radius: var(--rounded-sm); padding: 12px 24px; font: var(--type-body-sm); }
+  .banner.flush { border-left: none; border-right: none; border-radius: 0; }
   .banner .ic { color: var(--sem); flex: none; }
-  .banner .bact { margin-left: auto; font-weight: 500; color: var(--sem); text-decoration: none; white-space: nowrap; }
-  .banner .bx { background: none; border: none; color: var(--color-on-surface-muted); cursor: pointer; font-size: 14px; }
-  .avt { border-radius: var(--rounded-full); background: var(--color-accent-muted); color: var(--color-on-surface); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-body); font-weight: 500; flex: none; }
+  .banner .bact { font-weight: 500; color: var(--sem); text-decoration: none; white-space: nowrap; }
+  .banner .bx { position: absolute; right: 16px; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--color-on-surface-muted); cursor: pointer; font-size: 14px; }
+  .avt { border-radius: var(--rounded-full); background: var(--color-accent-muted); color: var(--color-primary); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-body); font-weight: 500; flex: none; border: 1px solid var(--color-border-strong); }
+  button.avt { transition: transform .15s ease-out, box-shadow .15s ease-out; }
+  button.avt:hover { transform: translateY(-1px); box-shadow: 0 3px 10px rgba(50,32,20,.22); }
   .avt.s24 { width: 24px; height: 24px; font-size: 9px; }
   .avt.s32 { width: 32px; height: 32px; font-size: 11px; }
   .avt.s40 { width: 40px; height: 40px; font-size: 13px; }
@@ -576,6 +591,17 @@
   .prose blockquote footer { font: var(--type-caption); letter-spacing: var(--type-caption-ls); font-family: var(--font-body); color: var(--color-on-surface-muted); margin-top: 8px; }
   .code-i { font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--rounded-xs); padding: 1px 6px; color: var(--color-accent); white-space: nowrap; }
   .code-b { font: 12px/1.7 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--color-surface-raised); border: 1px solid var(--color-border); border-radius: var(--rounded-md); padding: var(--space-4); overflow-x: auto; margin: var(--space-4) 0; }
+  .dia { display: inline-block; width: 22px; height: 22px; background: rgba(50,32,20,.45); transform: rotate(45deg); border-radius: 3px; }
+  .dia.sm { width: 10px; height: 10px; border-radius: 2px; background: var(--color-accent); }
+  .dia.dd { width: 14px; height: 14px; border-radius: 2px; background: currentColor; }
+  .article-hero { position: relative; min-height: 440px; border-radius: var(--rounded-lg); overflow: hidden; background-size: cover; background-position: center 25%; display: flex; flex-direction: column; justify-content: flex-end; padding: var(--space-7); }
+  .article-hero .ah-chip { position: absolute; top: var(--space-5); left: var(--space-7); background: var(--color-surface); }
+  .article-hero-content { max-width: 720px; }
+  .article-hero .ttl { font: 400 clamp(38px, 4.4vw, 60px)/1.15 var(--font-heading); letter-spacing: -0.025em; max-width: 18ch; margin-bottom: var(--space-4); color: #F5F4F2; }
+  .article-hero .stand { font: var(--type-body-lg); color: rgba(234,231,226,.85); max-width: 52ch; margin-bottom: var(--space-5); }
+  .article-hero .author .nm { color: #F5F4F2; }
+  .article-hero .author .rl { color: rgba(234,231,226,.75); }
+  @media (prefers-reduced-motion: reduce) { .caction .txt, .ccard .img, .qadd { transition: none; } }
   .prose figure { margin: var(--space-5) 0; }
   .prose .fimg { height: 180px; border-radius: var(--rounded-md); background: var(--gradient-haku); }
   .prose figcaption { font: var(--type-caption); letter-spacing: var(--type-caption-ls); color: var(--color-on-surface-muted); text-align: center; margin-top: 8px; }
@@ -583,7 +609,8 @@
   /* ============ mobile patterns ============ */
   .phone { width: 375px; max-width: 100%; border: 1px solid var(--color-border-strong); border-radius: 20px; overflow: hidden; background: var(--color-background); }
   .mnav { height: 60px; display: flex; align-items: center; gap: var(--space-3); padding: 0 16px; border-bottom: 1px solid var(--color-border); }
-  .mnav .brand { font: 500 17px/1.3 var(--font-heading); letter-spacing: -0.015em; flex: 1; }
+  .mnav .brand { display: flex; align-items: center; gap: 3px; font: 600 15px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); flex: 1; }
+  .mnav .brand .brand-loupe { width: 23px; height: 23px; flex: none; }
   .burger { width: 44px; height: 44px; display: flex; flex-direction: column; gap: 5px; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; }
   .burger span { width: 18px; height: 2px; background: var(--color-on-surface); }
   .mclose { width: 44px; height: 44px; background: none; border: none; font-size: 18px; color: var(--color-on-surface); cursor: pointer; }
@@ -795,7 +822,19 @@
   .footer-demo { background-color: #2B1C13; background-image: radial-gradient(rgba(245,244,242,.06) 1px, transparent 1.5px); background-size: 22px 22px; border-radius: var(--rounded-lg); padding: var(--space-8) var(--space-7) var(--space-6); color: #EAE7E2; }
   .footer-demo .cols { display: grid; grid-template-columns: 1.6fr 1fr 1.1fr 1fr 1fr; gap: var(--space-6); }
   @media (max-width: 860px) { .footer-demo .cols { grid-template-columns: 1fr 1fr; } }
-  .fbrand .wordmark { font: 500 24px/1.3 var(--font-heading); letter-spacing: -0.015em; margin-bottom: var(--space-3); }
+  .fbrand .wordmark { display: inline-flex; align-items: center; gap: 4px; font: 600 20px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; margin-bottom: var(--space-3); }
+  .fbrand .wordmark .brand-loupe { width: 30px; height: 30px; flex: none; }
+  .brandrow { display: flex; align-items: center; gap: var(--space-7); flex-wrap: wrap; }
+  .brandrow .spec { display: flex; flex-direction: column; gap: var(--space-2); align-items: flex-start; }
+  .brandrow .spec .k { font: var(--type-label); letter-spacing: var(--type-label-ls); text-transform: uppercase; color: var(--color-on-surface-muted); }
+  .lockup-a { display: inline-flex; align-items: center; gap: 4px; font: 600 24px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); }
+  .lockup-a .brand-loupe { width: 36px; height: 36px; flex: none; }
+  .lockup-b { display: inline-flex; align-items: center; gap: 3px; font: 600 17px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); }
+  .lockup-b .brand-loupe { width: 26px; height: 26px; flex: none; }
+  .lockup-c { display: inline-flex; align-items: center; gap: 3px; font: 600 15px/1 var(--font-heading); letter-spacing: 0.125em; text-transform: uppercase; color: var(--color-on-surface); }
+  .lockup-c .brand-loupe { width: 23px; height: 23px; flex: none; }
+  .darkpanel { background: var(--color-brand-950, #2B1C13); border-radius: var(--rounded-md); padding: var(--space-6); display: inline-flex; }
+  .darkpanel .lockup-a { color: #EAE7E2; }
   .fbrand .tag { font: 400 16px/1.5 var(--font-heading); color: rgba(234,231,226,.8); max-width: 24ch; margin-bottom: var(--space-5); }
   .fsocial { display: flex; gap: var(--space-4); }
   .fsocial svg { width: 20px; height: 20px; color: #EAE7E2; opacity: .9; }
@@ -822,13 +861,112 @@
 </head>
 <body>
 
-<button class="theme-toggle" onclick="const h=document.documentElement;h.dataset.theme=h.dataset.theme==='light'?'dark':'light';this.textContent=h.dataset.theme==='light'?'Dark mode':'Light mode'">Dark mode</button>
 
 <div class="layout">
 <nav class="sidenav">
-  <div class="brandline">Kiri DS</div>
+  <div class="brandline"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+        
+      >
+        <g filter="url(#kl0-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl0-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl0-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl0-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl0-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl0-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl0-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl0-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl0-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl0-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl0-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl0-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl0-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl0-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl0-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl0-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl0-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl0-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span>Kiri DS</span></div>
   <a href="#all">All components</a>
   <div class="sect">Foundations</div>
+  <a href="#brand">Brand</a>
   <a href="#colors">Colors</a>
   <a href="#typography">Typography</a>
   <a href="#spacing">Spacing</a>
@@ -862,6 +1000,415 @@
 </header>
 
 <!-- ================= COLORS ================= -->
+<section id="brand">
+  <h2>Brand</h2>
+  <p class="intro">The Kiri mark: the bronze jeweler's loupe beside the tracked small-caps wordmark ("All-Caps Small-Caps Trailed"). Newsreader SemiBold, uppercase, +0.125em tracking, a 1.5:1 icon-to-text ratio at every size.</p>
+  <h3 class="group">Lockup &middot; master and context sizes, 1.5:1 icon-to-text</h3>
+  <div class="comp-row">
+    <div class="comp-item"><div class="brandrow">
+      <div class="spec"><span class="k">Master &middot; 36/24</span><span class="lockup-a"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl1-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl1-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl1-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl1-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl1-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl1-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl1-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl1-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl1-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl1-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl1-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl1-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl1-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl1-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl1-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl1-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl1-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl1-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span></div>
+      <div class="spec"><span class="k">Nav &middot; 26/17</span><span class="lockup-b"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl2-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl2-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl2-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl2-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl2-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl2-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl2-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl2-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl2-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl2-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl2-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl2-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl2-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl2-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl2-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl2-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl2-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl2-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span></div>
+      <div class="spec"><span class="k">Mobile &middot; 23/15</span><span class="lockup-c"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl3-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl3-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl3-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl3-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl3-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl3-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl3-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl3-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl3-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl3-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl3-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl3-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl3-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl3-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl3-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl3-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl3-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl3-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span></div>
+    </div><span class="lbl">wordmark color is on-surface (theme-aware); the loupe's bronze and Urushi are fixed brand colors</span></div>
+  </div>
+  <h3 class="group">On the dark anchor &middot; footer and cta-band grounds</h3>
+  <div class="comp-row">
+    <div class="comp-item"><div class="darkpanel"><span class="lockup-a"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl4-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl4-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl4-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl4-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl4-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl4-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl4-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl4-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl4-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl4-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl4-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl4-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl4-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl4-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl4-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl4-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl4-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl4-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span></div>
+    <span class="lbl">on brand-950 the wordmark runs paper cream; never recolor the loupe</span></div>
+  </div>
+</section>
 <section id="colors">
   <h2>Colors</h2>
   <p class="intro">Natural materials named in Japanese: Urushi lacquer ink, Haku bronze accents, Suna sand and Kami paper surfaces. Toggle dark mode (top right) to see the inverted roasted-brown set.</p>
@@ -1083,7 +1630,7 @@
     <div class="icell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy</div>
     <div class="icell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>check</div>
     <div class="icell"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>chevron-down</div>
-    <div class="icell"><span style="font-size:20px;line-height:1">⬖</span>brand glyph · custom</div>
+    <div class="icell"><span style="font-size:11px;line-height:1.3;text-align:center">see<br>Brand</span>loupe · brand mark</div>
   </div>
 </section>
 
@@ -1323,38 +1870,38 @@
   <div class="comp-row">
     <div class="card"><span class="meta">April 8, 2026 · Set: Origins</span><h4>Kiri, Mist Courser</h4><p>Legendary mount. When Kiri attacks, draw a card for each ally that shares its clan.</p></div>
     <div class="card is-hover"><span class="meta">Hover state</span><h4>Kiri, Mist Courser</h4><p>Border strengthens to border-strong with a 2px lift. No shadow.</p></div>
-    <div class="comp-item"><div class="cframe">⬖</div><span class="lbl">card-frame · 63:88 image placeholder</span></div>
+    <div class="comp-item"><div class="cframe"><span class="dia"></span></div><span class="lbl">card-frame · 63:88 image placeholder</span></div>
   </div>
 
   <h3 class="group">Card grid tile · the browse/search workhorse (hover reveals quick-add)</h3>
   <div class="comp-row">
     <div class="ctile">
-      <div class="cimg">⬖<button class="qadd">+</button></div>
+      <div class="cimg"><span class="dia"></span><button class="qadd">+</button></div>
       <div class="tnm">Kiri, Mist Courser</div>
       <div class="tst">Origins · 042 </div><div class="trar"><span class="badge-dot r-mythic">Mythic</span></div>
       <div class="tpr"><span class="tnum">$42.00</span><span class="pdelta up">4.8%</span></div>
     </div>
     <div class="ctile is-hover">
-      <div class="cimg">⬖<button class="qadd">+</button></div>
+      <div class="cimg"><span class="dia"></span><button class="qadd">+</button></div>
       <div class="tnm">Kiri, Mist Courser</div>
       <div class="tst">Origins · 042 </div><div class="trar"><span class="badge-dot r-mythic">Mythic</span></div>
       <div class="tpr"><span class="tnum">$42.00</span><span class="pdelta up">4.8%</span></div>
     </div>
     <div class="ctile">
-      <div class="cimg">⬖<button class="qadd">+</button></div>
+      <div class="cimg"><span class="dia"></span><button class="qadd">+</button></div>
       <div class="tnm">Paper Crane Scout</div>
       <div class="tst">Origins · 101 </div><div class="trar"><span class="badge-dot r-common">Common</span></div>
       <div class="tpr"><span class="tnum">$0.25</span><span class="pdelta down">2.1%</span></div>
     </div>
     <div class="ctile">
-      <div class="cimg">⬖<button class="qadd">+</button></div>
+      <div class="cimg"><span class="dia"></span><button class="qadd">+</button></div>
       <div class="tnm">Bronze Familiar</div>
       <div class="tst">Empire · 033 </div><div class="trar"><span class="badge-dot r-rare">Rare</span></div>
       <div class="tpr"><span class="tnum">$3.10</span><span class="pdelta flat">0.0%</span></div>
     </div>
   </div>
 
-  <h3 class="group">Content cards · hover any card: the notch arrow expands into Read More and the cover zooms</h3>
+  <h3 class="group">Content cards · hover any card: the notch arrow expands into Read More</h3>
   <div class="comp-row">
     <div class="comp-item" style="flex:1 1 100%">
       <div class="ccard ccard-featured">
@@ -1412,7 +1959,7 @@
         <div class="mini">
           <div class="mrow dim">Azure Vault</div>
           <div class="mrow dim">Binder Nine</div>
-          <div class="mrow hot">⬖ Origins Vault <span class="mdot"></span></div>
+          <div class="mrow hot"><span class="dia sm"></span> Origins Vault <span class="mdot"></span></div>
         </div>
       </div>
       <div class="cap"><div class="t">Private collection vault</div><div class="d">Track every card you own, securely, on your terms.</div></div>
@@ -1444,18 +1991,213 @@
   <h2>Navigation</h2>
   <p class="intro">Header bars, dropdowns, mega menus, page tabs, pagination, and row-action menus.</p>
 
-  <h3 class="group">Navigation · 72px bar, 16px links</h3>
-  <h3 class="group" style="margin-top:0">Authed app nav · active underline + center search well</h3>
+  <h3 class="group">Authed app nav · active underline + center search well</h3>
   <div class="nav-demo" style="margin-bottom:var(--space-6)">
-    <span class="brand">⬖ Kiri</span>
-    <a href="#navigation">Cards</a><a href="#navigation" class="active">Portfolio</a><a href="#navigation">Watchlist</a><a href="#navigation">Pricing</a>
+    <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl5-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl5-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl5-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl5-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl5-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl5-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl5-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl5-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl5-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl5-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl5-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl5-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl5-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl5-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl5-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl5-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl5-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl5-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
+    <a href="#navigation">News</a><a href="#navigation">Cards</a><a href="#navigation" class="active">Portfolio</a><a href="#navigation">Watchlist</a><a href="#navigation">Pricing</a>
     <span class="nav-search"><span class="well"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search any card<span class="kbd">⌘K</span></span></span>
     <span class="bellwrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span>
     <span class="avt s32 img"></span>
   </div>
 
   <div class="nav-demo">
-    <span class="brand">⬖ Kiri</span>
+    <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl6-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl6-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl6-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl6-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl6-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl6-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl6-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl6-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl6-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl6-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl6-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl6-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl6-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl6-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl6-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl6-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl6-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl6-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
     <a href="#navigation">Products <svg class="caret-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a><a href="#navigation">Cards</a><a href="#navigation">Decks</a><a href="#navigation">Events</a><a href="#navigation">Pricing</a>
     <span class="spacer"></span>
     <a href="#navigation">EN <svg class="caret-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
@@ -1466,7 +2208,105 @@
   <h3 class="group">Navigation · dropdown open in the header</h3>
   <div class="navdd">
     <div class="nav-demo">
-      <span class="brand">⬖ Kiri</span>
+      <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl7-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl7-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl7-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl7-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl7-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl7-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl7-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl7-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl7-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl7-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl7-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl7-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl7-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl7-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl7-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl7-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl7-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl7-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
       <a href="#navigation" class="active">Products <svg class="caret-svg up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a><a href="#navigation">Cards</a><a href="#navigation">Decks</a><a href="#navigation">Events</a><a href="#navigation">Pricing</a>
       <span class="spacer"></span>
       <a href="#navigation">EN <svg class="caret-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></a>
@@ -1475,15 +2315,15 @@
     </div>
     <div class="dd-menu">
       <div class="dd-item is-hover" style="--acc:var(--color-info)">
-        <div class="dd-icon">⬖</div>
+        <div class="dd-icon"><span class="dia dd"></span></div>
         <div><div class="t">Deck Builder</div><div class="d">Describe decks in plain language, refine them visually, and share them anywhere.</div></div>
       </div>
       <div class="dd-item" style="--acc:var(--color-error)">
-        <div class="dd-icon">⬖</div>
+        <div class="dd-icon"><span class="dia dd"></span></div>
         <div><div class="t">Card Scanner</div><div class="d">Scan physical cards into your collection with built-in condition grading.</div></div>
       </div>
       <div class="dd-item" style="--acc:var(--color-accent-alt)">
-        <div class="dd-icon">⬖</div>
+        <div class="dd-icon"><span class="dia dd"></span></div>
         <div><div class="t">Trade Hub</div><div class="d">List, match, and settle trades with collectors across your region.</div></div>
       </div>
     </div>
@@ -1536,7 +2376,105 @@
     <div class="comp-item">
       <div class="phone">
         <div class="mnav">
-          <span class="brand">⬖ Kiri</span>
+          <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl8-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl8-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl8-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl8-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl8-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl8-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl8-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl8-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl8-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl8-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl8-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl8-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl8-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl8-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl8-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl8-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl8-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl8-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
           <span class="bellwrap" style="border:none;background:none"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span class="ndot">3</span></span>
           <button class="burger"><span></span><span></span><span></span></button>
         </div>
@@ -1546,7 +2484,105 @@
     <div class="comp-item">
       <div class="phone">
         <div class="mnav">
-          <span class="brand">⬖ Kiri</span>
+          <span class="brand"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl9-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl9-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl9-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl9-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl9-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl9-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl9-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl9-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl9-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl9-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl9-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl9-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl9-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl9-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl9-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl9-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl9-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl9-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></span>
           <button class="mclose">✕</button>
         </div>
         <div class="msheet">
@@ -1633,6 +2669,16 @@
 <section id="editorial">
   <h2>Editorial</h2>
   <p class="intro">Article typography and the sidebar widget set.</p>
+  <h3 class="group">Immersive article header · card-featured at page scale</h3>
+  <div class="article-hero" style="background-image:linear-gradient(180deg, rgba(26,18,14,.18) 0%, rgba(26,18,14,.28) 30%, rgba(26,18,14,.55) 55%, rgba(26,18,14,.93) 100%), var(--gradient-haku)">
+    <span class="chip ah-chip">News · Market</span>
+    <div class="article-hero-content">
+      <div class="ttl">The One Ring Keeps Climbing: What Its Third Rally Tells Us</div>
+      <p class="stand">Three spikes in twelve months is not hype, it is a supply story. We chart every reprint rumor against the price line.</p>
+      <div class="author"><div class="av">RF</div><div><div class="nm">Robin Fox</div><div class="rl">Market Desk · Jul 14, 2026 · 12 min read</div></div></div>
+    </div>
+  </div>
+
   <h3 class="group">Article layout · prose + sidebar widgets</h3>
   <div class="article-demo">
     <div class="prose">
@@ -2156,12 +3202,12 @@
   <h3 class="group">Banner · page-level system strip, full-width under the nav</h3>
   <div class="comp-row" style="flex-direction:column">
     <div class="banner" style="--sem:var(--color-warning);width:100%">
-      <span class="ic">⚠</span> Price updates are delayed while our data provider is under maintenance.
+      <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span> Price updates are delayed while our data provider is under maintenance.
       <a href="#feedback" class="bact">Status page →</a>
       <button class="bx">✕</button>
     </div>
     <div class="banner" style="--sem:var(--color-info);width:100%">
-      <span class="ic">ℹ</span> Origins II support arrives next week, and preorder pricing is now tracked.
+      <span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span> Origins II support arrives next week, and preorder pricing is now tracked.
       <button class="bx">✕</button>
     </div>
   </div>
@@ -2180,9 +3226,9 @@
 
   <h3 class="group">Alerts &amp; toast</h3>
   <div class="comp-row" style="flex-direction:column">
-    <div class="alert" style="max-width:420px" style="--sem:var(--color-info)"><span class="ic">ℹ</span> New set “Origins II” previews begin next week.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-info)"><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span> New set “Origins II” previews begin next week.</div>
     <div class="alert" style="max-width:420px" style="--sem:var(--color-success)"><span class="ic">✓</span> Deck saved to your collection.</div>
-    <div class="alert" style="max-width:420px" style="--sem:var(--color-warning)"><span class="ic">⚠</span> This deck is 2 cards under the 60-card minimum.</div>
+    <div class="alert" style="max-width:420px" style="--sem:var(--color-warning)"><span class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg></span> This deck is 2 cards under the 60-card minimum.</div>
     <div class="alert" style="max-width:420px" style="--sem:var(--color-error)"><span class="ic">✗</span> Card could not be added: collection limit reached.</div>
     <div><span class="toast">Deck exported · View file</span></div>
   </div>
@@ -2202,7 +3248,7 @@
 
   <h3 class="group">Empty state</h3>
   <div class="empty" style="max-width:480px">
-    <div class="well">⬖</div>
+    <div class="well"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9a2 2 0 0 1 2-2h14"/><path d="M3 11h3c.8 0 1.6.3 2.1.9l1.1.9c1.6 1.6 4.1 1.6 5.7 0l1.1-.9c.5-.6 1.3-.9 2.1-.9H21"/></svg></div>
     <div class="t">No cards in your portfolio yet</div>
     <div class="d">Search for any card across Magic, Pokémon, Yu-Gi-Oh!, and Sorcery to start tracking its value.</div>
     <button class="btn btn-primary">Add your first card</button>
@@ -2358,7 +3404,105 @@
   <div class="footer-demo">
     <div class="cols">
       <div class="fbrand">
-        <div class="wordmark">⬖ Kiri</div>
+        <div class="wordmark"><svg
+        class="brand-loupe"
+        viewBox="0 0 36 36"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden="true"
+      >
+        <g filter="url(#kl10-card-shadow)">
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="#322014" />
+          <rect x="7.8" y="4.8" width="14.4" height="19.8" rx="1.5" fill="url(#kl10-card-sheen)" />
+          <rect x="7.95" y="4.95" width="14.1" height="19.5" rx="1.35" stroke="url(#kl10-bronze-card)" stroke-width="0.3" />
+        </g>
+        <rect x="9.3" y="6.3" width="11.4" height="7.8" rx="0.6" fill="black" fill-opacity="0.25" />
+        <g filter="url(#kl10-handle-shadow)">
+          <rect x="22.95" y="23.85" width="3" height="7.8" rx="1.5" transform="rotate(-45 22.95 23.85)" fill="url(#kl10-bronze-handle)" />
+          <rect x="23.056" y="23.85" width="2.85" height="7.65" rx="1.425" transform="rotate(-45 23.056 23.85)" stroke="#59361F" stroke-width="0.15" />
+        </g>
+        <g filter="url(#kl10-barrel-shadow)">
+          <circle cx="20.4" cy="18.6" r="6.6" fill="url(#kl10-bronze-barrel)" />
+          <circle cx="20.4" cy="18.6" r="6.45" stroke="#59361F" stroke-width="0.3" />
+        </g>
+        <g filter="url(#kl10-lens-inner)">
+          <circle cx="20.4" cy="18.6" r="4.8" fill="white" fill-opacity="0.08" />
+          <circle cx="20.4" cy="18.6" r="4.8" fill="url(#kl10-lens-sheen)" />
+        </g>
+        <circle cx="20.4" cy="18.6" r="4.725" stroke="white" stroke-opacity="0.2" stroke-width="0.15" />
+        <circle cx="18.45" cy="16.05" r="1.05" fill="white" fill-opacity="0.4" />
+        <circle cx="20.25" cy="14.85" r="0.45" fill="white" fill-opacity="0.45" />
+        <defs>
+          <filter id="kl10-card-shadow" x="6" y="4.2" width="18" height="23.4" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.2" />
+            <feGaussianBlur stdDeviation="0.9" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.3" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.25 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl10-handle-shadow" x="22.37" y="22.05" width="8.795" height="8.794" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.9" />
+            <feGaussianBlur stdDeviation="0.6" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+          </filter>
+          <filter id="kl10-barrel-shadow" x="10.8" y="10.8" width="19.2" height="19.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="1.8" />
+            <feGaussianBlur stdDeviation="1.5" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.45 0" />
+            <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow" />
+            <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.45" />
+            <feGaussianBlur stdDeviation="0.15" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0" />
+            <feBlend mode="normal" in2="shape" result="effect2_innerShadow" />
+          </filter>
+          <filter id="kl10-lens-inner" x="15.6" y="13.8" width="9.6" height="10.2" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <feFlood flood-opacity="0" result="BackgroundImageFix" />
+            <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
+            <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+            <feOffset dy="0.6" />
+            <feGaussianBlur stdDeviation="0.45" />
+            <feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1" />
+            <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feBlend mode="normal" in2="shape" result="effect1_innerShadow" />
+          </filter>
+          <linearGradient id="kl10-card-sheen" x1="7.8" y1="4.8" x2="22.2" y2="4.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.19" />
+            <stop offset="1" stop-opacity="0.31" />
+          </linearGradient>
+          <linearGradient id="kl10-bronze-card" x1="15" y1="4.8" x2="5.58" y2="11.65" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl10-bronze-handle" x1="24.45" y1="23.85" x2="21.84" y2="24.86" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl10-bronze-barrel" x1="20.4" y1="12" x2="13.8" y2="18.6" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#C5A681" />
+            <stop offset="1" stop-color="#7E4E2D" />
+          </linearGradient>
+          <linearGradient id="kl10-lens-sheen" x1="15.6" y1="13.8" x2="25.2" y2="13.8" gradientUnits="userSpaceOnUse">
+            <stop stop-color="white" stop-opacity="0.28" />
+            <stop offset="1" stop-color="white" stop-opacity="0.02" />
+          </linearGradient>
+        </defs>
+      </svg><span class="brand-word">Kiri</span></div>
         <div class="tag">The fastest way to build, track, and trade your collection.</div>
         <div class="fsocial">
           <a href="#footer-comp" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg></a>
@@ -2516,6 +3660,7 @@
     'rarity ladder': ['rarity', 'badge-rarity'],
     'panel cards': ['card'],
     'content cards': ['card-featured', 'card-standard', 'card-compact', 'card-action', 'notch'],
+    'lockup': ['loupe lockup', 'wordmark'], 'dark anchor': ['loupe lockup', 'brand-950'],
     'card grid tile': ['card-tile'],
     'navigation': ['nav', 'dropdown-menu'],
     'mobile navigation': ['nav-mobile', 'nav-sheet'],
@@ -2608,6 +3753,11 @@
     ['Preview', 'HTML', 'CSS', 'Docs'].forEach(function(t, ti){
       var b = document.createElement('button'); b.textContent = t; if (!ti) b.className = 'active'; tabs.appendChild(b);
     });
+    // per-story light/dark preview toggle (scopes tokens to this story only)
+    var them = document.createElement('button'); them.className = 'sthem'; them.textContent = '☾';
+    them.setAttribute('aria-label', 'Toggle this preview between light and dark');
+    them.title = 'Preview in the other theme';
+    tabs.appendChild(them);
     bar.appendChild(title); bar.appendChild(tabs);
     var body = document.createElement('div'); body.className = 'sbody';
     content.forEach(function(n){ body.appendChild(n); });
@@ -2617,8 +3767,15 @@
     var storyTitle = h.textContent;
     h.remove();
     var built = false, docsBuilt = false;
+    them.addEventListener('click', function(e){
+      e.stopPropagation();
+      var cur = body.dataset.theme || document.documentElement.dataset.theme || 'light';
+      var next = cur === 'dark' ? 'light' : 'dark';
+      body.dataset.theme = next;
+      them.textContent = next === 'dark' ? '☀' : '☾';
+    });
     tabs.addEventListener('click', function(e){
-      if (e.target.tagName !== 'BUTTON') return;
+      if (e.target.tagName !== 'BUTTON' || e.target === them) return;
       tabs.querySelectorAll('button').forEach(function(b){ b.classList.toggle('active', b === e.target); });
       var t = e.target.textContent;
       if (!built && (t === 'HTML' || t === 'CSS')) {

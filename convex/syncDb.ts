@@ -282,3 +282,15 @@ export const listGamesInternal = internalQuery({
     return games.map(({ _id, slug, justTcgId }) => ({ _id, slug, justTcgId }));
   },
 });
+
+/** Does a search query already return cached results? (seedStaples skip check) */
+export const hasSearchResults = internalQuery({
+  args: { q: v.string() },
+  handler: async (ctx, { q }) => {
+    const hits = await ctx.db
+      .query("cards")
+      .withSearchIndex("search", (s) => s.search("searchText", q.toLowerCase()))
+      .take(1);
+    return hits.length > 0;
+  },
+});

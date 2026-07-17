@@ -220,3 +220,68 @@ export const seedSets = internalAction({
     return results;
   },
 });
+
+/**
+ * Seed the launch staples (seed.STAPLES): for each uncached query, one
+ * backfill request drawn from the nightly pool. Re-run until it reports
+ * remaining: 0; it resumes safely across days.
+ */
+export const seedStaples = internalAction({
+  args: {},
+  handler: async (ctx) => {
+    const { STAPLES } = await import("./seed");
+    let fetched = 0;
+    let skipped = 0;
+    let remaining = 0;
+    for (const staple of STAPLES) {
+      const cached = await ctx.runQuery(internal.syncDb.hasSearchResults, { q: staple.q });
+      if (cached) {
+        skipped++;
+        continue;
+      }
+      const granted: number = await ctx.runMutation(internal.syncDb.takeBudget, {
+        kind: "nightly",
+        count: 1,
+      });
+      if (granted < 1) {
+        remaining++;
+        continue;
+      }
+      const params: Record<string, string> = { q: staple.q, game: staple.gameSlug, limit: "20" };
+      try {
+        const res = await justTcgFetch<{ data: ApiCard[] }>("/cards", params);
+        for (const card of res.data ?? []) {
+          if (!card.id || !card.name || !card.set_name) continue;
+          await ctx.runMutation(internal.syncDb.upsertCardFromApi, {
+            gameSlug: staple.gameSlug,
+            card: {
+              justTcgCardId: card.id,
+              name: card.name,
+              setName: card.set_name,
+              number: card.number ?? undefined,
+              rarity: card.rarity ?? undefined,
+              imageUrl: card.imageUrl,
+              variants: (card.variants ?? []).map((variant) => ({
+                justTcgVariantId: variant.id,
+                condition: variant.condition ?? undefined,
+                printing: variant.printing ?? undefined,
+                price: variant.price ?? undefined,
+                lastUpdated: variant.lastUpdated ?? undefined,
+                change7d: variant.priceChange7d ?? undefined,
+                change30d: variant.priceChange30d ?? undefined,
+                change90d: variant.priceChange90d ?? undefined,
+                priceHistory: (variant.priceHistory ?? []).filter(
+                  (point) => typeof point?.p === "number" && typeof point?.t === "number",
+                ),
+              })),
+            },
+          });
+          fetched++;
+        }
+      } catch (err) {
+        console.error(`seedStaples: "${staple.q}" failed: ${String(err)}`);
+      }
+    }
+    return { cardsFetched: fetched, staplesSkipped: skipped, remaining };
+  },
+});

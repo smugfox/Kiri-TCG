@@ -1,29 +1,33 @@
 import Link from "next/link";
 import PlanCards from "@/components/features/PlanCards";
-import AuthedRedirect from "./AuthedRedirect";
+import HeroShowcase from "@/components/features/HeroShowcase";
+import MarketTicker from "@/components/features/MarketTicker";
 
 export const metadata = {
   description:
-    "Track prices across Magic, Pok\u00e9mon, Yu-Gi-Oh, and Sorcery. Add cards in seconds, follow every swing, and trade with confidence.",
+    "Track prices across Magic, Pokémon, Yu-Gi-Oh, and Sorcery. Add cards in seconds, follow every swing, and trade with confidence.",
 };
 
-/** Landing page per product-vision \u00a7 Messaging Framework; copy verbatim. */
+/** Landing page per product-vision § Messaging Framework; copy verbatim. */
 export default function Home() {
   return (
     <div className="page" style={{ maxWidth: 1080, margin: "0 auto", padding: "0 var(--space-5)" }}>
-      <AuthedRedirect />
 
-      <section className="mhero">
-        <span className="chip">The stock app for your card collection</span>
-        <h1 className="mtitle">Know what your collection is worth.</h1>
-        <p className="msub">
-          Track prices across Magic, Pok\u00e9mon, Yu-Gi-Oh, and Sorcery. Add cards in
-          seconds, follow every swing, and trade with confidence.
-        </p>
-        <div className="mcta">
-          <Link href="/signin" className="btn btn-primary">Start tracking free</Link>
-          <Link href="/cards" className="btn btn-secondary">Browse card prices</Link>
+      <section className="mhero hero-flex">
+        <div className="hero-copy">
+          <span className="chip">The stock app for your card collection</span>
+          <h1 className="mtitle">Know what your collection is <em>worth.</em></h1>
+          <p className="msub">
+            Track prices across Magic, Pokémon, Yu-Gi-Oh, and Sorcery. Add cards in
+            seconds, follow every swing, and trade with confidence.
+          </p>
+          <div className="mcta">
+            <Link href="/signin" className="btn btn-primary">Start tracking free</Link>
+            <Link href="/cards" className="btn btn-secondary">Browse card prices</Link>
+          </div>
+          <div className="hero-fresh"><span className="dot" /> 23,412 prices refreshed last night</div>
         </div>
+        <HeroShowcase />
       </section>
 
       <section style={{ padding: "var(--space-7) 0" }}>
@@ -35,8 +39,8 @@ export default function Home() {
                   <b style={{ font: "var(--type-h4)", fontFamily: "var(--font-heading)" }}>$2,340.19</b>
                   <span className="pdelta up">1.8%</span>
                 </div>
-                <div className="mrow dim">Cost basis \u00b7 $1,610.00</div>
-                <div className="mrow dim">Unrealized P&L \u00b7 <span className="pl up">+$730.19</span></div>
+                <div className="mrow dim">Cost basis · $1,610.00</div>
+                <div className="mrow dim">Unrealized P&L · <span className="pl up">+$730.19</span></div>
               </div>
             </div>
             <div className="cap">
@@ -63,7 +67,7 @@ export default function Home() {
             <div className="well">
               <div className="mini">
                 <div className="mrow">Magic <span style={{ marginLeft: "auto", color: "var(--color-on-surface-muted)" }}>1,204 cards</span></div>
-                <div className="mrow">Pok\u00e9mon <span style={{ marginLeft: "auto", color: "var(--color-on-surface-muted)" }}>862</span></div>
+                <div className="mrow">Pokémon <span style={{ marginLeft: "auto", color: "var(--color-on-surface-muted)" }}>862</span></div>
                 <div className="mrow">Yu-Gi-Oh <span style={{ marginLeft: "auto", color: "var(--color-on-surface-muted)" }}>590</span></div>
                 <div className="mrow">Sorcery <span style={{ marginLeft: "auto", color: "var(--color-on-surface-muted)" }}>118</span></div>
               </div>
@@ -83,7 +87,7 @@ export default function Home() {
             <div className="st">Free until it outgrows the shoebox</div>
             <div className="si">A real portfolio for up to 100 cards, free forever. Trader unlocks the rest.</div>
           </div>
-          <Link className="act" href="/pricing">Compare plans \u2192</Link>
+          <Link className="btn btn-secondary sm" href="/pricing" style={{ textDecoration: "none" }}>Compare plans</Link>
         </div>
         <PlanCards showToggle={false} />
       </section>
@@ -95,6 +99,8 @@ export default function Home() {
           <Link href="/signin" className="btn btn-inverted">Start tracking free</Link>
         </div>
       </section>
+
+      <MarketTicker bleed aboveFooter />
     </div>
   );
 }

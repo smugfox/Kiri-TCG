@@ -79,3 +79,25 @@ export const testClearHoldings = internalMutation({
     return { removed };
   },
 });
+
+/**
+ * Launch catalog: high-traffic staples per game so first visitors find
+ * populated pages and charts. Cache-aware (skips queries that already
+ * return results) and budget-guarded, so it can re-run across days:
+ * `npx convex run seed:staples`.
+ */
+export const STAPLES: Array<{ q: string; gameSlug: string }> = [
+  // Magic: The Gathering
+  ...["sol ring", "counterspell", "brainstorm", "swords to plowshares", "dark ritual",
+      "birds of paradise", "force of will", "thoughtseize", "ragavan", "rhystic study",
+      "cyclonic rift", "demonic tutor"].map((q) => ({ q, gameSlug: "magic-the-gathering" })),
+  // Pokémon
+  ...["charizard", "pikachu", "blastoise", "venusaur", "umbreon", "rayquaza",
+      "gengar", "mewtwo", "eevee", "lugia", "gardevoir", "dragonite"].map((q) => ({ q, gameSlug: "pokemon" })),
+  // Yu-Gi-Oh
+  ...["blue-eyes white dragon", "dark magician", "red-eyes black dragon", "exodia",
+      "pot of greed", "ash blossom", "dark magician girl", "monster reborn",
+      "mirror force", "nibiru", "accesscode talker", "snake-eye"].map((q) => ({ q, gameSlug: "yugioh" })),
+  // Sorcery: Contested Realm
+  ...["avatar", "dragon", "grim", "flame", "sorcerer", "knight"].map((q) => ({ q, gameSlug: "sorcery-contested-realm" })),
+];

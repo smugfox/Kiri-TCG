@@ -2,8 +2,8 @@
  * two decimals (aggregates at or above $10,000 drop cents), +/− prefixes
  * with a real minus sign, one-decimal percents. */
 
-export function money(value: number): string {
-  const dropCents = Math.abs(value) >= 10_000;
+export function money(value: number, dropCentsAt = 10_000): string {
+  const dropCents = Math.abs(value) >= dropCentsAt;
   return value.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
@@ -12,8 +12,8 @@ export function money(value: number): string {
   });
 }
 
-export function signedMoney(value: number): string {
-  return `${value < 0 ? "−" : "+"}${money(Math.abs(value))}`;
+export function signedMoney(value: number, dropCentsAt = 10_000): string {
+  return `${value < 0 ? "−" : "+"}${money(Math.abs(value), dropCentsAt)}`;
 }
 
 export function signedPercent(value: number): string {

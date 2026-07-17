@@ -10,6 +10,7 @@ import Switch from "@/components/ui/Switch";
 import Button from "@/components/ui/Button";
 import UpgradePrompt from "@/components/features/UpgradePrompt";
 import { useToast } from "@/components/ui/Toast";
+import { capture, EVENTS } from "@/lib/analytics";
 
 /**
  * price-alert row (design.md § Components): $ threshold input, above/below
@@ -54,6 +55,7 @@ export default function PriceAlertRow({ variantId }: { variantId: Id<"variants">
         toast("Alert updated.");
       } else {
         await create({ variantId, direction, threshold: parsed });
+        capture(EVENTS.ALERT_CREATED, { direction });
         toast("Alert set. Kiri checks after each nightly price update.");
       }
     } catch (err) {

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import BrandLockup from "./BrandLockup";
 
 export default function SiteFooter() {
   return (
@@ -6,18 +7,20 @@ export default function SiteFooter() {
       <div className="page">
         <div className="cols">
           <div className="fbrand">
-            <div className="wordmark">⬖ Kiri</div>
+            <div className="wordmark"><BrandLockup /></div>
             <div className="tag">The fastest way to track, value, and trade your collection.</div>
           </div>
           <div className="fcol">
             <div className="h">Product</div>
             <Link href="/pricing">Pricing</Link>
             <Link href="/signin">Login</Link>
+            <a href="/design.html">Design system</a>
           </div>
           <div className="fcol">
             <div className="h">Cards</div>
             <Link href="/cards">Card database</Link>
             <Link href="/watchlist">Watchlist</Link>
+            <Link href="/news">News</Link>
           </div>
           <div className="fcol">
             <div className="h">Account</div>
