@@ -15,7 +15,7 @@ export default function StaleBanner() {
   const staleness = useQuery(api.status.staleness, isAuthenticated ? {} : "skip");
   if (!staleness || staleness.oldestUpdateHoursAgo <= STALE_HOURS) return null;
   return (
-    <Banner kind="warning">
+    <Banner kind="warning" flush>
       Price updates are delayed. Your values reflect the last good refresh; freshness
       chips show exactly how old each price is.
     </Banner>

@@ -3,15 +3,25 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { useQuery } from "convex/react";
+import { api } from "@/../convex/_generated/api";
 
 /**
- * Avatar-triggered menu. Shows a generic avatar until the viewer query is
- * wired up (Phase 2, once convex/_generated exists on this machine).
+ * Avatar-triggered menu: the viewer's photo when they have one (demo
+ * accounts get /avatar.webp), else initials on Tsuchi.
  */
 export default function UserMenu() {
   const { signOut } = useAuthActions();
+  const viewer = useQuery(api.users.viewer);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLSpanElement>(null);
+  const initials = (viewer?.name ?? "")
+    .split(/\s+/)
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
 
   useEffect(() => {
     if (!open) return;
@@ -31,8 +41,13 @@ export default function UserMenu() {
 
   return (
     <span ref={ref} style={{ position: "relative", display: "inline-flex" }}>
-      <button className="avt s40" aria-label="Account menu" aria-expanded={open} onClick={() => setOpen(!open)} style={{ border: "none", cursor: "pointer" }}>
-        ⬖
+      <button className="avt s40" aria-label="Account menu" aria-expanded={open} onClick={() => setOpen(!open)} style={{ border: "none", cursor: "pointer", overflow: "hidden" }}>
+        {viewer?.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={viewer.image} alt="" style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "inherit" }} />
+        ) : (
+          initials || "K"
+        )}
       </button>
       {open && (
         <div className="umenu" role="menu" style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", zIndex: 200 }}>

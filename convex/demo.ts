@@ -17,12 +17,16 @@ export const ensureDemoData = mutation({
     if (!userId) throw new Error("Not signed in");
     const user = await ctx.db.get(userId);
     if (!user?.isAnonymous) return "not-a-demo-account";
+    // Demo identity: name + the bundled avatar (also healed on revisit).
+    const identity: { name?: string; image?: string } = {};
+    if (!user.name) identity.name = "Demo Collector";
+    if (!user.image) identity.image = "/avatar.webp";
+    if (Object.keys(identity).length > 0) await ctx.db.patch(userId, identity);
     const existing = await ctx.db
       .query("holdings")
       .withIndex("byUser", (q) => q.eq("userId", userId))
       .first();
     if (existing) return "already-seeded";
-    if (!user.name) await ctx.db.patch(userId, { name: "Demo Collector" });
 
     // Build a believable, good-looking collection: prefer cards with real
     // images, spread across games, in a $3-$1,500 band, one variant per card.

@@ -14,6 +14,7 @@ export default function SiteFooter() {
             <div className="h">Product</div>
             <Link href="/pricing">Pricing</Link>
             <Link href="/signin">Login</Link>
+            <a href="/design.html">Design system</a>
           </div>
           <div className="fcol">
             <div className="h">Cards</div>
