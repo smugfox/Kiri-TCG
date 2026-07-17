@@ -2,7 +2,6 @@ import Link from "next/link";
 import PlanCards from "@/components/features/PlanCards";
 import HeroShowcase from "@/components/features/HeroShowcase";
 import MarketTicker from "@/components/features/MarketTicker";
-import AuthedRedirect from "./AuthedRedirect";
 
 export const metadata = {
   description:
@@ -13,7 +12,6 @@ export const metadata = {
 export default function Home() {
   return (
     <div className="page" style={{ maxWidth: 1080, margin: "0 auto", padding: "0 var(--space-5)" }}>
-      <AuthedRedirect />
 
       <section className="mhero hero-flex">
         <div className="hero-copy">
