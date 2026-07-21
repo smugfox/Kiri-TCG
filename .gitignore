@@ -18,3 +18,4 @@ next-env.d.ts
 .DS_Store
 *.tsbuildinfo
 public/design.html
+public/design.md
