@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "predev": "node -e \"require('fs').copyFileSync('docs/design.html','public/design.html')\"",
+    "predev": "node -e \"['design.html','design.md'].forEach(f=>require('fs').copyFileSync('docs/'+f,'public/'+f))\"",
     "dev": "next dev",
     "dev:all": "concurrently -n web,convex -c blue,yellow \"npm:dev\" \"convex dev\"",
-    "build": "node -e \"require('fs').copyFileSync('docs/design.html','public/design.html')\" && next build",
+    "build": "node -e \"['design.html','design.md'].forEach(f=>require('fs').copyFileSync('docs/'+f,'public/'+f))\" && next build",
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
